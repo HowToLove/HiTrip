@@ -1,6 +1,5 @@
 <?php
 session_start();
-$_SESSION['userId']= 20100;
 $userId = $_SESSION['userId'];
 $longitude = $_POST['longitude'];
 $latitude = $_POST['latitude'];

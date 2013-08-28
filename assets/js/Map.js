@@ -1,13 +1,84 @@
+var lastLongitute;//written by lanxiang 
+var lastLatitude;//written by lanxiang
+
 //地理定位+景点盖章
 function getE(ele){
 	return document.getElementById(ele);
 }
+/*
+start
+written by lanxiang
+*/
+function check(lat,lon){
+	return true;
+}
+function sendLocation()
+{
+	console.log("lanxiang!");
+	if (navigator.geolocation)
+    {
+    navigator.geolocation.getCurrentPosition(getPosition,showError);
+    }
+  else{
+	alert("sorry!Your browser is bad!");
+  }
+}
 
-window.setInterval(function getLocation(){
-	if (navigator.geolocation){
-		navigator.geolocation.watchPosition(showPosition);
+function getPosition(position)
+  {
+  var xmlHttp;
+	if(window.ActiveXObject){
+		xmlHttp = new ActiveXObject("Microsoft.XMLHttp");
+	}else if(window.XMLHttpRequest){
+		xmlHttp = new XMLHttpRequest();
 	}
-},1000)
+  var lat=position.coords.latitude;
+  var lon=position.coords.longitude;
+  if(check(lat,lon)){//用来判断用户的位置是否发生了变化
+  lastLatitude=lat;
+  lastLongitude=lon;
+  var param ="longitude="+lon+
+		"&latitude="+lat+
+		"&t="+Math.random();
+		console.log(param);
+	var url = "sendPosition.php";
+	xmlHttp.onreadystatechange = function(){
+		if(xmlHttp.readyState==4){
+		if(xmlHttp.status == 200){
+			var test = xmlHttp.responseText;
+			console.log("From:sendPosition.php:");
+			console.log(test);
+		}
+		}
+	};
+	xmlHttp.open("POST",url);
+	xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+	xmlHttp.send(param);
+	}
+	showAllPosition(position.coords.latitude,position.coords.longitude,"user-ego");
+}
+function showError(error)
+  {
+  switch(error.code) 
+    {
+    case error.PERMISSION_DENIED:
+      alert("User denied the request for Geolocation.");
+      break;
+    case error.POSITION_UNAVAILABLE:
+      alert("Location information is unavailable.");
+      break;
+    case error.TIMEOUT:
+      alert("The request to get user location timed out.");
+      break;
+    case error.UNKNOWN_ERROR:
+     alert("An unknown error occurred.");
+      break;
+    }
+  }
+  /*
+  end 
+  written by lanxiang 
+  */
 function Distance(latA,lonA,latB,lonB){
 	return (25960.23679735*(Math.acos(Math.sin(latA)*Math.sin(latB)+Math.cos(latA)*Math.cos(latB)*Math.cos(lonA-lonB))));
 }
@@ -22,9 +93,7 @@ function calLeft(x,y){
 	return 2.953059756*y-2.96137829*x+945;
 }
 var isSealed=false;
-function showPosition(position){
-	showAllPosition(position.coords.latitude,position.coords.longitude,"user-ego");
-}
+
 function showAllPosition(lat,lon,id){
 	var ad=524;
 	var an=Distance(31.8948,118.8090,lat,lon);
