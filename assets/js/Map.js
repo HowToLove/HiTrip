@@ -1,5 +1,5 @@
-var lastLongitute;//written by lanxiang 
-var lastLatitude;//written by lanxiang
+var lastLongitude=1.1;//written by lanxiang 
+var lastLatitude=1.2;//written by lanxiang
 
 //地理定位+景点盖章
 function getE(ele){
@@ -10,11 +10,19 @@ start
 written by lanxiang
 */
 function check(lat,lon){
+//console.log(LastLongitude+"  "+Lon);
+	if(lastLongitude==lon)
+	{
+	return false;
+	}
+	else
 	return true;
 }
 function sendLocation()
 {
-	console.log("lanxiang!");
+	//console.log("lanxiang!");
+	//alert("")
+	/*
 	if (navigator.geolocation)
     {
     navigator.geolocation.getCurrentPosition(getPosition,showError);
@@ -22,9 +30,12 @@ function sendLocation()
   else{
 	alert("sorry!Your browser is bad!");
   }
+  */
+  getPosition();
 }
 
-function getPosition(position)
+//function getPosition(position)
+ function getPosition()
   {
   var xmlHttp;
 	if(window.ActiveXObject){
@@ -32,15 +43,16 @@ function getPosition(position)
 	}else if(window.XMLHttpRequest){
 		xmlHttp = new XMLHttpRequest();
 	}
-  var lat=position.coords.latitude;
-  var lon=position.coords.longitude;
+  var lat=31.885700300000003;
+  var lon=118.8136401;
   if(check(lat,lon)){//用来判断用户的位置是否发生了变化
   lastLatitude=lat;
-  lastLongitude=lon;
+  lastLongitude=lon; 
+  
   var param ="longitude="+lon+
 		"&latitude="+lat+
 		"&t="+Math.random();
-		console.log(param);
+		//console.log(param);
 	var url = "sendPosition.php";
 	xmlHttp.onreadystatechange = function(){
 		if(xmlHttp.readyState==4){
@@ -55,7 +67,9 @@ function getPosition(position)
 	xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 	xmlHttp.send(param);
 	}
-	showAllPosition(position.coords.latitude,position.coords.longitude,"user-ego");
+	//showAllPosition(position.coords.latitude,position.coords.longitude,"user-ego");
+	showAllPosition(31.885700300000003,118.8136401,"user-ego");
+
 }
 function showError(error)
   {
