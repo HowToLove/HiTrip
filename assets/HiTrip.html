@@ -105,22 +105,48 @@ function cb_up(){
 }
 </script>
 -->
+<!----------------------添加自己到地图------------------------->
 <script id='user-ego-tmpl' type='text/x-jquery-tmpl'>
 	<a class="avatar"><img src=${Head}></img></a>
 </script>
-<script id='user-friend' type='text/x-jquery-tmpl'>
+<!----------------------添加好友到地图------------------------->
+<script id='user-friend-tmpl' type='text/x-jquery-tmpl'>
 	<div class="user-friend" id=${Id}>
 		<a class="avatar"><img src=${Head}></img></a>
 	</div>
 </script>
-
-
+<!----------------------新的好友请求------------------------->
+<script id="newf-tmpl" type="text/x-jquery-tmpl">
+	<li id=${Id} data-corners="false" data-shadow="false" data-iconshadow="true" data-wrapperels="div" data-icon="arrow-r" data-iconpos="right" data-theme="c" class="ui-btn ui-btn-icon-right ui-li-has-arrow ui-li ui-li-has-thumb ui-first-child ui-btn-up-c"><div class="ui-btn-inner ui-li"><div class="ui-btn-text"><div class="ui-li-aside">
+					<div data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="c" data-inline="true" data-disabled="false" class="ui-btn ui-shadow ui-btn-corner-all ui-btn-inline ui-btn-up-c" aria-disabled="false"><span class="ui-btn-inner"><span class="ui-btn-text">同意</span></span><button class="newfY ui-btn-hidden" data-inline="true" data-disabled="false">同意</button></div>
+					<div data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="c" data-inline="true" data-disabled="false" class="ui-btn ui-shadow ui-btn-corner-all ui-btn-inline ui-btn-up-c" aria-disabled="false"><span class="ui-btn-inner"><span class="ui-btn-text">拒绝</span></span><button class="newfN ui-btn-hidden" data-inline="true" data-disabled="false">拒绝</button></div>
+				</div>
+				<a href="#zone-others" class="ui-link-inherit">
+					<img src=${Head} class="ui-li-thumb">
+					<h3 class="ui-li-heading">${Name}</h3><p class="ui-li-desc">请求加您为好友</p>
+				</a>
+				
+			</div><span class="ui-icon ui-icon-arrow-r ui-icon-shadow">&nbsp;</span></div></li>
+</script>
+<!----------------------好友请求被接受------------------------->
+<script id="newf-accept-tmpl" type="text/x-jquery-tmpl">
+	<li>
+		<a href="#zone-others">
+			<img src=${Head}/>
+			<h3>王小明</h3><p>已添加您为好友</p>
+		</a>
+	</li>
+</script>
 <script>
 //written by lanxiang
 var sendLocationIntervalId;
+var queryAnswerId;
+var queryAnswerCount=0;
+var queryFriendsId;
 function init(){
 	getSelfInfo(); 
 	sendLocationIntervalId = setInterval(sendLocation,1000);
+	queryFriendsId = setInterval(queryFriends,1000);
 }
 function getSelfInfo(){//得到用户自己的信息	
 	var xmlHttp;
@@ -165,7 +191,15 @@ function queryAnswer(){//查询对方是否给出回复，如果给出返回值�
 			console.log("From:queryAnswer.php:");
 			console.log(test);
 			if(test!=""){
-			var answer = eval("("+test+")");
+				var answer = eval("("+test+")");//得到了对方的JSON变量和结果
+				for(var i=0;i<answer.length;i++){
+					if(answer[i].status==1){
+						$("#newf-accept-tmpl").tmpl(answer[i]).prependTo("#newf-list");
+					}
+				}
+				queryAnswerCount-=answer.length;
+				if(queryAnswerCount==0)//表示所有的请求都得到了回答
+				clearInterval(queryAnswerId);//终止此次查找
 			}			
 			}
 		}
@@ -174,9 +208,35 @@ function queryAnswer(){//查询对方是否给出回复，如果给出返回值�
 	xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 	xmlHttp.send(param);
 }
-function answerFriends(){
-	var answer=1;//这里要用户输入,1表示接受好友请求，2表示拒绝
-	var answerUserId=2;//表示回复的用户的Id，应作为参数传入
+$(document).ready(function(){
+	$(".newfY").tap(function(){
+		var id=$(this).parent().parent().parent().parent().parent().attr("id");
+		$("#"+id).find(".ui-li-aside").empty();
+		$("#"+id).find(".ui-li-aside").append("<div data-corners='true' data-shadow='true' data-iconshadow='true' data-wrapperels='span' data-theme='c' data-inline='true' data-disabled='false' class='ui-btn ui-shadow ui-btn-corner-all ui-btn-inline ui-btn-up-c' aria-disabled='false'><span class='ui-btn-inner'><span class='ui-btn-text'>已添加</span></span><button data-inline='true' class='ui-btn-hidden' data-disabled='false'>已添加</button></div>");
+		answerFriends(1,id);
+	});
+	$(".newfN").tap(function(){
+		var id=$(this).parent().parent().parent().parent().parent().attr("id");
+		$("#"+id).find(".ui-li-aside").empty();
+		$("#"+id).find(".ui-li-aside").append("<div data-corners='true' data-shadow='true' data-iconshadow='true' data-wrapperels='span' data-theme='c' data-inline='true' data-disabled='false' class='ui-btn ui-shadow ui-btn-corner-all ui-btn-inline ui-btn-up-c' aria-disabled='false'><span class='ui-btn-inner'><span class='ui-btn-text'>已拒绝</span></span><button data-inline='true' class='ui-btn-hidden' data-disabled='false'>已拒绝</button></div>");
+		answerFriends(2,id);
+	});
+	$(".eyeon").tap(function(){
+		var id=$(this).parent().parent().parent().attr("id");
+		requestFriends(id);
+	});
+	
+});
+function aaa(){
+	var json1=[{"Longitude":"118.8136401","Latitude":"31.885700300000003","Head":"http:\/\/localhost\/register8.24\/files\/A.jpg","Id":"1","Name":"A"}];
+	for(var i=0;i<json1.length;i++){
+				$("#newf-tmpl").tmpl(json1[i]).prependTo("#newf-list");
+				alert(i);
+			}
+		}
+function answerFriends(answer,answerUserId){
+	//这里要用户输入,1表示接受好友请求，2表示拒绝
+	//表示回复的用户的Id，应作为参数传入
 	var xmlHttp;
 	if(window.ActiveXObject){
 		xmlHttp = new ActiveXObject("Microsoft.XMLHttp");
@@ -197,8 +257,9 @@ function answerFriends(){
 	};
 	xmlHttp.open("POST",url);
 	xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-	xmlHttp.send(param);
+	xmlHttp.send(param);	
 }
+
 function queryFriends(){//用户登录成功后调用，返回请求该用户的JSON数组。
 	var xmlHttp;
 	if(window.ActiveXObject){
@@ -213,9 +274,23 @@ function queryFriends(){//用户登录成功后调用，返回请求该用户的
 		if(xmlHttp.readyState==4){
 		if(xmlHttp.status == 200){
 			var test = xmlHttp.responseText;
-			var strange = eval("("+test+")");
 			console.log("From:queryFriends.php:");
 			console.log(test);
+			if(test==-1){
+				alert("Update 失败！");
+			}else{
+			if(test!="1"){
+				var strange = eval("("+test+")");
+				for(var i=0;i<strange.length;i++){
+					$("#newf-tmpl").tmpl(strange[i]).prependTo("#newf-list");
+					alert(i)
+				}			
+
+			}else{
+			test = "没有人请求添加我为好友";
+			}
+			}
+			
 			}
 		}
 	};
@@ -223,9 +298,12 @@ function queryFriends(){//用户登录成功后调用，返回请求该用户的
 	xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 	xmlHttp.send(param);
 }
-function requestFriends(){//requestFriends(targetId)
-	setInterval("queryAnswer()",1000);
-	var targetId=6;
+function requestFriends(targetId){
+	if(queryAnswerCount==0){
+		queryAnswerId = setInterval("queryAnswer()",1000);		
+	}
+	queryAnswerCount++;
+	//var targetId=6;
 	var xmlHttp;
 	if(window.ActiveXObject){
 		xmlHttp = new ActiveXObject("Microsoft.XMLHttp");
@@ -298,6 +376,7 @@ function getFriendInfo(){
 	xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 	xmlHttp.send(param);
 }
+
 
 </script>
 </head>
@@ -430,7 +509,7 @@ function getFriendInfo(){
 			
 			<!-------------------用户头像和状态显示--------------------->
 			<div class="user-ego" id="user-ego">
-				<a class="avatar"><img src="img/Avatar.jpg"></img></a>
+
 			</div>
 		</div>
 		
@@ -493,18 +572,18 @@ function getFriendInfo(){
 		<a href="#zone-others-panel" data-icon="bars" data-iconpos="notext" data-shadow="false" data-iconshadow="false">Menu</a>
     </div>
 	<div data-role="content" data-theme="c" style="padding:0">
-		<div class="zone-header" id="">
+		<div class="zone-header" id="2">
 			<!---------------------用户头像----------------------->
-			<div class="zone-avatar" id="">
+			<div class="zone-avatar">
 				<img src="img/Avatar.jpg"/>
 			</div>
 			
 			<!---------------------用户信息----------------------->
-			<div class="zone-userinfo" id="">
-				<div class="zone-username"><p>王小明</p></div>
+			<div class="zone-userinfo">
+				<div class="zone-username"><p>王大明</p></div>
 				<div class="zone-gender"><img src="img/male-symbol.png"/></div>
 				<div class="zone-eyeon">
-					<a class="eyeon" href="index.html" data-role="button" data-theme="e" data-icon="plus" data-inline="true"data-mini="true">加关注</a>
+					<a class="eyeon" href="#" data-role="button" data-theme="e" data-icon="plus" data-inline="true" data-mini="true">加关注</a>
 				</div>
 			</div>
 		</div>
@@ -563,15 +642,15 @@ function getFriendInfo(){
 		<a href="#msg-newf-panel" data-icon="bars" data-iconpos="notext" data-shadow="false" data-iconshadow="false">Menu</a>
     </div>
 	<div data-role="content" data-theme="c">
-		<ul data-role="listview">
-			<li>
+		<ul data-role="listview" id="newf-list">
+			<li id="2-newf">
 				<a href="#zone-others">
 					<img src="img/Avatar.jpg"/>
 					<h3>王小明</h3><p>请求加您为好友</p>
 				</a>
 				<div class="ui-li-aside">
-					<button data-inline="true">同意</button>
-					<button data-inline="true">拒绝</button>
+					<button class="newfY" data-inline="true">同意</button>
+					<button class="newfN" data-inline="true">拒绝</button>
 				</div>
 			</li>
 			<li>
@@ -580,7 +659,7 @@ function getFriendInfo(){
 					<h3>王小明</h3><p>请求加您为好友</p>
 				</a>
 				<div class="ui-li-aside">
-					<button class="ytj" data-inline="true">已添加</button>
+					<button data-inline="true">已添加</button>
 				</div>
 			</li>
 			<li>
@@ -589,8 +668,14 @@ function getFriendInfo(){
 					<h3>王小明</h3><p>请求加您为好友</p>
 				</a>
 				<div class="ui-li-aside">
-					<button data-inline="true">已拒绝</button>
+					<button data-inline="true" onclick="aaa();">已拒绝</button>
 				</div>
+			</li>
+			<li>
+				<a href="#zone-others">
+					<img src="img/Avatar.jpg"/>
+					<h3>王小明</h3><p>已添加您为好友</p>
+				</a>
 			</li>
 		</ul>
 	</div>

@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta lang="zh" />
+  <meta name="viewport" content="width=device-width,user-scalable=yes,initial-scale=1.0,maximum-scale=3.0" />
+
+  <title>HiTrip</title>
+  
+  <link rel="stylesheet" href="js/jquery.mobile-1.3.2/jquery.mobile.theme-1.3.2.min.css">
+  <link rel="stylesheet" href="js/jquery.mobile-1.3.2/jquery.mobile.structure-1.3.2.min.css">
+
+  <link href="css/Map.css" rel="stylesheet">
+  <link href="css/Zone.css" rel="stylesheet">
+  <link href="css/bootstrap.css" rel="stylesheet">
+  <script src="js/jquery-1.10.2.min.js"></script>
+  <script src="js/Map.js"></script>
+  <script src="js/Zone.js"></script>
+  <script src="js/jquery.mobile-1.3.2/jquery.mobile-1.3.2.min.js"></script>
+  <!--script src="https://d10ajoocuyu32n.cloudfront.net/codiqa.ext.js"></script-->
+
+  <!-- templete -->
+  <script src="js/jquery.tmpl.min.js"></script>
+
+  <script id='noimg'  type='text/x-jquery-tmpl'>
+      <tr><td><img src=${Head} width="50px" height="50px"/></td><td style="text-align:left">${Name}</td></tr>
+      <tr><td></td><td style="text-align:left">${Content}<br /></td></tr>
+  </script>
+
+  <script id='img'  type='text/x-jquery-tmpl'>
+    <tr><td><img src=${Head} width="50px" height="50px"/></td><td style="text-align:left">${Name}</td></tr>
+    <tr><td></td><td style="text-align:left"><img src=${IMG} width="100%" /><br />${Content}<br/></td></tr>
+  </script>
+<!--
+  <script>
+  var news;
+  var xmlHttp;
+  $(document).ready(function(){
+	//first 6 news
+	createXMLHttpRequest();
+	var url = "get_friend_news_6.php?t="+Math.random();
+	xmlHttp.open("GET",url,true);
+	xmlHttp.onreadystatechange = cb;
+	xmlHttp.send(null);	
+	
+    //click friendLoadMore button 
+	$("#friendLoadMore").click(function() {
+	createXMLHttpRequest();
+	var url = "get_friend_news_up.php?t="+Math.random();
+	xmlHttp.open("GET",url,true);
+	xmlHttp.onreadystatechange = cb;
+	xmlHttp.send(null);	
+	});
+	
+	//click friendRefresh button
+	$("#friendRefresh").click(function() {
+	createXMLHttpRequest();
+	var url = "get_friend_news_up.php?t="+Math.random();
+	xmlHttp.open("GET",url,true);
+	xmlHttp.onreadystatechange = cb_up;
+	xmlHttp.send(null);	
+	});
+	
+	});
+	
+function createXMLHttpRequest(){
+	if(window.ActiveXObject){
+		xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	else if(window.XMLHttpRequest){
+		xmlHttp = new XMLHttpRequest();
+	}
+}
+
+function cb(){
+	if(xmlHttp.readyState==4){
+		if(xmlHttp.status==200){			
+			str = xmlHttp.responseText;
+			console.log(str);
+			var news = eval("("+str+")");
+			for(var i=0;i<news.length;i++) {
+				if(news[i].IMG)
+					$("#img").tmpl(news[i]).appendTo("#new");
+				else
+					$("#noimg").tmpl(news[i]).appendTo("#new");
+			}			
+		}
+	}
+}
+
+function cb_up(){
+	if(xmlHttp.readyState==4){
+		if(xmlHttp.status==200){			
+			str = xmlHttp.responseText;
+			console.log(str);
+			var news = eval("("+str+")");
+			for(var i=0;i<news.length;i++) {
+				if(news[i].IMG)
+					$("#img").tmpl(news[i]).prependTo("#new");
+				else
+					$("#noimg").tmpl(news[i]).prependTo("#new");
+			}			
+		}
+	}
+}
+</script>
+-->
+<script id='user-ego-tmpl' type='text/x-jquery-tmpl'>
+	<a class="avatar"><img src=${Head}></img></a>
+</script>
+<script id='user-friend' type='text/x-jquery-tmpl'>
+	<div class="user-friend" id=${Id}>
+		<a class="avatar"><img src=${Head}></img></a>
+	</div>
+</script>
+
+
+<script>
+//written by lanxiang
+var sendLocationIntervalId;
+function init(){
+	getSelfInfo(); 
+	sendLocationIntervalId = setInterval(sendLocation,1000);
+}
+function getSelfInfo(){//得到用户自己的信息	
+	var xmlHttp;
+	if(window.ActiveXObject){
+		xmlHttp = new ActiveXObject("Microsoft.XMLHttp");
+	}else if(window.XMLHttpRequest){
+		xmlHttp = new XMLHttpRequest();
+	}
+    var param ="t="+Math.random();
+		console.log(param);
+	var url = "getSelfInfo.php";
+	xmlHttp.onreadystatechange = function(){
+		if(xmlHttp.readyState==4){
+		if(xmlHttp.status == 200){
+			var test = xmlHttp.responseText;
+			alert("QQQ: "+test);
+			var selfInfo = eval("("+test+")");
+			$("#user-ego-tmpl").tmpl(selfInfo).appendTo("#user-ego");
+			console.log("From:getSelfInfo.php:");
+			console.log(test);
+			}
+		}
+	};
+	xmlHttp.open("POST",url);
+	xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+	xmlHttp.send(param);
+}
+function queryAnswer(){//查询对方是否给出回复，如果给出返回值是对方信息的json变量和回复的status，1表示同意，0表示不统一
+	var xmlHttp;
+	if(window.ActiveXObject){
+		xmlHttp = new ActiveXObject("Microsoft.XMLHttp");
+	}else if(window.XMLHttpRequest){
+		xmlHttp = new XMLHttpRequest();
+	}
+    var param ="t="+Math.random();
+		console.log(param);
+	var url = "queryAnswer.php";
+	xmlHttp.onreadystatechange = function(){
+		if(xmlHttp.readyState == 4){
+		if(xmlHttp.status == 200){
+			var test = xmlHttp.responseText;
+			console.log("From:queryAnswer.php:");
+			console.log(test);
+			if(test!=""){
+			var answer = eval("("+test+")");
+			}			
+			}
+		}
+	};
+	xmlHttp.open("POST",url);
+	xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+	xmlHttp.send(param);
+}
+function answerFriends(){
+	var answer=1;//这里要用户输入,1表示接受好友请求，2表示拒绝
+	var answerUserId=2;//表示回复的用户的Id，应作为参数传入
+	var xmlHttp;
+	if(window.ActiveXObject){
+		xmlHttp = new ActiveXObject("Microsoft.XMLHttp");
+	}else if(window.XMLHttpRequest){
+		xmlHttp = new XMLHttpRequest();
+	}
+    var param ="answer="+answer+"&answerUserId="+answerUserId+"&t="+Math.random();
+		console.log(param);
+	var url = "answerFriends.php";
+	xmlHttp.onreadystatechange = function(){
+		if(xmlHttp.readyState == 4){
+		if(xmlHttp.status == 200){
+			var test = xmlHttp.responseText;
+			console.log("From:answerFriends.php:");
+			console.log(test);
+			}
+		}
+	};
+	xmlHttp.open("POST",url);
+	xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+	xmlHttp.send(param);
+}
+function queryFriends(){//用户登录成功后调用，返回请求该用户的JSON数组。
+	var xmlHttp;
+	if(window.ActiveXObject){
+		xmlHttp = new ActiveXObject("Microsoft.XMLHttp");
+	}else if(window.XMLHttpRequest){
+		xmlHttp = new XMLHttpRequest();
+	}
+    var param ="t="+Math.random();
+		console.log(param);
+	var url = "queryFriends.php";
+	xmlHttp.onreadystatechange = function(){
+		if(xmlHttp.readyState==4){
+		if(xmlHttp.status == 200){
+			var test = xmlHttp.responseText;
+			var strange = eval("("+test+")");
+			console.log("From:queryFriends.php:");
+			console.log(test);
+			}
+		}
+	};
+	xmlHttp.open("POST",url);
+	xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+	xmlHttp.send(param);
+}
+function requestFriends(){//requestFriends(targetId)
+	setInterval("queryAnswer()",1000);
+	var targetId=6;
+	var xmlHttp;
+	if(window.ActiveXObject){
+		xmlHttp = new ActiveXObject("Microsoft.XMLHttp");
+	}else if(window.XMLHttpRequest){
+		xmlHttp = new XMLHttpRequest();
+	}
+    var param ="targetId="+targetId+"&t="+Math.random();
+		console.log(param);
+	var url = "requestFriends.php";
+	xmlHttp.onreadystatechange = function(){
+		if(xmlHttp.readyState==4){
+		if(xmlHttp.status == 200){
+			var test = xmlHttp.responseText;
+			console.log("From:requestFriends.php:");
+			console.log(test);
+			}
+		}
+	};
+	xmlHttp.open("POST",url);
+	xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+	xmlHttp.send(param);
+}
+function getStrangeInfo(){//得到当前所有驴友的信息
+	var xmlHttp;
+	if(window.ActiveXObject){
+		xmlHttp = new ActiveXObject("Microsoft.XMLHttp");
+	}else if(window.XMLHttpRequest){
+		xmlHttp = new XMLHttpRequest();
+	}
+    var param ="t="+Math.random();
+		console.log(param);
+	var url = "getStrangeInfo.php";
+	xmlHttp.onreadystatechange = function(){
+		if(xmlHttp.readyState==4){
+		if(xmlHttp.status == 200){
+			var test = xmlHttp.responseText;
+			var strange = eval("("+test+")");
+			console.log("From:getStrangeInfo.php:");
+			console.log(test);
+			console.log(strange[0].Name);
+		}
+		}
+	};
+	xmlHttp.open("POST",url);
+	xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+	xmlHttp.send(param);
+}
+function getFriendInfo(){
+	var xmlHttp;
+	if(window.ActiveXObject){
+		xmlHttp = new ActiveXObject("Microsoft.XMLHttp");
+	}else if(window.XMLHttpRequest){
+		xmlHttp = new XMLHttpRequest();
+	}
+    var param ="t="+Math.random();
+		console.log(param);
+	var url = "getFriendInfo.php";
+	xmlHttp.onreadystatechange = function(){
+		if(xmlHttp.readyState==4){
+		if(xmlHttp.status == 200){
+			var test = xmlHttp.responseText;
+			var friends = eval("("+test+")");
+			console.log("From:getFriendInfo.php:");
+			console.log(test);
+			console.log(friends[0].Name);
+		}
+		}
+	};
+	xmlHttp.open("POST",url);
+	xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+	xmlHttp.send(param);
+}
+
+</script>
+</head>
+
+<body style="font-family:微软雅黑;padding:0;" onload="init()">
+
+<!--div data-role="page" id="page0" data-theme="c" >
+    <div data-role="header" data-theme="c">
+      <h1>首页</h1>
+      <a href="#panel0" data-icon="bars" data-iconpos="notext" data-shadow="false" data-iconshadow="false">Menu</a>
+    </div>
+    <div data-role="content" style="padding: 0%">
+	<div>
+              <div id="googlemapsjs3" class="google-map" style="width: 480px; height: 400px;">
+              </div>
+              <script type="text/javascript">
+                      window.CodiqaControls && window.CodiqaControls.register('googlemaps', 'googlemapsjs3', {
+              ready: function(control) {
+  
+                  control.options = {
+                      zoom: 14,
+                      mapTypeId: google.maps.MapTypeId.ROADMAP
+                  };
+  
+                  control.el = document.getElementById(control._id);
+                  control.map = new google.maps.Map(control.el, control.options);
+  
+                  var geocoder = new google.maps.Geocoder();
+                  geocoder.geocode({
+                      'address': 'Nanjing，China'
+                  }, function(results, status) {
+                      if (status == google.maps.GeocoderStatus.OK) {
+  
+                          var marker = new google.maps.Marker({
+                              map: control.map,
+                              position: results[0].geometry.location
+                          });
+                          control.center = results[0].geometry.location;
+                          control.map.setCenter(control.center);
+                      }
+                  });
+  
+              }
+          });
+              </script>
+          </div>
+    </div>
+    <div data-role="panel" id="panel0" data-theme="b">
+           <ul data-role="listview" data-divider-theme="b" data-inset="false">
+              <li data-theme="a" id="panelHead">
+                      <img id="panelHeadImg" src="img/Avatar.jpg" height="100%">王小明
+              </li>
+              <li data-theme="c">
+                  <a href="#panel0" >
+                      首页
+                  </a>
+              </li>
+              <li data-theme="c">
+                  <a href="#page1" data-transition="flip">
+                      景区地图
+                  </a>
+              </li>
+              <li data-role="list-divider" >
+                      动态
+              </li>
+              <li data-theme="c">
+                  <a href="#page2" data-transition="flip">
+                      好友动态
+                  </a>
+              </li>
+              <li data-theme="c">
+                  <a href="#page3" data-transition="flip">
+                      景区新鲜事
+                  </a>
+              </li>
+              <li data-role="list-divider">
+                      关于我
+              </li>
+              <li data-theme="c">
+                  <a href="#page4" data-transition="flip">
+                      个人主页
+                  </a>
+              </li>
+              <li data-theme="c">
+                  <a href="#page5" data-transition="flip">
+                      设置
+                  </a>
+              </li>
+          </ul>
+      </div>
+  </div--> 
+
+<div data-role="page" id="page1" data-theme="c" >
+    <div data-role="header" data-theme="c" id="header">
+      <h1>景区地图</h1>
+      <a href="#panel1" data-icon="bars" data-iconpos="notext" data-shadow="false" data-iconshadow="false">Menu</a>
+    </div>
+	<div data-role="content" style="padding:0%;" id="minilayer" class="minilayer" >
+		<div class="map-sketch" id="map-sketch">
+			<!-------------------景点标注------------------->
+			<div class="marker" id="jtbg">
+				<a class="pin"><img src="img/Marker-BB.png"/></a>
+				<a class="bubble"><div class="tooltip fade right in">
+					<div class="tooltip-arrow"></div>
+					<div class="tooltip-inner">焦廷标馆</div>
+				</div></a>
+			</div>
+			<div class="marker" id="lwz">
+				<a class="pin"><img src="img/Marker-GB.png"/><a>
+				<a class="bubble"><div class="tooltip fade right in">
+					<div class="tooltip-arrow"></div>
+					<div class="tooltip-inner">李文正图书馆</div>
+				</div></a>
+			</div>
+			<div class="marker" id="jsjl">
+				<a class="pin"><img src="img/Marker-WG.png"/></a>
+				<a class="bubble"><div class="tooltip fade right in">
+					<div class="tooltip-arrow"></div>
+					<div class="tooltip-inner">计算机 / 软件楼</div>
+				</div></a>
+			</div>
+			<div class="marker" id="jzl">
+				<a class="pin"><img src="img/Marker-WP.png"/></a>
+				<a class="bubble"><div class="tooltip fade right in">
+					<div class="tooltip-arrow"></div>
+					<div class="tooltip-inner">金智楼</div>
+				</div></a>
+			</div>
+			
+			
+			<!-------------------用户头像和状态显示--------------------->
+			<div class="user-ego" id="user-ego">
+				
+			</div>
+		</div>
+		
+		
+		<!----------------------进度条------------------------>
+		<div class="progress progress-warning active" id="progress">
+			<div class="bar" id="bar" style="width: 0;"></div>
+			<p style="position:absolute;margin-left:49%;"><span id="count">0</span>/10</p>
+		</div>
+		
+		<!---------------------地图切换--------------------->
+		<div class="" id="switch-button">
+			<a><img src="img/Photo.png"/></a>
+		</div>
+		<div class="" id="switch-list">
+			<ul data-role="listview">
+				<li><a href="" id="simple-map">普通地图</a></li>
+				<li><a href="" id="friend-map">好友地图</a></li>
+				<li><a href="" id="stranger-map">驴友地图</a></li>
+			</ul>
+		</div>
+		
+		<!---------------------照相按钮--------------------->
+		<div id="photo-button">
+			<a><img src="img/Photo.png"/></a>
+		</div>
+		<div id="pub-bar">
+			<a href="#pub" data-transition="slide"  onclick="disappear();"><i class="icon-edit"></i> 状态 </a>|
+			<a><i class="icon-camera"></i> 拍照 </a>|
+			<a><i class="icon-picture"></i> 图库</a>
+		</div>
+		
+		
+		<!---------------------景点盖章--------------------->
+		<div id="box">
+			<img class="seal" src="img/bind.jpg" id="bind"/>
+			<img class="seal" src="img/badge.jpg" id="badge"/>
+			<img class="seal" src="img/star-fill.jpg" id="star-fill"/>
+			<img class="seal" src="img/star-twinkle.jpg" id="star-twinkle"/>
+		</div>
+	</div>
+	<div data-role="panel" id="panel1" data-theme="b">
+		<ul data-role="listview" data-divider-theme="b" data-inset="false">
+			<li data-theme="a" id="panelHead"><img id="panelHeadImg" src="img/Avatar.jpg" height="100%">王小明</li>
+			<li data-theme="c"><a href="#page0" data-transition="flip" >首页</a></li>
+			<li data-theme="c"><a href="#panel1" >景区地图</a></li>
+			<li data-role="list-divider" >动态</li>
+			<li data-theme="c"><a href="#page2" data-transition="flip">好友动态</a></li>
+			<li data-theme="c"><a href="#page3" data-transition="flip">	景区新鲜事</a></li>
+			<li data-role="list-divider">关于我</li>
+			<li data-theme="c"><a href="#page4" data-transition="flip">	个人主页</a></li>
+			<li data-theme="c"><a href="#msg-reply" data-transition="flip">消息中心</a></li>
+			<li data-theme="c"><a href="#page5" data-transition="flip">设置</a></li>
+		</ul>
+	</div>
+</div>
+<div data-role="page" id="zone-others" data-theme="c">
+	<div data-role="header" data-theme="c" data-position="fixed">
+		<h1>个人主页</h1>
+		<a href="#zone-others-panel" data-icon="bars" data-iconpos="notext" data-shadow="false" data-iconshadow="false">Menu</a>
+    </div>
+	<div data-role="content" data-theme="c" style="padding:0">
+		<div class="zone-header" id="">
+			<!---------------------用户头像----------------------->
+			<div class="zone-avatar" id="">
+				<img src="img/Avatar.jpg"/>
+			</div>
+			
+			<!---------------------用户信息----------------------->
+			<div class="zone-userinfo" id="">
+				<div class="zone-username"><p>王小明</p></div>
+				<div class="zone-gender"><img src="img/male-symbol.png"/></div>
+				<div class="zone-eyeon">
+					<a class="eyeon" href="index.html" data-role="button" data-theme="e" data-icon="plus" data-inline="true"data-mini="true">加关注</a>
+				</div>
+			</div>
+		</div>
+		<div class="zone-container" id="">
+		</div>
+	</div>
+	<div data-role="panel" id="zone-others-panel" data-theme="b">
+		<ul data-role="listview" data-divider-theme="b" data-inset="false">
+			<li data-theme="a" id="panelHead"><img id="panelHeadImg" src="img/Avatar.jpg" height="100%">王小明</li>
+			<li data-theme="c"><a href="#page0" data-transition="flip" >首页</a></li>
+			<li data-theme="c"><a href="#page1" >景区地图</a></li>
+			<li data-role="list-divider" >动态</li>
+			<li data-theme="c"><a href="#page2" data-transition="flip">好友动态</a></li>
+			<li data-theme="c"><a href="#page3" data-transition="flip">	景区新鲜事</a></li>
+			<li data-role="list-divider">关于我</li>
+			<li data-theme="c"><a href="#page4" data-transition="flip">	个人主页</a></li>
+			<li data-theme="c"><a href="#msg-reply" data-transition="flip">消息中心</a></li>
+			<li data-theme="c"><a href="#page5" data-transition="flip">设置</a></li>
+		</ul>
+	</div>
+</div>
+<div  data-role="page" id="msg-reply" data-theme="c">
+	<div data-role="header" data-theme="c" data-position="fixed">
+		<h1>消息中心</h1>
+		<a href="#msg-reply-panel" data-icon="bars" data-iconpos="notext" data-shadow="false" data-iconshadow="false">Menu</a>
+    </div>
+	<div data-role="content" data-theme="c" style="padding:0">
+		
+	</div>
+	<div data-role="footer" data-theme="c" data-position="fixed">	
+		<div data-role="navbar">
+			<ul>
+				<li><a href="#" class="ui-btn-active ui-state-persist">评论回复</a></li>
+				<li><a href="#msg-newf">新的朋友</a></li>
+			</ul>
+		</div>
+	</div>
+	<div data-role="panel" id="msg-reply-panel" data-theme="b">
+		<ul data-role="listview" data-divider-theme="b" data-inset="false">
+			<li data-theme="a" id="panelHead"><img id="panelHeadImg" src="img/Avatar.jpg" height="100%">王小明</li>
+			<li data-theme="c"><a href="#page0" data-transition="flip" >首页</a></li>
+			<li data-theme="c"><a href="#page1" >景区地图</a></li>
+			<li data-role="list-divider" >动态</li>
+			<li data-theme="c"><a href="#page2" data-transition="flip">好友动态</a></li>
+			<li data-theme="c"><a href="#page3" data-transition="flip">	景区新鲜事</a></li>
+			<li data-role="list-divider">关于我</li>
+			<li data-theme="c"><a href="#page4" data-transition="flip">	个人主页</a></li>
+			<li data-theme="c"><a href="#msg-reply-panel" data-transition="flip">消息中心</a></li>
+			<li data-theme="c"><a href="#page5" data-transition="flip">设置</a></li>
+		</ul>
+	</div>
+</div>
+<div  data-role="page" id="msg-newf" data-theme="c">
+	<div data-role="header" data-theme="c" data-position="fixed">
+		<h1>消息中心</h1>
+		<a href="#msg-newf-panel" data-icon="bars" data-iconpos="notext" data-shadow="false" data-iconshadow="false">Menu</a>
+    </div>
+	<div data-role="content" data-theme="c">
+		<ul data-role="listview">
+			<li>
+				<a href="#zone-others">
+					<img src="img/Avatar.jpg"/>
+					<h3>王小明</h3><p>请求加您为好友</p>
+				</a>
+				<div class="ui-li-aside">
+					<button data-inline="true">同意</button>
+					<button data-inline="true">拒绝</button>
+				</div>
+			</li>
+			<li>
+				<a href="#zone-others">
+					<img src="img/Avatar.jpg"/>
+					<h3>王小明</h3><p>请求加您为好友</p>
+				</a>
+				<div class="ui-li-aside">
+					<button class="ytj" data-inline="true">已添加</button>
+				</div>
+			</li>
+			<li>
+				<a href="#zone-others">
+					<img src="img/Avatar.jpg"/>
+					<h3>王小明</h3><p>请求加您为好友</p>
+				</a>
+				<div class="ui-li-aside">
+					<button data-inline="true">已拒绝</button>
+				</div>
+			</li>
+		</ul>
+	</div>
+	<div data-role="footer" data-theme="c" data-position="fixed">	
+		<div data-role="navbar">
+			<ul>
+				<li><a href="#msg-reply">评论回复</a></li>
+				<li><a href="#" class="ui-btn-active ui-state-persist">新的朋友</a></li>
+			</ul>
+		</div>
+	</div>
+	<div data-role="panel" id="msg-newf-panel" data-theme="b">
+		<ul data-role="listview" data-divider-theme="b" data-inset="false">
+			<li data-theme="a" id="panelHead"><img id="panelHeadImg" src="img/Avatar.jpg" height="100%">王小明</li>
+			<li data-theme="c"><a href="#page0" data-transition="flip" >首页</a></li>
+			<li data-theme="c"><a href="#page1" data-transition="flip" >景区地图</a></li>
+			<li data-role="list-divider" >动态</li>
+			<li data-theme="c"><a href="#page2" data-transition="flip">好友动态</a></li>
+			<li data-theme="c"><a href="#page3" data-transition="flip">	景区新鲜事</a></li>
+			<li data-role="list-divider">关于我</li>
+			<li data-theme="c"><a href="#page4" data-transition="flip">	个人主页</a></li>
+			<li data-theme="c"><a href="#msg-newf-panel" data-transition="flip">消息中心</a></li>
+			<li data-theme="c"><a href="#page5" data-transition="flip">设置</a></li>
+		</ul>
+	</div>
+</div>
+    <div data-role="page" id="page3" data-theme="c" >
+    <div data-role="header" data-theme="c">
+      <h1>景区新鲜事</h1>
+      <a href="#panel3" data-icon="bars" data-iconpos="notext" data-shadow="false" data-iconshadow="false">Menu</a>
+    </div>
+    <div data-role="content" style="padding: 0%">
+      <table cellspacing="0" cellpadding="3" border="0" width="100%">
+        <tbody id="new1">
+        </tbody>
+      </table>
+      <button type="button" id="spotLoadMore">点击加载更多</button>
+    </div>
+    <div data-role="panel" id="panel3" data-theme="b">
+           <ul data-role="listview" data-divider-theme="b" data-inset="false">
+               <li data-theme="a" id="panelHead">
+                      <img id="panelHeadImg" src="img/Avatar.jpg" height="100%">王小明
+              </li>
+              <li data-theme="c">
+                  <a href="#page0" data-transition="flip">
+                      首页
+                  </a>
+              </li>
+              <li data-theme="c">
+                  <a href="#page1" data-transition="flip">
+                      景区地图
+                  </a>
+              </li>
+              <li data-role="list-divider" >
+                      动态
+              </li>
+              <li data-theme="c">
+                  <a href="#page2" data-transition="flip" >
+                      好友动态
+                  </a>
+              </li>
+              <li data-theme="c">
+                  <a href="#panel3">
+                      景区新鲜事
+                  </a>
+              </li>
+              <li data-role="list-divider">
+                      关于我
+              </li>
+              <li data-theme="c">
+                  <a href="#page4" data-transition="flip">
+                      个人主页
+                  </a>
+              </li>
+              <li data-theme="c">
+                  <a href="#page5" data-transition="flip">
+                      设置
+                  </a>
+              </li>
+          </ul>
+      </div>
+  </div>
+
+  <div data-role="page" id="page4" data-theme="c" >
+    <div data-role="header" data-theme="c">
+      <h1>个人主页</h1>
+      <a href="#panel4" data-icon="bars" data-iconpos="notext" data-shadow="false" data-iconshadow="false">Menu</a>
+    </div>
+    <div data-role="content" style="padding: 0%">
+      <table cellspacing="0" cellpadding="3" border="0" width="100%">
+        <tbody id="new2">
+        </tbody>
+      </table>
+      <button type="button" id="spotLoadMore">点击加载更多</button>
+    </div>
+    <div data-role="panel" id="panel4" data-theme="b">
+           <ul data-role="listview" data-divider-theme="b" data-inset="false">
+               <li data-theme="a" id="panelHead">
+                      <img id="panelHeadImg" src="img/Avatar.jpg" height="100%">王小明
+              </li>
+              <li data-theme="c">
+                  <a href="#page0" data-transition="flip">
+                      首页
+                  </a>
+              </li>
+              <li data-theme="c">
+                  <a href="#page1" data-transition="flip">
+                      景区地图
+                  </a>
+              </li>
+              <li data-role="list-divider" >
+                      动态
+              </li>
+              <li data-theme="c">
+                  <a href="#page2" data-transition="flip" >
+                      好友动态
+                  </a>
+              </li>
+              <li data-theme="c">
+                  <a href="#page3" data-transition="flip" >
+                      景区新鲜事
+                  </a>
+              </li>
+              <li data-role="list-divider">
+                      关于我
+              </li>
+              <li data-theme="c">
+                  <a href="#panel4">
+                      个人主页
+                  </a>
+              </li>
+              <li data-theme="c">
+                  <a href="#page5" data-transition="flip">
+                      设置
+                  </a>
+              </li>
+          </ul>
+      </div>
+  </div>
+
+  <div data-role="page" id="page5" data-theme="c" >
+    <div data-role="header" data-theme="c">
+      <h1>设置</h1>
+      <a href="#panel5" data-icon="bars" data-iconpos="notext" data-shadow="false" data-iconshadow="false">Menu</a>
+    </div>
+    <div data-role="content" style="padding: 0%">
+       
+    </div>
+    <div data-role="panel" id="panel5" data-theme="b">
+           <ul data-role="listview" data-divider-theme="b" data-inset="false">
+               <li data-theme="a" id="panelHead">
+                      <img id="panelHeadImg" src="img/Avatar.jpg" height="100%">王小明
+              </li>
+              <li data-theme="c">
+                  <a href="#page0" data-transition="flip">
+                      首页
+                  </a>
+              </li>
+              <li data-theme="c">
+                  <a href="#page1" data-transition="flip">
+                      景区地图
+                  </a>
+              </li>
+              <li data-role="list-divider" >
+                      动态
+              </li>
+              <li data-theme="c">
+                  <a href="#page2" data-transition="flip" >
+                      好友动态
+                  </a>
+              </li>
+              <li data-theme="c">
+                  <a href="#page3" data-transition="flip" >
+                      景区新鲜事
+                  </a>
+              </li>
+              <li data-role="list-divider">
+                      关于我
+              </li>
+              <li data-theme="c">
+                  <a href="#page4" data-transition="flip">
+                      个人主页
+                  </a>
+              </li>
+              <li data-theme="c">
+                  <a href="#panel5">
+                      设置
+                  </a>
+              </li>
+          </ul>
+      </div>
+  </div>
+</body>
+</html>
