@@ -1,0 +1,275 @@
+*{
+	margin:0;
+	padding:0;
+}
+a{
+	cursor:pointer;
+}
+html{
+	overflow-x: hidden; overflow-y: hidden;
+	height:100%;
+}
+body {
+	text-align:center;	
+	overflow:-Scroll;
+	overflow-y:auto;
+	overflow:-Scroll;
+	overflow-x:hidden;
+	height:100%;
+	padding:0;
+}
+
+
+/*地图*/
+#minilayer { 
+	overflow:hidden;
+	position: absolute;
+	z-index: 0;
+	display:block;
+	height: 100%;
+	width: 100%;
+}
+#map-sketch {
+	background: url(../img/Map.jpg) no-repeat;
+	width: 2500px;
+	height:1598px;
+	margin: 0;
+	padding: 0px 0 0 0;
+	position: relative;
+	cursor: move;
+	z-index:0;
+}
+#map-sketch a{
+	text-decoration:none;
+	color:black;
+}
+#map-sketch a:hover{
+	color:black;
+}
+a.spot{
+	position:absolute;
+	background-color:rgba(199, 199, 199, 0.9);
+	width:120px;
+	height:80px;
+	border-radius:15px;
+	text-decoration:none;
+	display:none;
+}
+.spot p{
+	margin:0;
+	font-size:20px;
+	padding:25px 12px;
+}
+
+
+/*用户头像、状态*/
+.user-friend{
+	background:url(../img/bg-friend.png) no-repeat;
+	position:absolute;
+	width:240px;
+	height:100px;
+}
+.user-ego{
+	background:url(../img/bg-ego.png) no-repeat;
+	position:absolute;
+	width:240px;
+	height:100px;
+}
+.user-stranger{
+	background:url(../img/bg-stranger.png) no-repeat;
+	position:absolute;
+	width:240px;
+	height:100px;
+}
+.avatar{
+	float:left;
+}
+.avatar img{
+	width:67px;
+	height:67px;
+	padding-top:7px;
+	padding-left:9px;
+}
+.bubble{
+	float:left;
+	display:block;
+}
+.bubble img{
+	width:80px;
+}
+.bubble-img{
+	top:-20px;
+}
+.bubble-word{
+	top:4px;
+}
+.bubble-word .tooltip-inner{
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+/*景点标注*/
+.marker{
+	position:absolute;
+	width:200px;
+}
+.marker .bubble{
+	display:none;
+}
+.marker .bubble .tooltip{
+	top:6px;
+	left:40px;
+}
+.pin{
+	float:left;
+	width:50px;
+}
+#jtbg{
+	top:916px;
+	left:1600px;
+}
+#jsjl{
+	top:820px;
+	left:710px;
+}
+#lwz{
+	top:628px;
+	left:1064px;
+}
+#jzl{
+	top:916px;
+	left:865px;
+}
+
+
+/*进度条*/
+#progress{
+	position:absolute;
+	top:10px;
+	width:70%;
+	margin-left:10%;
+	margin-right:10%;
+}
+
+
+/*照相按钮*/
+#photo-button{
+	position:absolute;
+	bottom:10px;
+	right:10px;
+	z-index:1000;
+}
+
+
+/*状态发布页*/
+#pub-bar{
+	font-size:19px;
+	position:absolute;
+	bottom:10px;
+	right:10px;
+	z-index:999;
+	background-color:orange;
+	width:250px;
+	height:43px;
+	border-radius:30px;
+	padding-top:16px;
+	padding-right:45px;
+	display:none;
+}
+#pub-bar a{
+	text-decoration:none;
+	color:black;
+}
+#pub-bar a:visited{
+	color:black;
+}
+#pub{
+	height:100%;
+	width:100%;
+	overflow:hidden;
+}
+#pub textarea{
+	overflow:hidden;
+	resize:none;
+	width:99%;
+	height:80%;
+	border:none;
+	border-radius:0;
+	margin:0 0 10px 0;
+}
+
+
+/*分享功能*/
+#jiathis{
+	width:100%;
+	position:absolute;
+	bottom:0;
+}
+#jiathis1{
+	height:25px;
+	width:100%;
+	border-top:solid 1px #cccccc
+}
+#jiathis2{
+	width:100%;
+	background-color:#cccccc;
+	height:115px;
+}
+
+
+/*盖章效果*/
+#badge{
+	position: absolute;
+	left: 59px;
+	z-index: 1;
+	display: none;
+	width: 320px;
+	height: 330px;
+}
+
+#star-fill{
+	position: absolute;
+	left: 112px;
+	top: 56px;
+	z-index: 2;
+	display: none;
+}
+#star-twinkle{
+	position: absolute;
+	opacity: 1;
+	left: 113px;
+	top: 53px;
+	width:95px;
+	height: 95px;
+	z-index: 3;
+	display: none;
+}
+#bind{
+	z-index: 0;
+	width: 320px;
+	height: 220px;
+	display: none;
+	position: absolute;
+	top: 35px;
+	left:0;
+}
+#box{
+	border:0px solid red;
+	position: fixed;
+	width: 320px;
+	height: 300px;
+	display:none;
+}
+
+/*地图切换*/
+#switch-button{
+	position:absolute;
+	top:10px;
+	right:40px;
+}
+#switch-list{
+	position:absolute;
+	top:90px;
+	right:63px;
+}
