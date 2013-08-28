@@ -136,6 +136,7 @@ function getSelfInfo(){//得到用户自己的信息
 		if(xmlHttp.readyState==4){
 		if(xmlHttp.status == 200){
 			var test = xmlHttp.responseText;
+			alert("QQQ: "+test);
 			var selfInfo = eval("("+test+")");
 			$("#user-ego-tmpl").tmpl(selfInfo).appendTo("#user-ego");
 			console.log("From:getSelfInfo.php:");
