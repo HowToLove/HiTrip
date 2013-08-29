@@ -283,6 +283,10 @@ $( function () {
 
 
 $(document).ready(function(){
+	//设置盖章效果
+	getE("minilayer").style.height=(parseInt(document.body.clientHeight+0)-43)+'px';
+	setstyle();
+	
 	//状态发布栏的隐藏和显示
 	$("#pub-bar").hide();
 	$(".marker .bubble").hide();
@@ -290,15 +294,22 @@ $(document).ready(function(){
 		$("#pub-bar").fadeToggle("fast");
 		seal("lwz");
 	});
+	$("#pub-bar-status").tap(function(){
+		$("#pub-bar").hide();
+	});
+	$("#pub-bar-camera").tap(function(){
+		$("#pub-bar").hide();
+	});
+	$("#pub-bar-gallery").tap(function(){
+		$("#pub-bar").hide();
+	});
 	
 	//地图景点名字显示
 	$(".pin").tap(function(){
 		$(this).parent().find(".bubble").toggle("slow");
 	});
 	
-	//设置盖章效果
-	getE("minilayer").style.height=(parseInt(document.body.clientHeight+0)-43)+'px';
-	setstyle();
+	
 	
 	//地图切换
 	$("#simple-map").tap(function(){

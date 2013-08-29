@@ -17,6 +17,7 @@
 <script src="js/Map.js"></script>
 <script src="js/Zone.js"></script>
 <script src="js/jquery.mobile-1.3.2/jquery.mobile-1.3.2.min.js"></script>
+<script src="js/jquery.tmpl.min.js"></script>
 <!--script src="https://d10ajoocuyu32n.cloudfront.net/codiqa.ext.js"></script-->
 
 <!----------------------------------------------------- template ------------------------------------------------------>
@@ -76,13 +77,31 @@
 </script>
 
 
+<!----------------------添加文字状态到地图----------------------->
+<script id="status-word-tmpl" type="text/x-jquery-tmpl">
+	<a class="bubble"><div class="tooltip fade right in bubble-word">
+		<div class="tooltip-arrow"></div>
+		<div class="tooltip-inner">${Content}</div>
+	</div></a>
+</script>
+
+
+<!----------------------添加图片状态到地图----------------------->
+<script id="status-pic-tmpl" type="text/x-jquery-tmpl">
+	<a class="bubble"><div class="tooltip fade right in bubble-img">
+		<div class="tooltip-arrow"></div>
+		<div class="tooltip-inner"><img src=${Picture}></div>
+	</div></a>
+</script>
+
+
+
 <!---------------------------------------------------------后台--------------------------------------------------------->
 <script>
 //written by lanxiang
 //地图消息发送和请求好友消息
-function sendMessage()
-{
-	var content = "男人就是累！";
+function sendMessage(){
+	var content = $("#message").val();
 	var xmlHttp;
 	if(window.ActiveXObject){
 		xmlHttp = new ActiveXObject("Microsoft.XMLHttp");
@@ -91,7 +110,7 @@ function sendMessage()
 	}
     var param ="content="+content+"&t="+Math.random();
 		console.log(param);
-	var url = "sendMessage.php";
+	var url = "http://192.168.1.101/HiTrip/assets/sendMessage.php";
 	xmlHttp.onreadystatechange = function(){
 		if(xmlHttp.readyState == 4){
 		if(xmlHttp.status == 200){
@@ -110,8 +129,7 @@ function sendMessage()
 	xmlHttp.send(param);
 }
 
-function queryMessage()//need to be added into init()
-{
+function queryMessage(){//need to be added into init()
 	var xmlHttp;
 	if(window.ActiveXObject){
 		xmlHttp = new ActiveXObject("Microsoft.XMLHttp");
@@ -127,14 +145,21 @@ function queryMessage()//need to be added into init()
 			var test = xmlHttp.responseText;
 			console.log("From:queryMessage.php:");
 			console.log(test);
-			if(test=="1")
-			{
+			if(test=="1"){
 				console.log("没有新消息！");
 			}
 			else{
 				var news = eval("("+test+")");//形如下面的JSON数组：
 				//[{"Longitude":"0","Latitude":"0","Head":"http:\/\/192.168.1.101\/register8.24\/files\/D.jpg","Id":"4","Name":"D","Picture":"","Content":"\u7537\u4eba\u5c31\u662f\u7d2f\uff01"},{"Longitude":"0","Latitude":"0","Head":"http:\/\/192.168.1.101\/register8.24\/files\/D.jpg","Id":"4","Name":"D","Picture":"","Content":"\u7537\u4eba\u5c31\u662f\u7d2f\uff01"},{"Longitude":"0","Latitude":"0","Head":"http:\/\/192.168.1.101\/register8.24\/files\/D.jpg","Id":"4","Name":"D","Picture":"","Content":"\u7537\u4eba\u5c31\u662f\u7d2f\uff01"},{"Longitude":"0","Latitude":"0","Head":"http:\/\/192.168.1.101\/register8.24\/files\/C.jpg","Id":"3","Name":"C","Picture":"","Content":"\u7537\u4eba\u5c31\u662f\u7d2f\uff01"},{"Longitude":"0","Latitude":"0","Head":"http:\/\/192.168.1.101\/register8.24\/files\/D.jpg","Id":"4","Name":"D","Picture":"","Content":"\u7537\u4eba\u5c31\u662f\u7d2f\uff01"},{"Longitude":"0","Latitude":"0","Head":"http:\/\/192.168.1.101\/register8.24\/files\/D.jpg","Id":"4","Name":"D","Picture":"","Content":"\u7537\u4eba\u5c31\u662f\u7d2f\uff01"},{"Longitude":"0","Latitude":"0","Head":"http:\/\/192.168.1.101\/register8.24\/files\/D.jpg","Id":"4","Name":"D","Picture":"","Content":"\u7537\u4eba\u5c31\u662f\u7d2f\uff01"}]
-				//Here you need to add some codes to show the messages
+				for(var i=0;i<news.length;i++){
+					var id=news[i].Id;
+					var pic=news[i].Picture;
+					if(pic==""){
+						$("#status-word-tmpl").tmpl(news[i]).appendTo("#"+id);
+					}else{
+						$("#status-pic-tmpl").tmpl(news[i]).appendTo("#"+id);
+					}
+				}
 			}
 			}
 		}
@@ -158,6 +183,7 @@ function init(){
 	myListener();
 	sendLocationIntervalId = setInterval(sendLocation,1000);
 	queryFriendsId = setInterval(queryFriends,1000);
+	aaa();
 }
 
 
@@ -248,7 +274,7 @@ function getStrangeInfo(){
 }
 
 
-/************************发送好友请求***************************/
+/*********************发送好友请求***********************/
 function requestFriends(targetId){
 //alert("!");
 	if(queryAnswerCount==0){
@@ -280,7 +306,7 @@ function requestFriends(targetId){
 }
 
 
-/***********用户登录成功后调用，查询是否有新的好友请求，返回请求该用户的JSON数组**************/
+/*******用户登录成功后调用，查询是否有新的好友请求，返回请求该用户的JSON数组*******/
 function queryFriends(){
 	var xmlHttp;
 	if(window.ActiveXObject){
@@ -322,7 +348,7 @@ function queryFriends(){
 }
 
 
-/***********************是否接受好友请求****************************/
+/*****************是否接受好友请求*****************/
 function answerFriends(answer,answerUserId){
 	//answer,1表示接受好友请求，2表示拒绝
 	//answerUserId表示回复的用户的Id，应作为参数传入
@@ -416,9 +442,18 @@ function aaa(){
 	var json1=[{"Longitude":"118.8136401","Latitude":"31.885700300000003","Head":"http:\/\/localhost\/register8.24\/files\/A.jpg","Id":"1","Name":"A"}];
 	for(var i=0;i<json1.length;i++){
 		$("#newf-tmpl").tmpl(json1[i]).prependTo("#newf-list");
-		alert(i);
 	}
 	myListener();
+	var json2=[{"Longitude":"0","Latitude":"0","Head":"http:\/\/192.168.1.101\/register8.24\/files\/D.jpg","Id":"4","Name":"D","Picture":"","Content":"\u7537\u4eba\u5c31\u662f\u7d2f\uff01"},{"Longitude":"0","Latitude":"0","Head":"http:\/\/192.168.1.101\/register8.24\/files\/D.jpg","Id":"4","Name":"D","Picture":"","Content":"\u7537\u4eba\u5c31\u662f\u7d2f\uff01"},{"Longitude":"0","Latitude":"0","Head":"http:\/\/192.168.1.101\/register8.24\/files\/D.jpg","Id":"4","Name":"D","Picture":"","Content":"\u7537\u4eba\u5c31\u662f\u7d2f\uff01"},{"Longitude":"0","Latitude":"0","Head":"http:\/\/192.168.1.101\/register8.24\/files\/C.jpg","Id":"3","Name":"C","Picture":"","Content":"\u7537\u4eba\u5c31\u662f\u7d2f\uff01"},{"Longitude":"0","Latitude":"0","Head":"http:\/\/192.168.1.101\/register8.24\/files\/D.jpg","Id":"4","Name":"D","Picture":"","Content":"\u7537\u4eba\u5c31\u662f\u7d2f\uff01"},{"Longitude":"0","Latitude":"0","Head":"http:\/\/192.168.1.101\/register8.24\/files\/D.jpg","Id":"4","Name":"D","Picture":"","Content":"\u7537\u4eba\u5c31\u662f\u7d2f\uff01"},{"Longitude":"0","Latitude":"0","Head":"http:\/\/192.168.1.101\/register8.24\/files\/D.jpg","Id":"4","Name":"D","Picture":"","Content":"\u7537\u4eba\u5c31\u662f\u7d2f\uff01"}]
+	for(var i=0;i<json2.length;i++){
+					var id=json2[i].Id;
+					var pic=json2[i].Picture;
+					if(pic==""){
+						$("#status-word-tmpl").tmpl(json2[i]).appendTo("#"+id);
+					}else{
+						$("#status-pic-tmpl").tmpl(json2[i]).appendTo("#"+id);
+					}
+				}
 }
 </script>
 </head>
@@ -555,6 +590,20 @@ function aaa(){
 			<div class="user-ego" id="user-ego">
 
 			</div>
+			<div class="user-friend" id="3">
+				<a class="avatar"><img src="img/Avatar.jpg"></img></a>
+				<!--a class="bubble"><div class="tooltip fade right in bubble-word">
+					<div class="tooltip-arrow"></div>
+					<div class="tooltip-inner">啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊</div>
+				</div></a-->
+			</div>
+			<div class="user-friend" id="4" style="top:100px;left:100px;">
+				<a class="avatar"><img src="img/Avatar.jpg"></img></a>
+				<!--a class="bubble"><div class="tooltip fade right in bubble-img">
+					<div class="tooltip-arrow"></div>
+					<div class="tooltip-inner"><img src="img/female.png"></div>
+				</div></a-->
+			</div>
 		</div>
 				
 		<!----------------------进度条------------------------>
@@ -580,9 +629,9 @@ function aaa(){
 			<a><img src="img/Photo.png"/></a>
 		</div>
 		<div id="pub-bar">
-			<a href="#pub" data-transition="slide"  onclick="disappear();"><i class="icon-edit"></i> 状态 </a>|
-			<a><i class="icon-camera"></i> 拍照 </a>|
-			<a><i class="icon-picture"></i> 图库</a>
+			<a href="#pub" data-transition="slide"  id="pub-bar-status"><i class="icon-edit"></i> 状态 </a>|
+			<a id="pub-bar-camera"><i class="icon-camera"></i> 拍照 </a>|
+			<a id="pub-bar-gallery"><i class="icon-picture"></i> 图库</a>
 		</div>
 				
 		<!---------------------景点盖章--------------------->
@@ -608,6 +657,45 @@ function aaa(){
 			<li data-theme="c"><a href="#msg-reply" data-transition="flip">消息中心</a></li>
 			<li data-theme="c"><a href="#page5" data-transition="flip">设置</a></li>
 		</ul>
+	</div>
+</div>
+
+
+
+<!------------------------------------------------------状态发布---------------------------------------------------------->
+<div data-role="page" id="pub" data-theme="c" data-add-back-btn="true">
+	<div data-role="header" data-theme="c" data-position="fixed">
+		<h1>发布状态</h1>
+		<a data-icon="arrow-l" data-iconpos="notext" data-shadow="false" data-iconshadow="false" data-rel="back">Menu</a>
+		<a data-role="button" data-rel="back" class="ui-btn-right" id="button-pub" onclick="sendMessage()">发布</a>
+    </div>
+	<div data-role="content" data-theme="c" style="padding:0">
+		<!--------------分享功能-------------->
+		<div class="jiathis_style_32x32" id="jiathis">
+			<div id="jiathis1">
+				<div style="margin-left:8px;float:left;">景点盖章</div>
+				<p style="margin-right:8px;float:right;"><span id="length">0</span>/140</p>
+			</div>
+			<div id="jiathis2">
+				<div style="margin:0 auto;width:180px;height:32px;">
+					<p style="padding-top:12px;padding-bottom:10px;">分享到...</p>
+					<a class="jiathis_button_tsina"></a>
+					<a class="jiathis_button_tqq"></a>
+					<a class="jiathis_button_douban"></a>
+					<a class="jiathis_button_renren"></a>
+					<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+				</div>
+				<a class="bshareDiv" href="http://www.bshare.cn/share">分享</a>
+			</div>
+		</div>
+		
+		
+		<!----------------输入栏------------------>
+		<div id="input">
+			<form name="myform" id="myform" style="height:100%">
+				<textarea autofocus="true" id="message" placeholder="想说点什么？" onKeyDown="MaxInput(this.form)" onKeyUp="MaxInput(this.form)"></textarea>
+			</form>
+		</div>	
 	</div>
 </div>
 
@@ -941,5 +1029,8 @@ function aaa(){
 	  </ul>
 	</div>
 </div>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1373077207876240" charset="utf-8"></script>
+<script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/buttonLite.js#uuid=<>&style=-1"></script>
+<script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/addons/bshareAp.js"></script>
 </body>
 </html>
