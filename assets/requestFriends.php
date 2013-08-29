@@ -3,7 +3,7 @@ session_start();
 $_SESSION['userId']= 1;
 $userId = $_SESSION['userId'];
 $targetId=$_POST['targetId'];
-$con = mysql_connect("localhost","root","aruizhuzhu");
+$con = mysql_connect("localhost","root","");
 if (!$con)
 {
   die('Could not connect: ' . mysql_error());

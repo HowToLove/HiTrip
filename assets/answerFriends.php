@@ -4,7 +4,7 @@ $_SESSION['userId']= 6;
 $userId = $_SESSION['userId'];
 $answer = $_POST['answer'];
 $answerUserId=$_POST['answerUserId'];
-$con = mysql_connect("localhost","root","aruizhuzhu");
+$con = mysql_connect("localhost","root","");
 if (!$con)
 {
   die('Could not connect: ' . mysql_error());

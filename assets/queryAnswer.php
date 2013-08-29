@@ -2,7 +2,7 @@
 session_start();
 $_SESSION['userId']= 2;
 $userId = $_SESSION['userId'];
-$con = mysql_connect("localhost","root","aruizhuzhu");
+$con = mysql_connect("localhost","root","");
 if (!$con)
 {
   die('Could not connect: ' . mysql_error());

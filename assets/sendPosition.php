@@ -3,7 +3,7 @@ session_start();
 $userId = $_SESSION['userId'];
 $longitude = $_POST['longitude'];
 $latitude = $_POST['latitude'];
-$con = mysql_connect("localhost","root","aruizhuzhu");
+$con = mysql_connect("localhost","root","");
 if (!$con)
 {
   die('Could not connect: ' . mysql_error());
