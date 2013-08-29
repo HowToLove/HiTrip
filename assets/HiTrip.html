@@ -383,7 +383,68 @@ function getFriendInfo(){
 	xmlHttp.send(param);
 }
 
-
+function sendMessage()
+{
+	var content = "男人就是累！";
+	var xmlHttp;
+	if(window.ActiveXObject){
+		xmlHttp = new ActiveXObject("Microsoft.XMLHttp");
+	}else if(window.XMLHttpRequest){
+		xmlHttp = new XMLHttpRequest();
+	}
+    var param ="content="+content+"&t="+Math.random();
+		console.log(param);
+	var url = "sendMessage.php";
+	xmlHttp.onreadystatechange = function(){
+		if(xmlHttp.readyState == 4){
+		if(xmlHttp.status == 200){
+			var test = xmlHttp.responseText;
+			console.log("From:sendMessage.php:");
+			console.log(test);
+			if(test!="0"){
+			//var answer = eval("("+test+")");
+			alert("消息发送失败！");
+			}
+			}
+		}
+	};
+	xmlHttp.open("POST",url);
+	xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+	xmlHttp.send(param);
+}
+function queryMessage()//need to be added into init()
+{
+	var xmlHttp;
+	if(window.ActiveXObject){
+		xmlHttp = new ActiveXObject("Microsoft.XMLHttp");
+	}else if(window.XMLHttpRequest){
+		xmlHttp = new XMLHttpRequest();
+	}
+    var param ="t="+Math.random();
+		console.log(param);
+	var url = "queryMessage.php";
+	xmlHttp.onreadystatechange = function(){
+		if(xmlHttp.readyState == 4){
+		if(xmlHttp.status == 200){
+			var test = xmlHttp.responseText;
+			console.log("From:queryMessage.php:");
+			console.log(test);
+			if(test=="1")
+			{
+				console.log("没有新消息！");
+			}
+			else{
+				var news = eval("("+test+")");//形如下面的JSON数组：
+				//[{"Longitude":"0","Latitude":"0","Head":"http:\/\/192.168.1.101\/register8.24\/files\/D.jpg","Id":"4","Name":"D","Picture":"","Content":"\u7537\u4eba\u5c31\u662f\u7d2f\uff01"},{"Longitude":"0","Latitude":"0","Head":"http:\/\/192.168.1.101\/register8.24\/files\/D.jpg","Id":"4","Name":"D","Picture":"","Content":"\u7537\u4eba\u5c31\u662f\u7d2f\uff01"},{"Longitude":"0","Latitude":"0","Head":"http:\/\/192.168.1.101\/register8.24\/files\/D.jpg","Id":"4","Name":"D","Picture":"","Content":"\u7537\u4eba\u5c31\u662f\u7d2f\uff01"},{"Longitude":"0","Latitude":"0","Head":"http:\/\/192.168.1.101\/register8.24\/files\/C.jpg","Id":"3","Name":"C","Picture":"","Content":"\u7537\u4eba\u5c31\u662f\u7d2f\uff01"},{"Longitude":"0","Latitude":"0","Head":"http:\/\/192.168.1.101\/register8.24\/files\/D.jpg","Id":"4","Name":"D","Picture":"","Content":"\u7537\u4eba\u5c31\u662f\u7d2f\uff01"},{"Longitude":"0","Latitude":"0","Head":"http:\/\/192.168.1.101\/register8.24\/files\/D.jpg","Id":"4","Name":"D","Picture":"","Content":"\u7537\u4eba\u5c31\u662f\u7d2f\uff01"},{"Longitude":"0","Latitude":"0","Head":"http:\/\/192.168.1.101\/register8.24\/files\/D.jpg","Id":"4","Name":"D","Picture":"","Content":"\u7537\u4eba\u5c31\u662f\u7d2f\uff01"}]
+				//Here you need to add some codes to show the messages
+			}
+			}
+		}
+	};
+	xmlHttp.open("POST",url);
+	xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+	xmlHttp.send(param);
+}
 </script>
 </head>
 
