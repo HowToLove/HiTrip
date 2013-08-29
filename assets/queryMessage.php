@@ -4,7 +4,9 @@
 	//$_SESSION['unreadNewsId']=0;
 	$_SESSION['userId']=1;
 	$userId=$_SESSION['userId'];
-	$mysqltime = date('Y-m-d H:i:s',time());
+	if(!isset($_SESSION['onlineTime']))
+		$_SESSION['onlineTime'] = date('Y-m-d H:i:s',time());
+	$mysqltime=$_SESSION['onlineTime'];
 	$con = mysql_connect("localhost","root","");
 	if (!$con)
 	{
@@ -12,14 +14,14 @@
 	}
 	mysql_select_db("test",$con);
 	mysql_query("set names 'gbk'");
-	$sql="SELECT * FROM status,friends,user WHERE ((friends.user_id1='$userId' AND friends.user_id2=status.user_id) OR (friends.user_id2='$userId' AND friends.user_id1=status.user_id)) AND user.user_id = status.user_id AND UNIX_TIMESTAMP( time_stamp ) <= UNIX_TIMESTAMP ('$mysqltime')";
+	$sql="SELECT * FROM status,friends,user WHERE ((friends.user_id1='$userId' AND friends.user_id2=status.user_id) OR (friends.user_id2='$userId' AND friends.user_id1=status.user_id)) AND user.user_id = status.user_id AND UNIX_TIMESTAMP( time_stamp ) >= UNIX_TIMESTAMP ('$mysqltime')";
 	if(isset($_SESSION['unreadNewsId'])){
 	$maxReadId=$_SESSION['unreadNewsId'];
 	$sql.= "AND status.status_id>'$maxReadId'";
 	}
 	//该sql语句查找用户登录之后，所有用户好友发布的消息
 	
-	echo $sql;
+	//echo $sql;
 	
 	$result=mysql_query($sql);
 	if(mysql_num_rows($result)>0)

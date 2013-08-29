@@ -175,15 +175,18 @@ var sendLocationIntervalId;
 var queryAnswerId;
 var queryAnswerCount=0;
 var queryFriendsId;
+var queryMessageId;
 
 
 /********************初始调用********************/
 function init(){
 	getSelfInfo(); 
+	getFriendInfo();
 	myListener();
+	queryMessageId=setInterval(queryMessage,1000);
 	sendLocationIntervalId = setInterval(sendLocation,1000);
 	queryFriendsId = setInterval(queryFriends,1000);
-	aaa();
+	//aaa();
 }
 
 
@@ -232,7 +235,16 @@ function getFriendInfo(){
 		if(xmlHttp.status == 200){
 			var test = xmlHttp.responseText;
 			var friends = eval("("+test+")");
-			//此处动态添加div
+			var flag=0;
+			if(flag==0){
+				for(var i=0;i<friends.length;i++){
+					$("#user-friend-tmpl").tmpl(friends[i]).appendTo("#map-sketch");
+				}
+				flag=1;
+			}
+			for(var i=0;i<friends.length;i++){
+				showAllPosition(friends[i].Latitude,friends[i].Longitude,friends[i].Id);
+			}
 			console.log("From:getFriendInfo.php:");
 			console.log(test);
 			console.log(friends[0].Name);
