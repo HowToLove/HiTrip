@@ -142,9 +142,11 @@ function cb_up(){
 var sendLocationIntervalId;
 var queryAnswerId;
 var queryAnswerCount=0;
+var queryFriendsId;
 function init(){
 	getSelfInfo(); 
 	sendLocationIntervalId = setInterval(sendLocation,1000);
+	queryFriendsId = setInterval(queryFriends,1000);
 }
 function getSelfInfo(){//得到用户自己的信息	
 	var xmlHttp;
@@ -274,12 +276,26 @@ function queryFriends(){//用户登录成功后调用，返回请求该用户的
 		if(xmlHttp.readyState==4){
 		if(xmlHttp.status == 200){
 			var test = xmlHttp.responseText;
-			var strange = eval("("+test+")");
 			for(var i=0;i<strange.length;i++){
 				$("#newf-tmpl").tmpl(strange[i]).prependTo("#newf-list");
 			}
 			console.log("From:queryFriends.php:");
 			console.log(test);
+			if(test==-1){
+				alert("Update 失败！");
+			}else{
+			if(test!="1"){
+				var strange = eval("("+test+")");
+				for(var i=0;i<strange.length;i++){
+					$("#newf-tmpl").tmpl(strange[i]).prependTo("#newf-list");
+					alert(i)
+				}			
+
+			}else{
+			test = "没有人请求添加我为好友";
+			}
+			}
+			
 			}
 		}
 	};

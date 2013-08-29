@@ -16,7 +16,7 @@ $sql = "SELECT * FROM user WHERE user_id = '$userId'";
 		//var_dump($row);
 		$SelfInfo['Longitude']=$row['longitude'];
 		$SelfInfo['Latitude']=$row['latitude'];
-		$SelfInfo['Head']="http://localhost/register8.24/";
+		$SelfInfo['Head']="http://192.168.1.101/register8.24/";
 		$SelfInfo['Head'].=$row['portrait'];		
 		$SelfInfo['Id']=$row['user_id'];	
 		$SelfInfo['Name']=iconv('gb2312//IGNORE','UTF-8',$row['user_name']);		
