@@ -145,6 +145,7 @@ var queryAnswerCount=0;
 var queryFriendsId;
 function init(){
 	getSelfInfo(); 
+	myListener();
 	sendLocationIntervalId = setInterval(sendLocation,1000);
 	queryFriendsId = setInterval(queryFriends,1000);
 }
@@ -222,8 +223,9 @@ function myListener(){
 			$("#"+id).find(".ui-li-aside").append("<div data-corners='true' data-shadow='true' data-iconshadow='true' data-wrapperels='span' data-theme='c' data-inline='true' data-disabled='false' class='ui-btn ui-shadow ui-btn-corner-all ui-btn-inline ui-btn-up-c' aria-disabled='false'><span class='ui-btn-inner'><span class='ui-btn-text'>已拒绝</span></span><button data-inline='true' class='ui-btn-hidden' data-disabled='false'>已拒绝</button></div>");
 			answerFriends(2,id);
 		});
-		$(".eyeon").tap(function(){
+		$(".eyeon").tap(function(){//alert("F");
 			var id=$(this).parent().parent().parent().attr("id");
+			
 			requestFriends(id);
 		});
   	});
@@ -276,9 +278,6 @@ function queryFriends(){//用户登录成功后调用，返回请求该用户的
 		if(xmlHttp.readyState==4){
 		if(xmlHttp.status == 200){
 			var test = xmlHttp.responseText;
-			for(var i=0;i<strange.length;i++){
-				$("#newf-tmpl").tmpl(strange[i]).prependTo("#newf-list");
-			}
 			console.log("From:queryFriends.php:");
 			console.log(test);
 			if(test==-1){
@@ -289,7 +288,8 @@ function queryFriends(){//用户登录成功后调用，返回请求该用户的
 				for(var i=0;i<strange.length;i++){
 					$("#newf-tmpl").tmpl(strange[i]).prependTo("#newf-list");
 					alert(i)
-				}			
+				}	
+					myListener();
 
 			}else{
 			test = "没有人请求添加我为好友";
@@ -304,6 +304,7 @@ function queryFriends(){//用户登录成功后调用，返回请求该用户的
 	xmlHttp.send(param);
 }
 function requestFriends(targetId){
+//alert("!");
 	if(queryAnswerCount==0){
 		queryAnswerId = setInterval("queryAnswer()",1000);		
 	}

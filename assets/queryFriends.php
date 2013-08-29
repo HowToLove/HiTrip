@@ -1,6 +1,6 @@
 <?php
 session_start();
-$_SESSION['userId']= 6;
+//$_SESSION['userId']= 6;
 $userId = $_SESSION['userId'];
 $con = mysql_connect("localhost","root","");
 if (!$con)
@@ -40,7 +40,7 @@ $sql = "SELECT * FROM tempRelation WHERE user_id2='$userId' and status = 0";//查
 			echo "-1";//更新失败
 		}
 		else{
-			echo "0";//更新成功
+			echo "";//更新成功
 		}
 	}
 	else{

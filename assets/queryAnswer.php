@@ -1,6 +1,6 @@
 <?php
 session_start();
-$_SESSION['userId']= 2;
+//$_SESSION['userId']= 1;
 $userId = $_SESSION['userId'];
 $con = mysql_connect("localhost","root","");
 if (!$con)

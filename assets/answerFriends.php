@@ -1,6 +1,6 @@
 <?php
 session_start();
-$_SESSION['userId']= 6;
+//$_SESSION['userId']= 2;
 $userId = $_SESSION['userId'];
 $answer = $_POST['answer'];
 $answerUserId=$_POST['answerUserId'];
