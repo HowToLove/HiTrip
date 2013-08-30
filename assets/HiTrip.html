@@ -121,6 +121,70 @@
 <!---------------------------------------------------------后台--------------------------------------------------------->
 <script>
 //written by lanxiang
+function eyeOn(){//添加景点关注
+	var jingdian_id=6;//要作为参数传入
+	var xmlHttp;
+	if(window.ActiveXObject){
+		xmlHttp = new ActiveXObject("Microsoft.XMLHttp");
+	}else if(window.XMLHttpRequest){
+		xmlHttp = new XMLHttpRequest();
+	}
+    var param ="jingdian_id="+jingdian_id+"&t="+Math.random();
+		console.log(param);
+	var url = "eyeOn.php";
+	xmlHttp.onreadystatechange = function(){
+		if(xmlHttp.readyState==4){
+		if(xmlHttp.status == 200){
+			var test = xmlHttp.responseText;
+			console.log("From:eyeOn.php:");
+			console.log(test);
+			}
+		}
+	};
+	xmlHttp.open("POST",url);
+	xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+	xmlHttp.send(param);
+}
+function queryJingdianNews(){//实时查找景点消息
+	var jingdianId=1;
+	var xmlHttp;
+	if(window.ActiveXObject){
+		xmlHttp = new ActiveXObject("Microsoft.XMLHttp");
+	}else if(window.XMLHttpRequest){
+		xmlHttp = new XMLHttpRequest();
+	}
+    var param ="jingdianId="+jingdianId+"&t="+Math.random();
+	var url = "queryJingdianNews.php";
+	xmlHttp.onreadystatechange = function(){
+		if(xmlHttp.readyState == 4){
+		if(xmlHttp.status == 200){
+			var test = xmlHttp.responseText;
+			console.log("From:queryJingdianNews.php:");
+			console.log(test);
+			if(test=="1"){
+				console.log("没有新消息！");
+			}
+			else{
+				var news = eval("("+test+")");//形如下面的JSON数组：
+				//[{"Id":"1","Head":"","Name":"\u7126\u5ef7\u6807\u9986","Picture":"jj","Content":"\u5feb\u4e50\u7684\u8682\u86b1"}] 
+				for(var i=0;i<news.length;i++){
+					var id=news[i].Id;
+					var pic=news[i].Picture;
+					/*if(pic==""){
+						$("#status-word-tmpl").tmpl(news[i]).appendTo("#"+id);
+					}else{
+						$("#status-pic-tmpl").tmpl(news[i]).appendTo("#"+id);
+					}
+					*/
+				}
+			}
+			}
+		}
+	};
+	xmlHttp.open("POST",url);
+	xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+	xmlHttp.send(param);
+}
 //地图消息发送和请求好友消息
 function sendMessage(){
 	var content = $("#message").val();
@@ -197,15 +261,18 @@ var sendLocationIntervalId;
 var queryAnswerId;
 var queryAnswerCount=0;
 var queryFriendsId;
+var queryMessageId;
 
 
 /********************初始调用********************/
 function init(){
 	getSelfInfo(); 
+	getFriendInfo();
 	myListener();
+	queryMessageId=setInterval(queryMessage,1000);
 	sendLocationIntervalId = setInterval(sendLocation,1000);
 	queryFriendsId = setInterval(queryFriends,1000);
-	aaa();
+	//aaa();
 }
 
 
@@ -254,7 +321,16 @@ function getFriendInfo(){
 		if(xmlHttp.status == 200){
 			var test = xmlHttp.responseText;
 			var friends = eval("("+test+")");
-			//此处动态添加div
+			var flag=0;
+			if(flag==0){
+				for(var i=0;i<friends.length;i++){
+					$("#user-friend-tmpl").tmpl(friends[i]).appendTo("#map-sketch");
+				}
+				flag=1;
+			}
+			for(var i=0;i<friends.length;i++){
+				showAllPosition(friends[i].Latitude,friends[i].Longitude,friends[i].Id);
+			}
 			console.log("From:getFriendInfo.php:");
 			console.log(test);
 			console.log(friends[0].Name);
