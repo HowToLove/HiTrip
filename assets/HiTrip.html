@@ -119,7 +119,7 @@
 <!---------------------------------------------------------后台--------------------------------------------------------->
 <script>
 //written by lanxiang
-function eyeOn(jingdian_id){//添加景点关注
+function eyeOn(idName){//添加景点关注
 	//var jingdian_id=6;//要作为参数传入
 	var xmlHttp;
 	if(window.ActiveXObject){
@@ -127,7 +127,7 @@ function eyeOn(jingdian_id){//添加景点关注
 	}else if(window.XMLHttpRequest){
 		xmlHttp = new XMLHttpRequest();
 	}
-    var param ="jingdian_id="+jingdian_id+"&t="+Math.random();
+    var param ="idName="+idName+"&t="+Math.random();
 		console.log(param);
 	var url = "eyeOn.php";
 	xmlHttp.onreadystatechange = function(){

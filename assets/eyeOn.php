@@ -2,15 +2,19 @@
 session_start();
 $_SESSION['userId']= 1;
 $userId = $_SESSION['userId'];
-$jingdianId=$_POST['jingdian_id'];
+$idName=$_POST['idName'];
 $con = mysql_connect("localhost","root","");
+
 if (!$con)
 {
   die('Could not connect: ' . mysql_error());
 }
 mysql_query("set names 'GB2312'");
 mysql_select_db("test",$con);
-
+$sql0 =  "SELECT * FROM jingdian_inf WHERE id_name = '$idName'";
+echo $sql0;
+$result0=mysql_query($sql0,$con);
+$jingdianId=mysql_fetch_array($result0)['jingdian_id'];
 $sql = "SELECT * FROM eyeon WHERE user_id='$userId' AND jingdian_id='$jingdianId'";
 	$result = mysql_query($sql,$con);
 	if(mysql_num_rows($result)>0)
