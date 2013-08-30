@@ -96,12 +96,10 @@
 
 
 <!----------------------添加景点文字状态到地图----------------------->
-<script id="spot-pic-tmpl" type="text/x-jquery-tmpl">
+<script id="spot-word-tmpl" type="text/x-jquery-tmpl">
 	<a class="bubble"><div class="tooltip fade right in mb-word">
 		<div class="tooltip-arrow"></div>
-		<div class="tooltip-inner">
-			<p>啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊</p>
-		</div>
+		<div class="tooltip-inner">${Content}</div>
 	</div></a>
 </script>
 
@@ -111,8 +109,8 @@
 	<a class="bubble"><div class="tooltip fade right in mb-img">
 		<div class="tooltip-arrow"></div>
 		<div class="tooltip-inner">
-			<img src="img/female.png">
-			啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊
+			<img src=${Picture}>
+			${Content}
 		</div>
 	</div></a>
 </script>
@@ -121,8 +119,8 @@
 <!---------------------------------------------------------后台--------------------------------------------------------->
 <script>
 //written by lanxiang
-function eyeOn(){//添加景点关注
-	var jingdian_id=6;//要作为参数传入
+function eyeOn(jingdian_id){//添加景点关注
+	//var jingdian_id=6;//要作为参数传入
 	var xmlHttp;
 	if(window.ActiveXObject){
 		xmlHttp = new ActiveXObject("Microsoft.XMLHttp");
@@ -170,12 +168,11 @@ function queryJingdianNews(){//实时查找景点消息
 				for(var i=0;i<news.length;i++){
 					var id=news[i].Id;
 					var pic=news[i].Picture;
-					/*if(pic==""){
-						$("#status-word-tmpl").tmpl(news[i]).appendTo("#"+id);
+					if(pic==""){
+						$("#spot-word-tmpl").tmpl(news[i]).appendTo("#"+id);
 					}else{
-						$("#status-pic-tmpl").tmpl(news[i]).appendTo("#"+id);
+						$("#spot-pic-tmpl").tmpl(news[i]).appendTo("#"+id);
 					}
-					*/
 				}
 			}
 			}
@@ -532,7 +529,7 @@ function myListener(){
 		});
 		$(".eyeon-spot").tap(function(){
 			var id=$(this).parent().parent().attr("id");	
-			alert(id);
+			eyeOn(id);
 		});
   	});
 }
@@ -664,13 +661,13 @@ function aaa(){
 					<div class="tooltip-arrow"></div>
 					<div class="tooltip-inner">焦廷标馆</div>
 				</div></a>
-				<a class="bubble"><div class="tooltip fade right in mb-img">
+				<!--a class="bubble"><div class="tooltip fade right in mb-img">
 					<div class="tooltip-arrow"></div>
 					<div class="tooltip-inner">
 						<img src="img/female.png">
 						啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊
 					</div>
-				</div></a>
+				</div></a-->
 			</div>
 			<div class="marker" id="lwz">
 				<a class="pin"><img src="img/Marker-GB.png"/><a>
@@ -678,12 +675,12 @@ function aaa(){
 					<div class="tooltip-arrow"></div>
 					<div class="tooltip-inner">李文正图书馆</div>
 				</div></a>
-				<a class="bubble"><div class="tooltip fade right in mb-word">
+				<!--a class="bubble"><div class="tooltip fade right in mb-word">
 					<div class="tooltip-arrow"></div>
 					<div class="tooltip-inner">
-						<p>啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊</p>
+						啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊
 					</div>
-				</div></a>
+				</div></a-->
 			</div>
 			<div class="marker" id="jsjl">
 				<a class="pin"><img src="img/Marker-WG.png"/></a>
