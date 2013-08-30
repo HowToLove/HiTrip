@@ -35,6 +35,7 @@
 			$jingdian_news[$i]['Head']=$row['portrait'];
 			$jingdian_news[$i]['Name']=iconv('gb2312//IGNORE','UTF-8',$row['jingdian_name']);
 			$jingdian_news[$i]['Picture']=$row['picture'];
+			$jingdian_news[$i]['IdName']=$row['id_name'];
 			$jingdian_news[$i++]['Content']=iconv('gb2312//IGNORE','UTF-8',$row['content']);
 			$_SESSION['unreadJingdianNewsId']=$row['status_id'];
 		}
