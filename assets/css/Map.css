@@ -113,14 +113,37 @@ a.spot{
 /************************¾°µã±ê×¢************************/
 .marker{
 	position:absolute;
-	width:200px;
 }
-.marker .bubble{
+.marker .bubble .mb-img{
+	width:250px;
+	top:-36px;
+	left:36px;
+}
+.marker .bubble .mb-img .tooltip-inner{
+	height:80px;
+	max-width:230px;
+}
+.marker .bubble .mb-img .tooltip-inner img{
+	float:left;
+}
+.marker .bubble .mb-word{
+	width:170px;
+	top:-20px;
+	left:36px;
+}
+.marker .bubble .mb-word .tooltip-inner{
+	max-width:150px;
+}
+.bubble-name{
 	display:none;
 }
-.marker .bubble .tooltip{
-	top:6px;
-	left:40px;
+.bubble-name .tooltip{
+	top:-48px;
+	left:-38px;
+}
+.bubble-name .top .tooltip-inner{
+	background-color:#ffa325;
+	width:105px;
 }
 .pin{
 	float:left;
