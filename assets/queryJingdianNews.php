@@ -1,8 +1,8 @@
 <?php
 	session_start();
 	//echo "lanxiang";
-	//$_SESSION['unreadJingdianNewsId']=0;
-	$jingdianId = $_POST['jingdianId'];
+	$_SESSION['unreadJingdianNewsId']=0;
+	//$jingdianId = $_POST['jingdianId'];
 	$_SESSION['userId']=1;
 	$userId=$_SESSION['userId'];
 	$mysqltime = date('Y-m-d H:i:s',time());
@@ -13,7 +13,8 @@
 	}
 	mysql_select_db("test",$con);
 	mysql_query("set names 'gbk'");
-	$sql="SELECT * FROM jingdian_inf,jingdian_status, eyeon WHERE eyeon.jingdian_id='$jingdianId' AND eyeon.user_id = '$userId' AND jingdian_inf.jingdian_id='$jingdianId' AND UNIX_TIMESTAMP( time_stamp ) <= UNIX_TIMESTAMP ('$mysqltime')";
+	//$sql="SELECT jingdian_inf.*,jingdian_status.*,eyeon.* FROM jingdian_inf,jingdian_status, eyeon WHERE eyeon.jingdian_id=jingdian_inf.jingdian_id AND eyeon.user_id = '$userId' AND UNIX_TIMESTAMP( time_stamp ) <= UNIX_TIMESTAMP ('$mysqltime')";
+	$sql="SELECT jingdian_inf.*,jingdian_status.*,eyeon.* FROM jingdian_inf,jingdian_status, eyeon WHERE eyeon.jingdian_id=jingdian_inf.jingdian_id AND eyeon.jingdian_id=jingdian_status.jingdian_id AND eyeon.user_id = '$userId' AND UNIX_TIMESTAMP( time_stamp ) <= UNIX_TIMESTAMP ('$mysqltime')";
 	//echo $sql;
 	
 	if(isset($_SESSION['unreadJingdianNewsId'])){
