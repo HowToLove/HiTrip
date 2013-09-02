@@ -94,6 +94,8 @@ a.spot{
 .bubble{
 	float:left;
 	display:block;
+	height:100px;
+	width:240px;
 }
 .bubble img{
 	width:80px;
@@ -135,11 +137,15 @@ a.spot{
 	max-width:150px;
 }
 .bubble-name{
-	display:none;
-}
-.bubble-name .tooltip{
+	display:inline-block;
+	position:absolute;
 	top:-48px;
 	left:-38px;
+	height:50px;
+	width:125px;
+}
+.bubble-name .tooltip{
+
 }
 .bubble-name .top .tooltip-inner{
 	background-color:#ffa325;
