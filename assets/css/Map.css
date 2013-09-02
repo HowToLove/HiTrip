@@ -208,11 +208,11 @@ a.spot{
 #pub-bar a:visited{
 	color:black;
 }
-#pub{
+#pub,#photo{
 	width:100%;
 	overflow:hidden;
 }
-#pub textarea{
+#pub textarea,#photo textarea{
 	overflow:hidden;
 	resize:none;
 	width:100%;
@@ -221,19 +221,23 @@ a.spot{
 	border-radius:0;
 	margin:0;
 }
-#input{
+.input{
 	text-align:center;
 	width:100%;
 	position:absolute;
 }
-
+.input img{
+	max-width:100px;
+	max-height:100px;
+	margin:0 auto;
+}
 /*********************·ÖÏí¹¦ÄÜ*********************/
 #jiathis{
 	width:100%;
 	position:absolute;
 	bottom:0;
 }
-#jiathis1{
+.count-word{
 	height:25px;
 	width:100%;
 	padding-top:10px;

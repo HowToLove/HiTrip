@@ -326,9 +326,15 @@ $(document).ready(function(){
 });
 
 //文字状态发布
-var maxLength = 140; 
-function MaxInput(form) {
-	if (form.message.value.length > maxLength) 
-		form.message.value = form.message.value.substring(0, maxLength);
-	else getE("length").innerText = form.message.value.length;
+var maxLength1 = 140; 
+function MaxInput1(form) {
+	if (form.message.value.length > maxLength1) 
+		form.message.value = form.message.value.substring(0, maxLength1);
+	else getE("length1").innerText = form.message.value.length;
+}
+var maxLength2 = 140;
+function MaxInput2(form) {
+	if (form.message.value.length > maxLength2) 
+		form.message.value = form.message.value.substring(0, maxLength2);
+	else getE("length2").innerText = form.message.value.length;
 }

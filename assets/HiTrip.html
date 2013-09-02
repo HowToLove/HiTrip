@@ -702,12 +702,12 @@ function aaa(){
 			<div class="user-ego" id="user-ego">
 
 			</div>
-			<div class="user-friend" id="3" style="top:1000px;left:1000px;">
+			<div class="user-friend" id="" style="top:100px;left:100px;">
 				<a class="avatar"><img src="img/Avatar.jpg"></img></a>
-				<!--a class="bubble"><div class="tooltip fade right in bubble-word">
+				<a class="bubble" href="#status"><div class="tooltip fade right in bubble-word">
 					<div class="tooltip-arrow"></div>
 					<div class="tooltip-inner"></div>
-				</div></a-->
+				</div></a>
 			</div>
 			<div class="user-friend" id="4" style="top:100px;left:100px;">
 				<a class="avatar"><img src="img/Avatar.jpg"></img></a>
@@ -775,7 +775,7 @@ function aaa(){
 
 
 <!------------------------------------------------------状态发布---------------------------------------------------------->
-<div data-role="page" id="pub" data-theme="c" data-add-back-btn="true">
+<div data-role="page" id="pub" data-theme="c">
 	<div data-role="header" data-theme="c" data-position="fixed">
 		<h1>发布状态</h1>
 		<a data-icon="arrow-l" data-iconpos="notext" data-shadow="false" data-iconshadow="false" data-rel="back">Menu</a>
@@ -813,6 +813,25 @@ function aaa(){
 
 
 
+<!------------------------------------------------------状态查看---------------------------------------------------------->
+<div data-role="page" id="status" data-theme="c">
+	<div data-role="header" data-theme="c" data-position="fixed">
+		<h1>状态查看</h1>
+		<a data-icon="arrow-l" data-iconpos="notext" data-shadow="false" data-iconshadow="false" data-rel="back">Menu</a>
+    </div>
+	<div data-role="content" data-theme="c">
+		<div>
+		</div>
+		<div>
+		</div>
+		<div>
+		</div>
+	</div>
+	<div data-role="footer" data-theme="c"data-position="fixed">
+		<input type="text" value="" />
+		<button data-rel="back" class="ui-btn-right">发布</button>
+	</div>
+</div>
 <!----------------------------------------------------好友/驴友主页------------------------------------------------------->
 <div data-role="page" id="zone-others" data-theme="c">
 	<div data-role="header" data-theme="c" data-position="fixed">
@@ -1008,7 +1027,7 @@ function aaa(){
 
 
 
-<!--------------------------------------------------景区新鲜事-------------------------------------------------------->
+<!-------------------------------------------------------景区新鲜事-------------------------------------------------------->
     <div data-role="page" id="page3" data-theme="c" >
     <div data-role="header" data-theme="c">
       <h1>景区新鲜事</h1>

@@ -704,17 +704,17 @@ function aaa(){
 			</div>
 			<div class="user-friend" id="3" style="top:1000px;left:1000px;">
 				<a class="avatar"><img src="img/Avatar.jpg"></img></a>
-				<!--a class="bubble"><div class="tooltip fade right in bubble-word">
+				<a class="bubble"><div class="tooltip fade right in bubble-img">
 					<div class="tooltip-arrow"></div>
-					<div class="tooltip-inner"></div>
-				</div></a-->
+					<div class="tooltip-inner"><img src="img/Avatar.jpg"></div>
+				</div></a>
 			</div>
-			<div class="user-friend" id="4" style="top:100px;left:100px;">
+			<div class="user-friend" style="top:100px;left:500px;">
 				<a class="avatar"><img src="img/Avatar.jpg"></img></a>
-				<!--a class="bubble"><div class="tooltip fade right in bubble-img">
+				<a class="bubble"><div class="tooltip fade right in bubble-word">
 					<div class="tooltip-arrow"></div>
-					<div class="tooltip-inner"><img src="img/female.png">啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊</div>
-				</div></a-->
+					<div class="tooltip-inner">啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊</div>
+				</div></a>
 			</div>
 		</div>
 				
@@ -784,9 +784,9 @@ function aaa(){
 	<div data-role="content" data-theme="c" style="padding:0">
 		<!--------------分享功能-------------->
 		<div class="jiathis_style_32x32" id="jiathis">
-			<div id="jiathis1">
+			<div class="count-word">
 				<div style="margin-left:8px;float:left;">景点盖章</div>
-				<p style="margin-right:8px;float:right;"><span id="length">0</span>/140</p>
+				<p style="margin-right:8px;float:right;"><span id="length1">0</span>/140</p>
 			</div>
 			<div id="jiathis2">
 				<div style="margin:0 auto;width:180px;height:32px;">
@@ -803,10 +803,35 @@ function aaa(){
 		
 		
 		<!----------------输入栏------------------>
-		<div id="input">
-			<form name="myform" id="myform" style="height:100%">
-				<textarea autofocus="true" id="message" placeholder="想说点什么？" onKeyDown="MaxInput(this.form)" onKeyUp="MaxInput(this.form)"></textarea>
+		<div class="input">
+			<form name="myform" id="myform1" style="height:100%">
+				<textarea autofocus="true" id="message" placeholder="想说点什么？" onKeyDown="MaxInput1(this.form)" onKeyUp="MaxInput1(this.form)"></textarea>
 			</form>
+		</div>	
+	</div>
+</div>
+
+
+
+<!------------------------------------------------------照片发布---------------------------------------------------------->
+<div data-role="page" id="photo" data-theme="C" data-add-back-btn="true">
+	<div data-role="header" data-theme="c" data-position="fixed">
+		<h1>发布照片</h1>
+		<a data-icon="arrow-l" data-iconpos="notext" data-shadow="false" data-iconshadow="false" data-rel="back">Menu</a>
+		<a data-role="button" data-rel="back" class="ui-btn-right" id="button-pub" onclick="sendMessage()">发布</a>
+    </div>
+	<div data-role="content" data-theme="c" style="padding:0">
+		<!----------------输入栏------------------>
+		<div class="input">
+			<form name="myform" id="myform2" style="height:100%">
+				<textarea autofocus="true" id="message" placeholder="想说点什么？" onKeyDown="MaxInput2(this.form)" onKeyUp="MaxInput2(this.form)"></textarea>
+				
+			</form>
+			<div class="count-word">
+				<div style="margin-left:8px;float:left;">景点盖章</div>
+				<p style="margin-right:8px;float:right;"><span id="length2">0</span>/140</p>
+			</div>
+			<img src="img/Avatar.jpg"/>
 		</div>	
 	</div>
 </div>
