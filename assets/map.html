@@ -510,6 +510,8 @@ function queryAnswer(){
 
 
 /*****************每次动态添加都要调用一次函数以执行JQuery效果*********************/
+var flag_zone_eyeon=0;
+var flag_spot_eyeon=0;
 function myListener(){
 	$(document).ready(function(){
 	   $(".newfY").tap(function(){
@@ -525,11 +527,29 @@ function myListener(){
 			answerFriends(2,id);
 		});
 		$(".eyeon").tap(function(){
-			var id=$(this).parent().parent().parent().attr("id");	
+			var id=$(this).parent().parent().parent().attr("id");
+			$(".zone-eyeon").empty();
+			if(flag_zone_eyeon==0){
+				$(".zone-eyeon").append("<a class='eyeon ui-btn ui-shadow ui-btn-corner-all ui-mini ui-btn-inline ui-btn-icon-left ui-btn-up-c' href='#' data-role='button' data-theme='c' data-icon='minus' data-inline='true' data-mini='true' data-corners='true' data-shadow='true' data-iconshadow='true' data-wrapperels='span'><span class='ui-btn-inner'><span class='ui-btn-text'>取消关注</span><span class='ui-icon ui-icon-minus ui-icon-shadow'>&nbsp;</span></span></a>");
+				flag_zone_eyeon=1;
+				myListener();
+			}else{
+				$(".zone-eyeon").append("<a class='eyeon ui-btn ui-btn-up-e ui-shadow ui-btn-corner-all ui-mini ui-btn-inline ui-btn-icon-left' href='#' data-role='button' data-theme='e' data-icon='plus' data-inline='true' data-mini='true' data-corners='true' data-shadow='true' data-iconshadow='true' data-wrapperels='span'><span class='ui-btn-inner'><span class='ui-btn-text'>加关注</span><span class='ui-icon ui-icon-plus ui-icon-shadow'>&nbsp;</span></span></a>");
+				flag_zone_eyeon=0;
+				myListener();
+			}
 			requestFriends(id);
 		});
 		$(".eyeon-spot").tap(function(){
-			var id=$(this).parent().parent().attr("id");	
+			var id=$(this).parent().parent().parent().attr("id");
+			$(".spot-eyeon").empty();
+			if(flag_spot_eyeon==0){
+				$(".spot-eyeon").append("<div data-corners='true' data-shadow='true' data-iconshadow='true' data-wrapperels='span' data-icon='minus' data-theme='c' data-inline='true' data-disabled='false' class='ui-btn ui-shadow ui-btn-corner-all ui-btn-inline ui-btn-icon-left ui-btn-hover-c ui-btn-up-c' aria-disabled='false'><span class='ui-btn-inner'><span class='ui-btn-text'>取消关注</span><span class='ui-icon ui-icon-minus ui-icon-shadow'>&nbsp;</span></span><button class='eyeon-spot ui-btn-hidden' data-inline='true' data-icon='minus' data-disabled='false'>取消关注</button></div>");
+				flag_spot_eyeon=1;myListener();
+			}else{
+				$(".spot-eyeon").append("<div data-corners='true' data-shadow='true' data-iconshadow='true' data-wrapperels='span' data-icon='plus' data-theme='c' data-inline='true' data-disabled='false' class='ui-btn ui-shadow ui-btn-corner-all ui-btn-inline ui-btn-icon-left ui-btn-up-c' aria-disabled='false'><span class='ui-btn-inner'><span class='ui-btn-text'>加关注</span><span class='ui-icon ui-icon-plus ui-icon-shadow'>&nbsp;</span></span><button class='eyeon-spot ui-btn-hidden' data-inline='true' data-icon='plus' data-disabled='false'>加关注</button></div>");
+				flag_spot_eyeon=0;myListener();
+			}
 			eyeOn(id);
 		});
   	});
@@ -742,8 +762,8 @@ function aaa(){
 		</div>
 		<div id="pub-bar">
 			<a href="#pub" data-transition="slide"  id="pub-bar-status"><i class="icon-edit"></i> 状态 </a>|
-			<a id="pub-bar-camera"><i class="icon-camera"></i> 拍照 </a>|
-			<a id="pub-bar-gallery"><i class="icon-picture"></i> 图库</a>
+			<a href="#photo" data-transition="slide" id="pub-bar-camera"><i class="icon-camera"></i> 拍照 </a>|
+			<a href="#photo" data-transition="slide" id="pub-bar-gallery"><i class="icon-picture"></i> 图库</a>
 		</div>
 				
 		<!---------------------景点盖章--------------------->
@@ -767,7 +787,9 @@ function aaa(){
 			<li data-role="list-divider">关于我</li>
 			<li data-theme="c"><a href="#page4" data-transition="flip">	个人主页</a></li>
 			<li data-theme="c"><a href="#msg-reply" data-transition="flip">消息中心</a></li>
+			<li data-role="list-divider">操作</li>
 			<li data-theme="c"><a href="#page5" data-transition="flip">设置</a></li>
+			<li data-theme="c"><a>注销</a></li>
 		</ul>
 	</div>
 </div>
@@ -897,8 +919,9 @@ function aaa(){
 	<div data-role="content">
 		<div id="lwz">
 			<img src="img/lwz-img.jpg"; width="400px"; height="300px" align="bottom"/>
-			<button class="eyeon-spot" data-inline="true" data-icon="plus">加关注</button>
-
+			<div class="spot-eyeon">
+				<button class="eyeon-spot" data-inline="true" data-icon="plus">加关注</button>
+			</div>
 			<hr>
 			<p>李文正图书馆坐落在九龙湖校区的地理中心，庄重、典雅、充满现代气息。不仅有丰富的文献资源
 			还是优良的学习场所和文化交流中心。。。。。。</p>
