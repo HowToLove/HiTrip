@@ -44,7 +44,7 @@
 				$friends_status_rows[$i][$j]['Head']=$port['portrait'];
 				$friends_status_rows[$i][$j]['Name']=iconv('gb2312//IGNORE','UTF-8',$name1['user_name']);
 				$friends_status_rows[$i][$j]['Reply_id']=$row2['status_id'];
-				$friends_status_rows[$i][$j]['Target_Name']=iconv('gb2312//IGNORE','UTF-8',$row2['object_user_name']);
+				$friends_status_rows[$i][$j]['Target_Id']=iconv('gb2312//IGNORE','UTF-8',$row2['object_user_id']);
 				$friends_status_rows[$i][$j]['Content']=iconv('gb2312//IGNORE','UTF-8',$row2['content']);
 				$friends_status_rows[$i][$j]['IMG']=$row2['picture'];
 				//return $row2['flag'];
