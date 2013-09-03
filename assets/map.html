@@ -182,7 +182,7 @@ function upLoadFile(path){
 </script>
 
 
-<!----------------------回复----------------------->
+<!---------------------------回复---------------------------->
 <script id='reply-tmpl' type='text/x-jquery-tmpl'>
 	<tr>
 		<td></td>
@@ -207,11 +207,40 @@ function upLoadFile(path){
 
 
 
-<!-------------------------足迹------------------------->
+<!----------------------------足迹----------------------------->
 <script id="footprint-tmpl" type="text/x-jquery-tmpl">
 	<img class="footprint" src="img/footprint.png" style="top:${top}px;left:${left}px";/>
 </script>
+
+
+
+<!---------------------------------------------------------后台--------------------------------------------------------->
 <script>
+/********************全局变量********************/
+var sendLocationIntervalId;
+var queryAnswerId;
+var queryAnswerCount=0;
+var queryFriendsId;
+var queryMessageId;
+var queryJingdianNewsId;
+
+/********************初始调用********************/
+function init(){
+
+	//getSelfInfo(); 
+	//getFriendInfo();
+	myListener();
+	showMyPosition(31.88736,118.83043);
+	//foot_print();
+	//queryMessageId=setInterval(queryMessage,1000);
+	//sendLocationIntervalId = setInterval(sendLocation,1000);
+	//queryFriendsId = setInterval(queryFriends,1000);
+	//queryJingdianNewsId=setInterval(queryJingdianNews,1000);
+	//aaa();
+	
+}
+
+/********************显示足迹********************/
 function foot_print(){
 	var json_footprint=[{"top":"100","left":"100"},
 						{"top":"100","left":"200"},
@@ -226,11 +255,9 @@ function foot_print(){
 			$("#footprint-tmpl").tmpl(json_footprint[i++]).appendTo("#map-sketch");
 	}
 }	
-</script>
-<!---------------------------------------------------------后台--------------------------------------------------------->
-<script>
-//written by lanxiang
-function eyeOn(idName){//添加景点关注
+
+/********************添加景点关注********************/
+function eyeOn(idName){
 	//var jingdian_id=6;//要作为参数传入
 	var xmlHttp;
 	if(window.ActiveXObject){
@@ -254,7 +281,9 @@ function eyeOn(idName){//添加景点关注
 	xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 	xmlHttp.send(param);
 }
-function queryJingdianNews(){//实时查找景点消息
+
+/********************实时查找景点消息********************/
+function queryJingdianNews(){
 	var xmlHttp;
 	if(window.ActiveXObject){
 		xmlHttp = new ActiveXObject("Microsoft.XMLHttp");
@@ -292,7 +321,8 @@ function queryJingdianNews(){//实时查找景点消息
 	xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 	xmlHttp.send(param);
 }
-//地图消息发送和请求好友消息
+
+/********************地图消息发送和请求好友消息，发布文字状态********************/
 function sendMessage(){
 	var content = $("#message").val();
 	var xmlHttp;
@@ -322,7 +352,7 @@ function sendMessage(){
 	xmlHttp.send(param);
 }
 
-//地图消息发送和请求好友消息
+/********************地图消息发送和请求好友消息，发布图片状态********************/
 function sendMessage2(){
 	var content = $("#message2").val();
 	$("#message2").empty();
@@ -353,6 +383,7 @@ function sendMessage2(){
 	xmlHttp.send(param);
 }
 
+/********************实时查询好友发布的状态********************/
 function queryMessage(){//need to be added into init()
 	var xmlHttp;
 	if(window.ActiveXObject){
@@ -392,33 +423,6 @@ function queryMessage(){//need to be added into init()
 	xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 	xmlHttp.send(param);
 }
-</script>
-<script>
-/**************written by lanxiang**************/
-var sendLocationIntervalId;
-var queryAnswerId;
-var queryAnswerCount=0;
-var queryFriendsId;
-var queryMessageId;
-var queryJingdianNewsId;
-
-
-/********************初始调用********************/
-function init(){
-
-	//getSelfInfo(); 
-	//getFriendInfo();
-	myListener();
-	showMyPosition(31.88646,118.81918);
-	foot_print();
-	//queryMessageId=setInterval(queryMessage,1000);
-	//sendLocationIntervalId = setInterval(sendLocation,1000);
-	//queryFriendsId = setInterval(queryFriends,1000);
-	//queryJingdianNewsId=setInterval(queryJingdianNews,1000);
-	//aaa();
-	
-}
-
 
 /********************添加自己到地图********************/
 function getSelfInfo(){
@@ -447,7 +451,6 @@ function getSelfInfo(){
 	xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 	xmlHttp.send(param);
 }
-
 
 /********************添加好友到地图********************/
 function getFriendInfo(){
@@ -486,7 +489,6 @@ function getFriendInfo(){
 	xmlHttp.send(param);
 }
 
-
 /********************添加驴友到地图********************/
 function getStrangeInfo(){
 	var xmlHttp;
@@ -514,7 +516,6 @@ function getStrangeInfo(){
 	xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 	xmlHttp.send(param);
 }
-
 
 /*********************发送好友请求***********************/
 function requestFriends(targetId){
@@ -546,7 +547,6 @@ function requestFriends(targetId){
 	xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 	xmlHttp.send(param);
 }
-
 
 /*******用户登录成功后调用，查询是否有新的好友请求，返回请求该用户的JSON数组*******/
 function queryFriends(){
@@ -589,7 +589,6 @@ function queryFriends(){
 	xmlHttp.send(param);
 }
 
-
 /*****************是否接受好友请求*****************/
 function answerFriends(answer,answerUserId){
 	//answer,1表示接受好友请求，2表示拒绝
@@ -616,7 +615,6 @@ function answerFriends(answer,answerUserId){
 	xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 	xmlHttp.send(param);	
 }
-
 
 /**查询对方是否给出回复，如果给出返回值是对方信息的json变量和回复的status，1表示同意，0表示不统一**/
 function queryAnswer(){
@@ -653,7 +651,6 @@ function queryAnswer(){
 	xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 	xmlHttp.send(param);
 }
-
 
 /*****************每次动态添加都要调用一次函数以执行JQuery效果*********************/
 var flag_zone_eyeon=0;
@@ -700,7 +697,6 @@ function myListener(){
 		});
   	});
 }
-
 
 /*****************测试函数，用以添加新的好友请求信息********************/
 function aaa(){
@@ -1187,9 +1183,7 @@ $(document).ready(function(){
     </div>
 	<div data-role="content" style="padding:0%;" id="minilayer" class="minilayer" >
 		<div class="map-sketch" id="map-sketch">
-			<!-----------------------足迹------------------------>
-
-			
+						
 			<!-------------------景点标注------------------->
 			<div class="marker" id="jtbg">
 				<a class="pin"><img src="img/Marker-BB.png"/></a>
@@ -1290,7 +1284,12 @@ $(document).ready(function(){
 			<a id="pub-bar-camera" onclick="capturePhotoEdit();" style="display:inline-block;height:50px;"><i class="icon-camera"></i>拍照</a> |
 			<a id="pub-bar-gallery" onclick="getPhoto(pictureSource.PHOTOLIBRARY);" style="display:inline-block;height:50px;"><i class="icon-picture"></i>图库</a>
 		</div>
-				
+		
+		<!----------------------定位到我---------------------->
+		<div id="pinpoint-button">
+			<img src="img/pinpoint-me.png"/>
+		</div>		
+		
 		<!---------------------景点盖章--------------------->
 		<div id="box">
 			<img class="seal" src="img/bind.jpg" id="bind"/>

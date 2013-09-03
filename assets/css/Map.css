@@ -319,3 +319,11 @@ a.spot{
 	max-width:50px;
 	max-height:50px;
 }
+
+/************************定位到我***********************/
+#pinpoint-button{
+	position:absolute;
+	left:10px;
+	bottom:10px;
+	z-index:1000;
+}
