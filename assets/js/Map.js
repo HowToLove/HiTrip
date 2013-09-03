@@ -2,6 +2,7 @@ var lastLongitude=1.1;//written by lanxiang
 var lastLatitude=1.2;//written by lanxiang
 
 //地理定位+景点盖章
+
 function getE(ele){
 	return document.getElementById(ele);
 }
@@ -68,7 +69,8 @@ function sendLocation()
 	xmlHttp.send(param);
 	}
 	//showAllPosition(position.coords.latitude,position.coords.longitude,"user-ego");
-	showAllPosition(31.885700300000003,118.8136401,"user-ego");
+	showMyPosition(31.88646,118.81918);
+	alert("hi")
 
 }
 function showError(error)
@@ -93,6 +95,8 @@ function showError(error)
   end 
   written by lanxiang 
   */
+
+var json=[{"IdName":"lwz","Top":"628","Left":"1064"},{"IdName":"jtbg","Top":"916","Left":"1600"},{"IdName":"jsjl","Top":"820","Left":"710"},{"IdName":"jzl","Top":"916","Left":"865"}];
 function Distance(latA,lonA,latB,lonB){
 	return (25960.23679735*(Math.acos(Math.sin(latA)*Math.sin(latB)+Math.cos(latA)*Math.cos(latB)*Math.cos(lonA-lonB))));
 }
@@ -107,7 +111,25 @@ function calLeft(x,y){
 	return 2.953059756*y-2.96137829*x+945;
 }
 var isSealed=false;
-
+function showMyPosition(lat,lon){
+	var ad=524;
+	var an=Distance(31.8948,118.8090,lat,lon);
+	var dn=Distance(31.8948,118.8318,lat,lon);
+	var otop=2*triArea(ad,an,dn)/ad;
+	var oleft=Math.sqrt(Math.pow(an,2)-Math.pow(otop,2));
+	var top=calTop(otop,oleft);
+	var left=calLeft(otop,oleft);
+	console.log("user-ego");
+	console.log(getE("user-ego"));
+	getE("user-ego").style.top=top+'px';
+	
+	getE("user-ego").style.left=left+'px';
+	for(var i=0;i<json.length;i++){
+		if(Math.sqrt(Math.pow((top-json[i].Top),2)-Math.pow((left-json[i].Left),2))<200){
+			seal(json[i]);
+		}
+	}
+}
 function showAllPosition(lat,lon,id){
 	var ad=524;
 	var an=Distance(31.8948,118.8090,lat,lon);

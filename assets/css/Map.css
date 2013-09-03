@@ -196,14 +196,14 @@ a.spot{
 #pub-bar{
 	font-size:19px;
 	position:absolute;
-	bottom:10px;
-	right:10px;
+	bottom:13px;
+	right:13px;
 	z-index:999;
-	background-color:orange;
-	width:250px;
-	height:43px;
-	border-radius:30px;
-	padding-top:16px;
+	background-image:linear-gradient(#e9e9ea,#a6a8ac);
+	width:230px;
+	height:40px;
+	border-radius:11px;
+	padding-top:14px;
 	padding-right:45px;
 	display:none;
 }
@@ -311,4 +311,11 @@ a.spot{
 	position:absolute;
 	top:90px;
 	right:63px;
+}
+
+/**************************×ã¼£************************/
+.footprint{
+	position:absolute;
+	max-width:50px;
+	max-height:50px;
 }
