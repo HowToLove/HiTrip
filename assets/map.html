@@ -206,6 +206,27 @@ function upLoadFile(path){
 </script>
 
 
+
+<!-------------------------足迹------------------------->
+<script id="footprint-tmpl" type="text/x-jquery-tmpl">
+	<img class="footprint" src="img/footprint.png" style="top:${top}px;left:${left}px";/>
+</script>
+<script>
+function foot_print(){
+	var json_footprint=[{"top":"100","left":"100"},
+						{"top":"100","left":"200"},
+						{"top":"100","left":"300"},
+						{"top":"100","left":"400"}];
+	var footIntervalId = setInterval(foot,1000);
+	var i=0;
+	function foot(){
+		if(i>=json_footprint.length)
+			clearInterval(footIntervalId);
+		else
+			$("#footprint-tmpl").tmpl(json_footprint[i++]).appendTo("#map-sketch");
+	}
+}	
+</script>
 <!---------------------------------------------------------后台--------------------------------------------------------->
 <script>
 //written by lanxiang
@@ -388,7 +409,7 @@ function init(){
 	//getSelfInfo(); 
 	//getFriendInfo();
 	myListener();
-	//showMyPosition(31.88646,118.81918);
+	showMyPosition(31.88646,118.81918);
 	foot_print();
 	//queryMessageId=setInterval(queryMessage,1000);
 	//sendLocationIntervalId = setInterval(sendLocation,1000);
