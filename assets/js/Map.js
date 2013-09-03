@@ -289,6 +289,7 @@ $(document).ready(function(){
 	
 	//状态发布栏的隐藏和显示
 	$("#pub-bar").hide();
+
 	$("#photo-button").tap(function(){
 		$("#pub-bar").fadeToggle("fast");
 		seal("lwz");
@@ -304,6 +305,7 @@ $(document).ready(function(){
 	});
 	
 	//地图景点名字显示
+	$(".bubble-name").hide();
 	$(".pin").tap(function(){
 		$(this).parent().find(".bubble-name").toggle();
 	});
