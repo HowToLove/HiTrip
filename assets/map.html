@@ -183,7 +183,7 @@ function upLoadFile(path){
 </script>
 
 
-<!----------------------回复----------------------->
+<!---------------------------回复---------------------------->
 <script id='reply-tmpl' type='text/x-jquery-tmpl'>
 	<tr>
 		<td></td><td id=${Id}><div id=${Reply_id}><img src=${Head} width="30px" height="30px"/>${Name} 回复${Target_Name}: ${Content}<a class="button-reply" ><img width="20px" height="20px" src="img/reply.png" style="float:right"/></a></div></td>
@@ -206,10 +206,58 @@ function upLoadFile(path){
 </script>
 
 
+
+<!----------------------------足迹----------------------------->
+<script id="footprint-tmpl" type="text/x-jquery-tmpl">
+	<img class="footprint" src="img/footprint.png" style="top:${top}px;left:${left}px";/>
+</script>
+
+
+
 <!---------------------------------------------------------后台--------------------------------------------------------->
 <script>
-//written by lanxiang
-function eyeOn(idName){//添加景点关注
+/********************全局变量********************/
+var sendLocationIntervalId;
+var queryAnswerId;
+var queryAnswerCount=0;
+var queryFriendsId;
+var queryMessageId;
+var queryJingdianNewsId;
+
+/********************初始调用********************/
+function init(){
+
+	//getSelfInfo(); 
+	//getFriendInfo();
+	myListener();
+	showMyPosition(31.88736,118.83043);
+	//foot_print();
+	//queryMessageId=setInterval(queryMessage,1000);
+	//sendLocationIntervalId = setInterval(sendLocation,1000);
+	//queryFriendsId = setInterval(queryFriends,1000);
+	//queryJingdianNewsId=setInterval(queryJingdianNews,1000);
+	//aaa();
+	
+}
+
+/********************显示足迹********************/
+function foot_print(){
+	var json_footprint=[{"top":"100","left":"100"},
+						{"top":"100","left":"200"},
+						{"top":"100","left":"300"},
+						{"top":"100","left":"400"}];
+	var footIntervalId = setInterval(foot,1000);
+	var i=0;
+	function foot(){
+		if(i>=json_footprint.length)
+			clearInterval(footIntervalId);
+		else
+			$("#footprint-tmpl").tmpl(json_footprint[i++]).appendTo("#map-sketch");
+	}
+}	
+
+/********************添加景点关注********************/
+function eyeOn(idName){
 	//var jingdian_id=6;//要作为参数传入
 	var xmlHttp;
 	if(window.ActiveXObject){
@@ -233,7 +281,9 @@ function eyeOn(idName){//添加景点关注
 	xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 	xmlHttp.send(param);
 }
-function queryJingdianNews(){//实时查找景点消息
+
+/********************实时查找景点消息********************/
+function queryJingdianNews(){
 	var xmlHttp;
 	if(window.ActiveXObject){
 		xmlHttp = new ActiveXObject("Microsoft.XMLHttp");
@@ -271,7 +321,8 @@ function queryJingdianNews(){//实时查找景点消息
 	xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 	xmlHttp.send(param);
 }
-//地图消息发送和请求好友消息
+
+/********************地图消息发送和请求好友消息，发布文字状态********************/
 function sendMessage(){
 	var content = $("#message").val();
 	var xmlHttp;
@@ -301,7 +352,7 @@ function sendMessage(){
 	xmlHttp.send(param);
 }
 
-//地图消息发送和请求好友消息
+/********************地图消息发送和请求好友消息，发布图片状态********************/
 function sendMessage2(){
 	var content = $("#message2").val();
 	$("#message2").empty();
@@ -332,6 +383,7 @@ function sendMessage2(){
 	xmlHttp.send(param);
 }
 
+/********************实时查询好友发布的状态********************/
 function queryMessage(){//need to be added into init()
 	var xmlHttp;
 	if(window.ActiveXObject){
@@ -371,31 +423,6 @@ function queryMessage(){//need to be added into init()
 	xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 	xmlHttp.send(param);
 }
-</script>
-<script>
-/**************written by lanxiang**************/
-var sendLocationIntervalId;
-var queryAnswerId;
-var queryAnswerCount=0;
-var queryFriendsId;
-var queryMessageId;
-var queryJingdianNewsId;
-
-
-/********************初始调用********************/
-function init(){
-
-	//getSelfInfo(); 
-	//getFriendInfo();
-	myListener();
-	//queryMessageId=setInterval(queryMessage,1000);
-	//sendLocationIntervalId = setInterval(sendLocation,1000);
-	//queryFriendsId = setInterval(queryFriends,1000);
-	//queryJingdianNewsId=setInterval(queryJingdianNews,1000);
-	//aaa();
-	
-}
-
 
 /********************添加自己到地图********************/
 function getSelfInfo(){
@@ -424,7 +451,6 @@ function getSelfInfo(){
 	xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 	xmlHttp.send(param);
 }
-
 
 /********************添加好友到地图********************/
 function getFriendInfo(){
@@ -463,7 +489,6 @@ function getFriendInfo(){
 	xmlHttp.send(param);
 }
 
-
 /********************添加驴友到地图********************/
 function getStrangeInfo(){
 	var xmlHttp;
@@ -491,7 +516,6 @@ function getStrangeInfo(){
 	xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 	xmlHttp.send(param);
 }
-
 
 /*********************发送好友请求***********************/
 function requestFriends(targetId){
@@ -523,7 +547,6 @@ function requestFriends(targetId){
 	xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 	xmlHttp.send(param);
 }
-
 
 /*******用户登录成功后调用，查询是否有新的好友请求，返回请求该用户的JSON数组*******/
 function queryFriends(){
@@ -566,7 +589,6 @@ function queryFriends(){
 	xmlHttp.send(param);
 }
 
-
 /*****************是否接受好友请求*****************/
 function answerFriends(answer,answerUserId){
 	//answer,1表示接受好友请求，2表示拒绝
@@ -593,7 +615,6 @@ function answerFriends(answer,answerUserId){
 	xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 	xmlHttp.send(param);	
 }
-
 
 /**查询对方是否给出回复，如果给出返回值是对方信息的json变量和回复的status，1表示同意，0表示不统一**/
 function queryAnswer(){
@@ -630,7 +651,6 @@ function queryAnswer(){
 	xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 	xmlHttp.send(param);
 }
-
 
 /*****************每次动态添加都要调用一次函数以执行JQuery效果*********************/
 var flag_zone_eyeon=0;
@@ -678,7 +698,6 @@ function myListener(){
   	});
 }
 
-
 /*****************测试函数，用以添加新的好友请求信息********************/
 function aaa(){
 	var json1=[{"Longitude":"118.8136401","Latitude":"31.885700300000003","Head":"http:\/\/localhost\/register8.24\/files\/A.jpg","Id":"1","Name":"A"}];
@@ -698,498 +717,64 @@ function aaa(){
 				}
 }
 </script>
-<!--
-<script>//景点新鲜事
-$(document).ready(function(){
-	//景点新鲜事点击加载更多
-	$("#spotLoadMore").click(function() {
-	var spot_xmlHttp;
-	if(window.ActiveXObject){
-		spot_xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
-	}
-		else if(window.XMLHttpRequest){
-		spot_xmlHttp = new XMLHttpRequest();
-	}
-	var url = "http://192.168.1.101/server/get_spot_down.php?t="+Math.random();
-	spot_xmlHttp.open("GET",url,true);
-	spot_xmlHttp.onreadystatechange = function (){
-		if(spot_xmlHttp.readyState==4){
-			if(spot_xmlHttp.status==200){			
-				str = spot_xmlHttp.responseText;
-				console.log(str);
-				var news = eval("("+str+")");
-				for(var i=0;i<news.length;i++) {
-					if(news[i].IMG)
-						$("#pic_status_no_reply_button").tmpl(news[i]).appendTo("#spot-new");
-					else
-						$("#text_status_no_reply_button").tmpl(news[i]).appendTo("#spot-new");
-				}	
-			}
-		}
-	};
-	spot_xmlHttp.send(null);	
-	});	
-	
-	//景点新鲜事刷新
-	$("#spotRefresh").click(function() {
-	$("#spot-new").empty();
-	var spot_xmlHttp;
-	if(window.ActiveXObject){
-		spot_xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
-	}
-		else if(window.XMLHttpRequest){
-		spot_xmlHttp = new XMLHttpRequest();
-	}
-	var url = "http://192.168.1.101/server/get_spot_refresh.php?t="+Math.random();
-	spot_xmlHttp.open("GET",url,true);
-	spot_xmlHttp.onreadystatechange = spot_xmlHttp.onreadystatechange = function (){
-		if(spot_xmlHttp.readyState==4){
-			if(spot_xmlHttp.status==200){			
-				str = spot_xmlHttp.responseText;
-				console.log(str);
-				var news = eval("("+str+")");
-				for(var i=0;i<news.length;i++) {
-					if(news[i].IMG)
-						$("#pic_status_no_reply_button").tmpl(news[i]).appendTo("#spot-new");
-					else
-						$("#text_status_no_reply_button").tmpl(news[i]).appendTo("#spot-new");
-				}	
-			}
-		}
-	};
-	spot_xmlHttp.send(null);	
-	});
-});
-//景点新鲜事初始化
-function initialQueryJDNews(){
-$("#spot-new").empty();
-	var spot_xmlHttp;
-	if(window.ActiveXObject){
-		spot_xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
-	}
-		else if(window.XMLHttpRequest){
-		spot_xmlHttp = new XMLHttpRequest();
-	}
-	var url = "http://192.168.1.101/server/get_spot_refresh.php?t="+Math.random();
-	spot_xmlHttp.open("GET",url,true);
-	spot_xmlHttp.onreadystatechange = spot_xmlHttp.onreadystatechange = function (){
-		if(spot_xmlHttp.readyState==4){
-			if(spot_xmlHttp.status==200){			
-				str = spot_xmlHttp.responseText;
-				console.log(str);
-				var news = eval("("+str+")");
-				for(var i=0;i<news.length;i++) {
-					if(news[i].IMG)
-						$("#pic_status_no_reply_button").tmpl(news[i]).appendTo("#spot-new");
-					else
-						$("#text_status_no_reply_button").tmpl(news[i]).appendTo("#spot-new");
-				}	
-			}
-		}
-	};
-	spot_xmlHttp.send(null);	
-}
-</script>
 
-
-<script>//个人主页
-var target_name_personal;//用来找被回复者Id
-var entry_id_personal;//找回复者Id
-$(document).ready(function(){
-	//个人主页点击加载更多
-	$("#myStatusLoadMore").click(function() {
-	var personal_xmlHttp;
-		if(window.ActiveXObject){
-			personal_xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
-		}
-		else if(window.XMLHttpRequest){
-			personal_xmlHttp = new XMLHttpRequest();
-		}
-	var url = "http://192.168.1.101/server/get_personal_status_down.php?t="+Math.random();
-	personal_xmlHttp.open("GET",url,true);
-	personal_xmlHttp.onreadystatechange = function (){
-		if(personal_xmlHttp.readyState==4){
-			if(personal_xmlHttp.status==200){			
-				str = personal_xmlHttp.responseText;
-				console.log(str);
-				var news = eval("("+str+")");
-				for(var i=0;i<news.length;i++) {
-					if(news[i].IMG)
-						$("#pic_status_no_reply_button").tmpl(news[i]).appendTo("#personal-new");
-					else
-						$("#text_status_no_reply_button").tmpl(news[i]).appendTo("#personal-new");
-					if(news[i].Reply)
-					{
-						for(var j=0;j<news[i].Reply.length;j++)
-						{
-							$("#reply-tmpl").tmpl(news[i].Reply[j]).appendTo("#personal-new");
-							replyListener();
-						}
-					}
-				}	
-			}
-		}
-	};
-	personal_xmlHttp.send(null);	
-	});	
-	//个人主页刷新
-	$("#myStatusRefresh").click(function() {
-	$("#personal-new").empty();
-	var personal_xmlHttp;
-		if(window.ActiveXObject){
-			personal_xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
-		}
-		else if(window.XMLHttpRequest){
-			personal_xmlHttp = new XMLHttpRequest();
-		}
-	var url = "http://192.168.1.101/server/get_personal_status_refresh.php?t="+Math.random();
-	personal_xmlHttp.open("GET",url,true);
-	personal_xmlHttp.onreadystatechange = function (){
-		if(personal_xmlHttp.readyState==4){
-			if(personal_xmlHttp.status==200){			
-				str = personal_xmlHttp.responseText;
-				console.log("From get_personal_status_refresh.php:");
-				console.log(str);
-				if(str!=1){
-				var news = eval("("+str+")");
-				for(var i=0;i<news.length;i++) {
-					if(news[i].IMG)
-						$("#pic_status_no_reply_button").tmpl(news[i]).appendTo("#personal-new");
-					else
-						$("#text_status_no_reply_button").tmpl(news[i]).appendTo("#personal-new");
-					if(news[i].Reply)
-					{
-						for(var j=0;j<news[i].Reply.length;j++)
-						{
-							$("#reply-tmpl").tmpl(news[i].Reply[j]).appendTo("#personal-new");
-							replyListener();
-						}
-					}
-				}
-				}				
-			}
-		}
-	};
-	personal_xmlHttp.send(null);	
-	});
-	//个人主页点击回复发送按钮
-	$("#button-send-personal").tap(function(){
-		var content=$("#reply-content-personal").val();
-		var str = "status_id="+entry_id_personal+
-			"&object_name="+target_name_personal+"&content="+content;
-		alert(str);
-		var personal_xmlHttp;
-		if(window.ActiveXObject){
-			personal_xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
-		}
-		else if(window.XMLHttpRequest){
-			personal_xmlHttp = new XMLHttpRequest();
-		}
-		var url="http://192.168.1.101/server/get_new_reply.php";
-		personal_xmlHttp.open("POST",url,true);
-		personal_xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-		personal_xmlHttp.send(str);
-	});
-});
-//个人主页初始化
-function initialQueryPersonNews(){
-	$("#personal-new").empty();
-	alert("in initialQueryPersonNews");
-	var personal_xmlHttp;
-		if(window.ActiveXObject){
-			personal_xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
-		}
-		else if(window.XMLHttpRequest){
-			personal_xmlHttp = new XMLHttpRequest();
-		}
-	var url = "http://192.168.1.101/server/get_personal_status_refresh.php?t="+Math.random();
-	personal_xmlHttp.open("GET",url,true);
-	personal_xmlHttp.onreadystatechange = function (){
-		if(personal_xmlHttp.readyState==4){
-			if(personal_xmlHttp.status==200){			
-				str = personal_xmlHttp.responseText;
-				console.log(str);
-				var news = eval("("+str+")");
-				for(var i=0;i<news.length;i++) {
-					if(news[i].IMG)
-						$("#pic_status_no_reply_button").tmpl(news[i]).appendTo("#personal-new");
-					else
-						$("#text_status_no_reply_button").tmpl(news[i]).appendTo("#personal-new");
-					if(news[i].Reply)
-					{
-						for(var j=0;j<news[i].Reply.length;j++)
-						{
-							$("#reply-tmpl").tmpl(news[i].Reply[j]).appendTo("#personal-new");
-							replyListener();
-						}
-					}
-				}	
-			}
-		}
-	};
-	personal_xmlHttp.send(null);	
-}
-//状态发布辅助函数
-function replyListener(){
-	$(document).ready(function(){
-		$(".button-reply").tap(function(){
-			target_name_personal=$(this).parent().parent().attr("id");
-			entry_id_personal=$(this).parent().attr("id");
-		//alert(target_name_personal+" "+entry_id_personal);
-		});
-	});
-}
-</script>
-
- <script>//好友动态
-var target_name_friend;//用来找被回复者Id
-var entry_id_friend;//找回复者Id
-//好友状态初始化
-function initialFriendStatus(){
-	alert("in initialFriendStatus");
-	$("#friend-new").empty();
-	var xmlHttp;
-	if(window.ActiveXObject){
-			xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
-		}
-		else if(window.XMLHttpRequest){
-			xmlHttp = new XMLHttpRequest();
-		}
-	var url = "http://192.168.1.101/server/get_status_refresh.php?t="+Math.random();
-	xmlHttp.open("GET",url,true);
-	xmlHttp.onreadystatechange = function (){
-		if(xmlHttp.readyState==4){
-			if(xmlHttp.status==200){			
-				str = xmlHttp.responseText;
-				console.log(str);
-				var news = eval("("+str+")");
-				for(var i=0;i<news.length;i++) {
-					if(news[i].IMG)
-						$("#pic_status_reply_button").tmpl(news[i]).appendTo("#friend-new");
-					else
-						$("#text_status_reply_button").tmpl(news[i]).appendTo("#friend-new");
-					if(news[i].Reply)
-					{
-						for(var j=0;j<news[i].Reply.length;j++)
-						{
-							$("#reply-tmpl").tmpl(news[i].Reply[j]).appendTo("#friend-new");
-							replyListener2();
-						}
-					}
-				}	
-			}
-		}
-	};
-	xmlHttp.send(null);	
-}
-//个人主页辅助函数
-function replyListener2(){
-	$(document).ready(function(){
-		$(".button-reply").tap(function(){
-			target_name_friend=$(this).parent().parent().attr("id");
-			entry_id_friend=$(this).parent().attr("id");
-		//alert(target_name_friend+" "+entry_id_friend);
-		});
-	});
-}
-$(document).ready(function(){
-	//好友点击加载更多
-		//点击加载更多
-	$("#friendLoadMore").click(function() {
-	//alert("in friendLoadMore");
-	var xmlHttp;
-	if(window.ActiveXObject){
-		xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
-	}
-	else if(window.XMLHttpRequest){
-		xmlHttp = new XMLHttpRequest();
-	}
-	var url = "http://192.168.1.101/server/get_status_down.php?t="+Math.random();
-	xmlHttp.open("GET",url,true);
-	xmlHttp.onreadystatechange = function (){
-		if(xmlHttp.readyState==4){
-			if(xmlHttp.status==200){			
-				str = xmlHttp.responseText;
-				console.log(str);
-				var news = eval("("+str+")");
-				for(var i=0;i<news.length;i++) {
-					if(news[i].IMG)
-						$("#pic_status_reply_button").tmpl(news[i]).appendTo("#friend-new");
-					else
-						$("#text_status_reply_button").tmpl(news[i]).appendTo("#friend-new");
-					if(news[i].Reply)
-					{
-						for(var j=0;j<news[i].Reply.length;j++)
-						{
-							$("#reply-tmpl").tmpl(news[i].Reply[j]).appendTo("#friend-new");
-							replyListener2();
-						}
-					}
-				}	
-			}
-		}
-	};
-	xmlHttp.send(null);	
-	});
-	//好友刷新
-	$("#friendRefresh").click(function() {
-	alert("in friendRefresh");
-	$("#friend-new").empty();
-	var xmlHttp;
-	if(window.ActiveXObject){
-			xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
-		}
-		else if(window.XMLHttpRequest){
-			xmlHttp = new XMLHttpRequest();
-		}
-	var url = "http://192.168.1.101/server/get_status_refresh.php?t="+Math.random();
-	xmlHttp.open("GET",url,true);
-	xmlHttp.onreadystatechange = function (){
-		if(xmlHttp.readyState==4){
-			if(xmlHttp.status==200){			
-				str = xmlHttp.responseText;
-				console.log(str);
-				var news = eval("("+str+")");
-				for(var i=0;i<news.length;i++) {
-					if(news[i].IMG)
-						$("#pic_status_reply_button").tmpl(news[i]).appendTo("#friend-new");
-					else
-						$("#text_status_reply_button").tmpl(news[i]).appendTo("#friend-new");
-					if(news[i].Reply)
-					{
-						for(var j=0;j<news[i].Reply.length;j++)
-						{
-							$("#reply-tmpl").tmpl(news[i].Reply[j]).appendTo("#friend-new");
-							replyListener2();
-						}
-					}
-				}	
-			}
-		}
-	};
-	xmlHttp.send(null);	
-	});
-	//好友点击回复发送按钮
-	$("#button-send-friend").tap(function(){
-		var content=$("#reply-content-friend").val();
-		var str = "status_id="+entry_id_friend+
-			"&object_name="+target_name_friend+"&content="+content;
-		alert(str);
-		var xmlHttp;
-		if(window.ActiveXObject){
-			xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
-		}
-		else if(window.XMLHttpRequest){
-			xmlHttp = new XMLHttpRequest();
-		}
-		var url="http://192.168.1.101/server/get_new_reply.php";
-		xmlHttp.open("POST",url,true);
-		xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-		xmlHttp.send(str);
-		//xmlHttp.onreadystatechange=function stateChanged(){
-			//if(xmlHttp.readyState==4){
-				//if(xmlHttp.status == 200){
-					//console.log(xmlHttp.responseText);
-					//str = xmlHttp.responseText;
-					//console.log(str);
-					//var news = eval("("+str+")");
-				//}	
-			//}
-		//}
-		});
-	});
-
-</script>
--->
 </head>
 
 <body style="font-family:微软雅黑;padding:0;" onload="init()">
 
-<!--div data-role="page" id="page0" data-theme="c" >
+<div data-role="page" id="page0" data-theme="c" >
     <div data-role="header" data-theme="c">
       <h1>首页</h1>
       <a href="#panel0" data-icon="bars" data-iconpos="notext" data-shadow="false" data-iconshadow="false">Menu</a>
     </div>
     <div data-role="content" style="padding: 0%">
-	<div>
-              <div id="googlemapsjs3" class="google-map" style="width: 480px; height: 400px;">
-              </div>
-              <script type="text/javascript">
-                      window.CodiqaControls && window.CodiqaControls.register('googlemaps', 'googlemapsjs3', {
-              ready: function(control) {
-  
-                  control.options = {
-                      zoom: 14,
-                      mapTypeId: google.maps.MapTypeId.ROADMAP
-                  };
-  
-                  control.el = document.getElementById(control._id);
-                  control.map = new google.maps.Map(control.el, control.options);
-  
-                  var geocoder = new google.maps.Geocoder();
-                  geocoder.geocode({
-                      'address': 'Nanjing，China'
-                  }, function(results, status) {
-                      if (status == google.maps.GeocoderStatus.OK) {
-  
-                          var marker = new google.maps.Marker({
-                              map: control.map,
-                              position: results[0].geometry.location
-                          });
-                          control.center = results[0].geometry.location;
-                          control.map.setCenter(control.center);
-                      }
-                  });
-  
-              }
-          });
-              </script>
-          </div>
+		<div>
+			<div id="googlemapsjs3" class="google-map" style="width: 480px; height: 400px;">
+			</div>
+			<script type="text/javascript">
+			window.CodiqaControls && window.CodiqaControls.register('googlemaps', 'googlemapsjs3', {
+				ready: function(control) {
+					control.options = {
+						zoom: 14,
+						mapTypeId: google.maps.MapTypeId.ROADMAP
+					};
+
+					control.el = document.getElementById(control._id);
+					control.map = new google.maps.Map(control.el, control.options);
+
+					var geocoder = new google.maps.Geocoder();
+					geocoder.geocode({'address': 'Nanjing，China'}, function(results, status) {
+						if (status == google.maps.GeocoderStatus.OK) {
+							var marker = new google.maps.Marker({
+								map: control.map,
+								position: results[0].geometry.location
+							});
+							control.center = results[0].geometry.location;
+							control.map.setCenter(control.center);
+						}
+					});
+				}
+			});
+			</script>
+        </div>
     </div>
-    <div data-role="panel" id="panel0" data-theme="b">
-           <ul data-role="listview" data-divider-theme="b" data-inset="false">
-              <li data-theme="a" id="panelHead">
-                      <img id="panelHeadImg" src="img/Avatar.jpg" height="100%">王小明
-              </li>
-              <li data-theme="c">
-                  <a href="#panel0" >
-                      首页
-                  </a>
-              </li>
-              <li data-theme="c">
-                  <a href="#page1" data-transition="flip">
-                      景区地图
-                  </a>
-              </li>
-              <li data-role="list-divider" >
-                      动态
-              </li>
-              <li data-theme="c">
-                  <a href="#page2" data-transition="flip">
-                      好友动态
-                  </a>
-              </li>
-              <li data-theme="c">
-                  <a href="#page3" data-transition="flip">
-                      景区新鲜事
-                  </a>
-              </li>
-              <li data-role="list-divider">
-                      关于我
-              </li>
-              <li data-theme="c">
-                  <a href="#page4" data-transition="flip">
-                      个人主页
-                  </a>
-              </li>
-              <li data-theme="c">
-                  <a href="#page5" data-transition="flip">
-                      设置
-                  </a>
-              </li>
-          </ul>
-      </div>
-  </div--> 
+    <div data-role="panel" id="panel0" data-theme="b" data-position-fixed="true">
+		<ul data-role="listview" data-divider-theme="b" data-inset="false">
+			<li data-theme="a" id="panelHead"><img id="panelHeadImg" src="img/Avatar.jpg" height="100%">王小明</li>
+			<li data-theme="c"><a href="#panel0" data-transition="flip" >首页</a></li>
+			<li data-theme="c"><a href="#page1" >景区地图</a></li>
+			<li data-role="list-divider" >动态</li>
+			<li data-theme="c"><a href="#page2" data-transition="flip">好友动态</a></li>
+			<li data-theme="c"><a href="#page3" data-transition="flip">	景区新鲜事</a></li>
+			<li data-role="list-divider">关于我</li>
+			<li data-theme="c"><a href="#page4" data-transition="flip" >个人主页</a></li>
+			<li data-theme="c"><a href="#msg-reply" data-transition="flip">消息中心</a></li>
+			<li data-role="list-divider">操作</li>
+			<li data-theme="c"><a href="#page5" data-transition="flip">设置</a></li>
+			<li data-theme="c"><a>注销</a></li>
+		</ul>
+    </div>
+</div> 
   
 
  
@@ -1201,6 +786,7 @@ $(document).ready(function(){
     </div>
 	<div data-role="content" style="padding:0%;" id="minilayer" class="minilayer" >
 		<div class="map-sketch" id="map-sketch">
+						
 			<!-------------------景点标注------------------->
 			<div class="marker" id="jtbg">
 				<a class="pin"><img src="img/Marker-BB.png"/></a>
@@ -1246,11 +832,11 @@ $(document).ready(function(){
 			
 			<!-------------------用户头像和状态显示--------------------->
 			<div class="user-ego" id="user-ego">
-
+				<a class="avatar"><img src="img/Avatar.jpg"></img></a>
 			</div>
 			<div class="user-friend" id="3" style="top:1000px;left:1000px;">
 				<a class="avatar"><img src="img/Avatar.jpg"></img></a>
-				<a class="bubble"><div class="tooltip fade right in bubble-img">
+				<a class="bubble" href="#status"><div class="tooltip fade right in bubble-img">
 					<div class="tooltip-arrow"></div>
 					<div class="tooltip-inner"><img src="img/Avatar.jpg"></div>
 				</div></a>
@@ -1271,10 +857,8 @@ $(document).ready(function(){
 		</div>
 		
 		<!---------------------地图切换--------------------->
-		<div class="" id="switch-button">
+		<!--div class="" id="switch-button">
 			<a onclick="capturePhotoEdit();"><img src="img/Photo.png"/></a>
-			<!--a id="pub-bar-camera" onclick="capturePhotoEdit();"><i class="icon-camera"></i> 拍照 </a-->|
-			<!--a id="pub-bar-gallery" onclick="getPhoto(pictureSource.PHOTOLIBRARY);"><i class="icon-picture"></i> 图库</a-->
 		</div>
 		<div class="" id="switch-list">
 			<ul data-role="listview">
@@ -1282,6 +866,16 @@ $(document).ready(function(){
 				<li><a href="" id="friend-map">好友地图</a></li>
 				<li><a href="" id="stranger-map">驴友地图</a></li>
 			</ul>
+		</div-->
+		<a id="switch-button"href="#popupPanel" data-rel="popup" data-transition="slide" data-position-to="window" data-role="button">Open panel</a>
+ 
+ 
+		<div data-role="popup" id="popupPanel" data-corners="false" data-theme="none" data-shadow="false" data-tolerance="0,0">
+		 
+			<button data-theme="a" data-icon="back" data-mini="true">Back</button>
+			<button data-theme="a" data-icon="grid" data-mini="true">Menu</button>
+			<button data-theme="a" data-icon="search" data-mini="true">Search</button>
+		 
 		</div>
 		
 		<!---------------------照相按钮--------------------->
@@ -1293,7 +887,12 @@ $(document).ready(function(){
 			<a id="pub-bar-camera" onclick="capturePhotoEdit();" style="display:inline-block;height:50px;"><i class="icon-camera"></i>拍照</a> |
 			<a id="pub-bar-gallery" onclick="getPhoto(pictureSource.PHOTOLIBRARY);" style="display:inline-block;height:50px;"><i class="icon-picture"></i>图库</a>
 		</div>
-				
+		
+		<!----------------------定位到我---------------------->
+		<div id="pinpoint-button">
+			<img src="img/pinpoint-me.png"/>
+		</div>		
+		
 		<!---------------------景点盖章--------------------->
 		<div id="box">
 			<img class="seal" src="img/bind.jpg" id="bind"/>
@@ -1301,10 +900,12 @@ $(document).ready(function(){
 			<img class="seal" src="img/star-fill.jpg" id="star-fill"/>
 			<img class="seal" src="img/star-twinkle.jpg" id="star-twinkle"/>
 		</div>
+		
+		
 	</div>
 	
 	<!---------------------景区地图panel--------------------->
-	<div data-role="panel" id="panel1" data-theme="b">
+	<div data-role="panel" id="panel1" data-theme="b" data-position-fixed="true">
 		<ul data-role="listview" data-divider-theme="b" data-inset="false">
 			<li data-theme="a" id="panelHead"><img id="panelHeadImg" src="img/Avatar.jpg" height="100%">王小明</li>
 			<li data-theme="c"><a href="#page0" data-transition="flip" >首页</a></li>
@@ -1415,7 +1016,7 @@ $(document).ready(function(){
 	</div>
 	
 	<!---------------------好友主页panel--------------------->
-	<div data-role="panel" id="zone-others-panel" data-theme="b">
+	<div data-role="panel" id="zone-others-panel" data-theme="b" data-position-fixed="true">
 		<ul data-role="listview" data-divider-theme="b" data-inset="false">
 			<li data-theme="a" id="panelHead"><img id="panelHeadImg" src="img/Avatar.jpg" height="100%">王小明</li>
 			<li data-theme="c"><a href="#page0" data-transition="flip" >首页</a></li>
@@ -1435,13 +1036,27 @@ $(document).ready(function(){
 
 <!------------------------------------------------------状态回复----------------------------------------------------------->
 <div data-role="page" id="status">
-	<div data-role="header" data-theme="c" data-position="fixed" >
+	<div data-role="header" data-theme="c" data-position="fixed" data-tap-toggle="false">
 		<h1>状态回复</h1>
 		<a data-icon="arrow-l" data-iconpos="notext" data-shadow="false" data-iconshadow="false" data-rel="back">Menu</a>
     </div>
-	<div data-role="footer" data-theme="c" data-position="fixed">
-		<div style="width:89%;margin-left:1%;"><input type="text" name="" id="" value="" data-mini="true" /></div>
-		<a data-role="button" data-rel="back" onclick="footer_reply_hide();" class="ui-btn-right" style="margin-top:1px;margin-right:1%;width:8%">发布</a>
+	<div data-role="content" data-theme="c">
+		<table cellspacing="0" cellpadding="3" border="0" width="100%">
+			<tbody id="friend-new" style="border-bottom:5px solid #FF0000;">
+					<tr><td><img src="img/Avatar.jpg" width="50px" height="50px"/></td><td>${Name}</td></tr>
+					<tr><td></td><td><img src="img/Avatar.jpg" width="100%" /></td></tr>
+					<tr><td></td><td>${Content}<a href="#popupReply" data-rel="popup" data-position-to="window"><img width="20px" height="20px" src="reply.png" style="float:right"/></a></td></tr>
+					<tr>
+						<td></td>
+						<td id=${Id}><div id=${Reply_id}><img src="img/Avatar.jpg" width="30px" height="30px"/>${Name} 回复${Target_Name}: ${Content}<a class="button-reply" ><img width="20px" height="20px" src="img/reply.png" style="float:right"/></a></div></td>
+					</tr>
+
+			</tbody>
+		</table>
+	</div>
+	<div data-role="footer" data-theme="c" data-position="fixed" data-tap-toggle="false">
+		<div style="width:93%;margin-left:1%;"><input type="text" name="" id="" value="" data-mini="true" /></div>
+		<a data-role="button" data-rel="back" class="ui-btn-right" style="margin-top:1px;margin-right:1%">发布</a>
 	</div>
 </div>
 
@@ -1507,7 +1122,7 @@ $(document).ready(function(){
 			</ul>
 		</div>
 	</div>
-	<div data-role="panel" id="msg-reply-panel" data-theme="b">
+	<div data-role="panel" id="msg-reply-panel" data-theme="b" data-position-fixed="true">
 		<ul data-role="listview" data-divider-theme="b" data-inset="false">
 			<li data-theme="a"><img src="img/Avatar.jpg" height="100%">王小明</li>
 			<li data-theme="c"><a href="#page0" data-transition="flip">首页</a></li>
@@ -1583,7 +1198,7 @@ $(document).ready(function(){
 	</div>
 	
 	<!---------------------------------新的朋友panel----------------------------------->
-	<div data-role="panel" id="msg-newf-panel" data-theme="b">
+	<div data-role="panel" id="msg-newf-panel" data-theme="b" data-position-fixed="true">
 		<ul data-role="listview" data-divider-theme="b" data-inset="false">
 			<li data-theme="a"><img src="img/Avatar.jpg" height="100%">王小明</li>
 			<li data-theme="c"><a href="#page0" data-transition="flip">首页</a></li>
@@ -1663,7 +1278,7 @@ $(document).ready(function(){
       </table>
       <button type="button" id="spotLoadMore">点击加载更多</button>
     </div>
-	<div data-role="panel" id="panel3" data-position="left" data-display="push" data-theme="b">
+	<div data-role="panel" id="panel3" data-position="left" data-theme="b" data-position-fixed="true">
 		<ul data-role="listview" data-divider-theme="b" data-inset="false">
 			<li data-theme="a"><img src="img/Avatar.jpg" height="100%">王小明</li>
 			<li data-theme="c"><a href="#page0" data-transition="flip">首页</a></li>
@@ -1705,7 +1320,7 @@ $(document).ready(function(){
 			  <button data-theme="b" id="button-send-personal">发送</button>
 			</div>
 	</div-->
-	<div data-role="panel" id="panel4" data-position="left" data-display="push" data-theme="b">
+	<div data-role="panel" id="panel4" data-position="left" data-theme="b" data-position-fixed="true">
 		<ul data-role="listview" data-divider-theme="b" data-inset="false">
 			<li data-theme="a"><img src="img/Avatar.jpg" height="100%">王小明</li>
 			<li data-theme="c"><a href="#page0" data-transition="flip">首页</a></li>
@@ -1734,7 +1349,7 @@ $(document).ready(function(){
 	<div data-role="content" style="padding: 0%">
 	   
 	</div>
-	<div data-role="panel" id="panel5" data-theme="b">
+	<div data-role="panel" id="panel5" data-theme="b" data-position-fixed="true">
 	   <ul data-role="listview" data-divider-theme="b" data-inset="false">
 			<li data-theme="a"><img src="img/Avatar.jpg" height="100%">王小明</li>
 			<li data-theme="c"><a href="#page0" data-transition="flip">首页</a></li>

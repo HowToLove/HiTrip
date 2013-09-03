@@ -1,7 +1,7 @@
 var lastLongitude=1.1;//written by lanxiang 
 var lastLatitude=1.2;//written by lanxiang
 
-//地理定位+景点盖章
+/**********************************地理定位**********************************/
 function getE(ele){
 	return document.getElementById(ele);
 }
@@ -18,8 +18,7 @@ function check(lat,lon){
 	else
 	return true;
 }
-function sendLocation()
-{
+function sendLocation(){
 	//console.log("lanxiang!");
 	//alert("")
 	/*
@@ -35,8 +34,7 @@ function sendLocation()
 }
 
 //function getPosition(position)
- function getPosition()
-  {
+function getPosition(){
   var xmlHttp;
 	if(window.ActiveXObject){
 		xmlHttp = new ActiveXObject("Microsoft.XMLHttp");
@@ -68,11 +66,11 @@ function sendLocation()
 	xmlHttp.send(param);
 	}
 	//showAllPosition(position.coords.latitude,position.coords.longitude,"user-ego");
-	showAllPosition(31.885700300000003,118.8136401,"user-ego");
+	showMyPosition(31.88646,118.81918);
+	alert("hi")
 
 }
-function showError(error)
-  {
+function showError(error){
   switch(error.code) 
     {
     case error.PERMISSION_DENIED:
@@ -93,6 +91,8 @@ function showError(error)
   end 
   written by lanxiang 
   */
+
+var json=[{"IdName":"lwz","Top":"628","Left":"1064"},{"IdName":"jtbg","Top":"916","Left":"1600"},{"IdName":"jsjl","Top":"820","Left":"710"},{"IdName":"jzl","Top":"916","Left":"865"}];
 function Distance(latA,lonA,latB,lonB){
 	return (25960.23679735*(Math.acos(Math.sin(latA)*Math.sin(latB)+Math.cos(latA)*Math.cos(latB)*Math.cos(lonA-lonB))));
 }
@@ -107,7 +107,22 @@ function calLeft(x,y){
 	return 2.953059756*y-2.96137829*x+945;
 }
 var isSealed=false;
-
+function showMyPosition(lat,lon){
+	var ad=524;
+	var an=Distance(31.8948,118.8090,lat,lon);
+	var dn=Distance(31.8948,118.8318,lat,lon);
+	var otop=2*triArea(ad,an,dn)/ad;
+	var oleft=Math.sqrt(Math.pow(an,2)-Math.pow(otop,2));
+	var top=calTop(otop,oleft);
+	var left=calLeft(otop,oleft);
+	getE("user-ego").style.top=top+'px';
+	getE("user-ego").style.left=left+'px';
+	for(var i=0;i<json.length;i++){
+		if(Math.sqrt(Math.pow((top-json[i].Top),2)-Math.pow((left-json[i].Left),2))<200){
+			seal(json[i]);
+		}
+	}
+}
 function showAllPosition(lat,lon,id){
 	var ad=524;
 	var an=Distance(31.8948,118.8090,lat,lon);
@@ -118,6 +133,7 @@ function showAllPosition(lat,lon,id){
 	getE(id).style.left=calLeft(otop,oleft)+'px';
 }
 
+/**********************************景点盖章**********************************/
 var winWidth = 0;
 var winHeight = 0;
 
@@ -175,15 +191,18 @@ function animation(){
 		});
 	});
 }
-var count=0;
+var count=0;//景点数
+/************************增加进度条***********************/
 function addBar(){
 	count++;
 	getE("bar").style.width=count*10+"%";
 	getE("count").innerText=count;
 }
+/************************改变颜色***********************/
 /*function changeColor(a){
 	getE(a).style.backgroundColor="rgba(251, 180,80, 0.9)";
 }*/
+/***********************盖章总效果**********************/
 function seal(id){
 	if(count<10){
 		animation();
@@ -191,7 +210,8 @@ function seal(id){
 		//changeColor(id);
 	}
 }
-//地图拖拽
+
+/**********************************地图拖拽**********************************/
 var isdrag=false;
 var x,y;
 var dobj;
@@ -281,13 +301,14 @@ $( function () {
 	});
 });
 
-
+/**********************************ready**********************************/
 $(document).ready(function(){
-	//设置盖章效果
+
+	/************************设置盖章***********************/
 	getE("minilayer").style.height=(parseInt(document.body.clientHeight+0)-43)+'px';
 	setstyle();
 	
-	//状态发布栏的隐藏和显示
+	/************************状态发布栏***********************/
 	$("#pub-bar").hide();
 
 	$("#photo-button").tap(function(){
@@ -304,15 +325,13 @@ $(document).ready(function(){
 		$("#pub-bar").hide();
 	});
 	
-	//地图景点名字显示
+	/************************景点名字***********************/
 	$(".bubble-name").hide();
 	$(".pin").tap(function(){
 		$(this).parent().find(".bubble-name").toggle();
 	});
 	
-	
-	
-	//地图切换
+	/************************地图切换***********************/
 	$("#simple-map").tap(function(){
 		$("#map-sketch").find(".user-friend").hide();
 		$("#map-sketch").find(".user-stranger").hide();
@@ -325,15 +344,35 @@ $(document).ready(function(){
 		$("#map-sketch").find(".user-friend").show();
 		$("#map-sketch").find(".user-stranger").show();
 	});
+	
+	/************************定位到我***********************/
+	$("#pinpoint-button").tap(function(){
+		var top=-(parseInt(getE("user-ego").style.top+0))+(parseInt(getE("minilayer").style.height+0))/2-50;
+		var left=-(parseInt(getE("user-ego").style.left+0))+(parseInt(document.body.clientWidth+0))/2-38;
+		if(top>0)
+			$("#map-sketch").css("top","0px");
+		else if(top<(-1598+parseInt(document.body.clientHeight+0)))
+			$("#map-sketch").css("top",-1598+parseInt(document.body.clientHeight+0)+"px");
+		else $("#map-sketch").css("top",top+"px");
+		
+		if(left>0)
+			$("#map-sketch").css("left","0px");
+		else if(left<(-2500+parseInt(document.body.clientWidth+0)))
+			$("#map-sketch").css("left",-2500+parseInt(document.body.clientWidth+0)+"px");
+		else $("#map-sketch").css("left",left+"px");
+	});
 });
 
-//文字状态发布
+
+/**********************************文字状态**********************************/
 var maxLength1 = 140; 
 function MaxInput1(form) {
 	if (form.message.value.length > maxLength1) 
 		form.message.value = form.message.value.substring(0, maxLength1);
 	else getE("length1").innerText = form.message.value.length;
 }
+
+/*******************************给图片加文字状态******************************/
 var maxLength2 = 140;
 function MaxInput2(form) {
 	if (form.message.value.length > maxLength2) 
