@@ -12,7 +12,7 @@
 		//$user_id=$_SESSION['userId'];
 		//return $con;
 		//测试时将user_id赋值为1，实际中要用到全局变量SESSION['userId'] y
-		$sql = "SELECT status_id FROM status WHERE user_id=1 ORDER BY time_stamp  DESC LIMIT 1";//select 6 entry everty time
+		$sql = "SELECT status_id FROM status WHERE user_id='4' ORDER BY time_stamp  DESC LIMIT 3";//select 6 entry everty time
 		$result = mysql_query($sql,$con);
 		$unread_id=mysql_fetch_array($result);		
 		$unread_id=$unread_id['status_id'];

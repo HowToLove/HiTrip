@@ -167,60 +167,44 @@ function upLoadFile(path){
 
 
 
-<!----------------------添加文字状态到景点新鲜事----------------------->
-<script id='spot-noimg-tmpl'  type='text/x-jquery-tmpl'>
+<!----------------------文字状态(无回复)----------------------->
+<script id='text_status_no_reply_button'  type='text/x-jquery-tmpl'>
 	<tr><td><img src=${Head} width="50px" height="50px"/></td><td>${Name}</td></tr>
 	<tr><td></td><td>${Content}<br /></td></tr>
 </script>
 
 
 
-<!----------------------添加图片状态到景点新鲜事----------------------->
-<script id='spot-img-tmpl'  type='text/x-jquery-tmpl'>
+<!----------------------图片状态(无回复)---------------------->
+<script id='pic_status_no_reply_button'  type='text/x-jquery-tmpl'>
 	<tr><td><img src=${Head} width="50px" height="50px"/></td><td>${Name}</td></tr>
-	<tr><td></td><td><img src=${IMG} width="100%" /></td></tr>
-	<tr><td></td><td>${Content}</td></tr>
+	<tr><td></td><td><img src=${IMG} width="100%" /><br/>${Content}</br></td></tr>
 </script>
 
 
-<!----------------------添加文字状态到个人主页----------------------->
-<script id='personal-noimg-tmpl'  type='text/x-jquery-tmpl'>
+<!----------------------回复----------------------->
+<script id='reply-tmpl' type='text/x-jquery-tmpl'>
+	<tr>
+		<td></td>
+		<td id=${Name}><div id=${Reply_id}><img src=${Head} width="30px" height="30px"/>${Name} 回复${Target_Name}: ${Content}<a href="#popupReply" class="button-reply"data-rel="popup" data-position-to="window" ><img width="20px" height="20px" src="reply.png" style="float:right"/></a></div></td>
+	</tr>
+</script>
+
+
+<!----------------------文字状态(有回复)----------------------->
+<script id='text_status_reply_button'  type='text/x-jquery-tmpl'>
 	<tr><td><img src=${Head} width="50px" height="50px"/></td><td>${Name}</td></tr>
 	<tr><td></td><td><td>${Content}<br /></td><td><a href="#popupReply" data-rel="popup"><img width="20px" height="20px" src="reply.png" style="float:right"/></a></td></td></tr>
 </script>
 
 
-<!----------------------添加图片状态到个人主页----------------------->
-<script id='personal-img-tmpl'  type='text/x-jquery-tmpl'>
+<!----------------------图片状态(有回复)---------------------->
+<script id='pic_status_reply_button'  type='text/x-jquery-tmpl'>
 	<tr><td><img src=${Head} width="50px" height="50px"/></td><td>${Name}</td></tr>
 	<tr><td></td><td><img src=${IMG} width="100%" /></td></tr>
 	<tr><td></td><td>${Content}<a href="#popupReply" data-rel="popup" data-position-to="window"><img width="20px" height="20px" src="reply.png" style="float:right"/></a></td></tr>
 </script>
 
-
-<!----------------------添加状态回复到个人主页----------------------->
-<script id='personal-reply-tmpl' type='text/x-jquery-tmpl'>
-	<tr><td></td>
-	<td id=${Name}><div id=${Reply_id}><img src=${Head} width="30px" height="30px"/>${Name} 回复${Target_Name}: ${Content}<a href="#popupReply" class="button-reply"data-rel="popup" data-position-to="window" ><img width="20px" height="20px" src="reply.png" style="float:right"/></a></div></td></tr>
-</script>
-
-	<script id='noimg'  type='text/x-jquery-tmpl'>
-      <tr><td><img src=${Head} width="50px" height="50px"/></td><td>${Name}</td></tr>
-      <tr><td></td><td><td>${Content}<br /></td><td><a href="#popupReply" data-rel="popup"><img width="20px" height="20px" src="reply.png" style="float:right"/></a></td></td></tr>
-  </script>
-
-  <script id='img'  type='text/x-jquery-tmpl'>
-    <tr><td><img src=${Head} width="50px" height="50px"/></td><td>${Name}</td></tr>
-    <tr><td></td><td><img src=${IMG} width="100%" /></td></tr>
-	<tr><td></td><td>${Content}<a href="#popupReply" data-rel="popup" data-position-to="window"><img width="20px" height="20px" src="reply.png" style="float:right"/></a></td></tr>
-  </script>
-
-  <script id='reply' type='text/x-jquery-tmpl'>
-    <tr>
-		<td></td>
-		<td id=${Name}><div id=${Reply_id}><img src=${Head} width="30px" height="30px"/>${Name} 回复${Target_Name}: ${Content}<a href="#popupReply" class="button-reply"data-rel="popup" data-position-to="window" ><img width="20px" height="20px" src="reply.png" style="float:right"/></a></div></td>
-	</tr>
-  </script>
 
 <!---------------------------------------------------------后台--------------------------------------------------------->
 <script>
@@ -400,16 +384,17 @@ var queryJingdianNewsId;
 
 /********************初始调用********************/
 function init(){
-
+	/*
 	getSelfInfo(); 
 	getFriendInfo();
-	myListener();
+	
 	queryMessageId=setInterval(queryMessage,1000);
 	sendLocationIntervalId = setInterval(sendLocation,1000);
 	queryFriendsId = setInterval(queryFriends,1000);
 	queryJingdianNewsId=setInterval(queryJingdianNews,1000);
 	//aaa();
-	
+	*/
+	myListener();
 }
 
 
@@ -716,19 +701,19 @@ function aaa(){
 </script>
 
 <script>//景点新鲜事
-//var news;
-var spot_xmlHttp;
 $(document).ready(function(){
-	function createXMLHttpRequest(){
-		if(window.ActiveXObject){
-			spot_xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
-		}
-		else if(window.XMLHttpRequest){
-			spot_xmlHttp = new XMLHttpRequest();
-		}
+	//景点新鲜事点击加载更多
+	$("#spotLoadMore").click(function() {
+	var spot_xmlHttp;
+	if(window.ActiveXObject){
+		spot_xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
 	}
-
-	function StateChange(){
+		else if(window.XMLHttpRequest){
+		spot_xmlHttp = new XMLHttpRequest();
+	}
+	var url = "http://192.168.1.101/server/get_spot_down.php?t="+Math.random();
+	spot_xmlHttp.open("GET",url,true);
+	spot_xmlHttp.onreadystatechange = function (){
 		if(spot_xmlHttp.readyState==4){
 			if(spot_xmlHttp.status==200){			
 				str = spot_xmlHttp.responseText;
@@ -736,59 +721,93 @@ $(document).ready(function(){
 				var news = eval("("+str+")");
 				for(var i=0;i<news.length;i++) {
 					if(news[i].IMG)
-						$("#spot-img-tmpl").tmpl(news[i]).appendTo("#spot-new");
+						$("#pic_status_no_reply_button").tmpl(news[i]).appendTo("#spot-new");
 					else
-						$("#spot-noimg-tmpl").tmpl(news[i]).appendTo("#spot-new");
+						$("#text_status_no_reply_button").tmpl(news[i]).appendTo("#spot-new");
 				}	
 			}
 		}
-	}
-
-	//初始显示状态
-	createXMLHttpRequest();
-	var url = "get_spot_refresh.php?t="+Math.random();
-	spot_xmlHttp.open("GET",url,true);
-	spot_xmlHttp.onreadystatechange = StateChange;
-	spot_xmlHttp.send(null);	
-	
-	//点击加载更多
-	$("#spotLoadMore").click(function() {
-	createXMLHttpRequest();
-	var url = "get_spot_down.php?t="+Math.random();
-	spot_xmlHttp.open("GET",url,true);
-	spot_xmlHttp.onreadystatechange = StateChange;
+	};
 	spot_xmlHttp.send(null);	
 	});	
 	
-	//刷新
+	//景点新鲜事刷新
 	$("#spotRefresh").click(function() {
 	$("#new").empty();
-	createXMLHttpRequest();
-	var url = "get_spot_refresh.php?t="+Math.random();
+	var spot_xmlHttp;
+	if(window.ActiveXObject){
+		spot_xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+	}
+		else if(window.XMLHttpRequest){
+		spot_xmlHttp = new XMLHttpRequest();
+	}
+	var url = "http://192.168.1.101/server/get_spot_refresh.php?t="+Math.random();
 	spot_xmlHttp.open("GET",url,true);
-	spot_xmlHttp.onreadystatechange = StateChange;
+	spot_xmlHttp.onreadystatechange = spot_xmlHttp.onreadystatechange = function (){
+		if(spot_xmlHttp.readyState==4){
+			if(spot_xmlHttp.status==200){			
+				str = spot_xmlHttp.responseText;
+				console.log(str);
+				var news = eval("("+str+")");
+				for(var i=0;i<news.length;i++) {
+					if(news[i].IMG)
+						$("#pic_status_no_reply_button").tmpl(news[i]).appendTo("#spot-new");
+					else
+						$("#text_status_no_reply_button").tmpl(news[i]).appendTo("#spot-new");
+				}	
+			}
+		}
+	};
 	spot_xmlHttp.send(null);	
 	});
 });
+//景点新鲜事初始化
+function initialQueryJDNews(){
+	var spot_xmlHttp;
+	if(window.ActiveXObject){
+		spot_xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+	}
+		else if(window.XMLHttpRequest){
+		spot_xmlHttp = new XMLHttpRequest();
+	}
+	var url = "http://192.168.1.101/server/get_spot_refresh.php?t="+Math.random();
+	spot_xmlHttp.open("GET",url,true);
+	spot_xmlHttp.onreadystatechange = function (){
+		if(spot_xmlHttp.readyState==4){
+			if(spot_xmlHttp.status==200){			
+				str = spot_xmlHttp.responseText;
+				console.log(str);
+				var news = eval("("+str+")");
+				for(var i=0;i<news.length;i++) {
+					if(news[i].IMG)
+						$("#pic_status_no_reply_button").tmpl(news[i]).appendTo("#spot-new");
+					else
+						$("#text_status_no_reply_button").tmpl(news[i]).appendTo("#spot-new");
+				}	
+			}
+		}
+	};
+	spot_xmlHttp.send(null);	
+}
 </script>
 
 
 <script>//个人主页
-//var news;
-var personal_xmlHttp;
-var target_name;
-var entry_id;
+var target_name_personal;//用来找被回复者Id
+var entry_id_personal;//找回复者Id
 $(document).ready(function(){
-	function createXMLHttpRequest(){
+	//个人主页点击加载更多
+	$("#myStatusLoadMore").click(function() {
+	var personal_xmlHttp;
 		if(window.ActiveXObject){
 			personal_xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
 		}
 		else if(window.XMLHttpRequest){
 			personal_xmlHttp = new XMLHttpRequest();
 		}
-	}
-
-	function StateChange(){
+	var url = "http://192.168.1.101/server/get_personal_status_down.php?t="+Math.random();
+	personal_xmlHttp.open("GET",url,true);
+	personal_xmlHttp.onreadystatechange = function (){
 		if(personal_xmlHttp.readyState==4){
 			if(personal_xmlHttp.status==200){			
 				str = personal_xmlHttp.responseText;
@@ -796,173 +815,255 @@ $(document).ready(function(){
 				var news = eval("("+str+")");
 				for(var i=0;i<news.length;i++) {
 					if(news[i].IMG)
-						$("#personal-img-tmpl").tmpl(news[i]).appendTo("#personal-new");
+						$("#pic_status_no_reply_button").tmpl(news[i]).appendTo("#personal-new");
 					else
-						$("#personal-noimg-tmpl").tmpl(news[i]).appendTo("#personal-new");
+						$("#text_status_no_reply_button").tmpl(news[i]).appendTo("#personal-new");
 					if(news[i].Reply)
 					{
 						for(var j=0;j<news[i].Reply.length;j++)
 						{
-							$("#personal-reply-tmpl").tmpl(news[i].Reply[j]).appendTo("#personal-new");
+							$("#reply-tmpl").tmpl(news[i].Reply[j]).appendTo("#personal-new");
 							replyListener();
 						}
 					}
 				}	
 			}
 		}
-	}
-
-
-	function replyListener(){
-		$(document).ready(function(){
-			$(".button-reply").tap(function(){
-				target_name=$(this).parent().parent().attr("id");
-				entry_id=$(this).parent().attr("id");
-			//alert(target_name+" "+entry_id);
-			});
-		});
-	}
-
-	//初始显示状态
-	createXMLHttpRequest();
-	var url = "get_personal_status_refresh.php?t="+Math.random();
-	personal_xmlHttp.open("GET",url,true);
-	personal_xmlHttp.onreadystatechange = StateChange;
-	personal_xmlHttp.send(null);	
-	
-	//点击加载更多
-	$("#myStatusLoadMore").click(function() {
-	createXMLHttpRequest();
-	var url = "get_personal_status_down.php?t="+Math.random();
-	personal_xmlHttp.open("GET",url,true);
-	personal_xmlHttp.onreadystatechange = StateChange;
+	};
 	personal_xmlHttp.send(null);	
 	});	
-	
-	//刷新
+	//个人主页刷新
 	$("#myStatusRefresh").click(function() {
-	$("#new").empty();
-	createXMLHttpRequest();
-	var url = "get_personal_status_refresh.php?t="+Math.random();
+	$("#personal-new").empty();
+	var personal_xmlHttp;
+		if(window.ActiveXObject){
+			personal_xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+		}
+		else if(window.XMLHttpRequest){
+			personal_xmlHttp = new XMLHttpRequest();
+		}
+	var url = "http://192.168.1.101/server/get_personal_status_refresh.php?t="+Math.random();
 	personal_xmlHttp.open("GET",url,true);
-	personal_xmlHttp.onreadystatechange = StateChange;
+	personal_xmlHttp.onreadystatechange = function (){
+		if(personal_xmlHttp.readyState==4){
+			if(personal_xmlHttp.status==200){			
+				str = personal_xmlHttp.responseText;
+				console.log(str);
+				var news = eval("("+str+")");
+				for(var i=0;i<news.length;i++) {
+					if(news[i].IMG)
+						$("#pic_status_no_reply_button").tmpl(news[i]).appendTo("#personal-new");
+					else
+						$("#text_status_no_reply_button").tmpl(news[i]).appendTo("#personal-new");
+					if(news[i].Reply)
+					{
+						for(var j=0;j<news[i].Reply.length;j++)
+						{
+							$("#reply-tmpl").tmpl(news[i].Reply[j]).appendTo("#personal-new");
+							replyListener();
+						}
+					}
+				}	
+			}
+		}
+	};
 	personal_xmlHttp.send(null);	
 	});
-
-	//点击回复发送按钮
-	$("#button-send").tap(function(){
-		var content=$("#reply-content").val();
-		var str = "status_id="+entry_id+
-			"&object_name="+target_name+"&content="+content;
+	//个人主页点击回复发送按钮
+	$("#button-send-personal").tap(function(){
+		var content=$("#reply-content-personal").val();
+		var str = "status_id="+entry_id_personal+
+			"&object_name="+target_name_personal+"&content="+content;
 		alert(str);
-		createXMLHttpRequest();
-		var url="get_new_reply.php";
+		var personal_xmlHttp;
+		if(window.ActiveXObject){
+			personal_xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+		}
+		else if(window.XMLHttpRequest){
+			personal_xmlHttp = new XMLHttpRequest();
+		}
+		var url="http://192.168.1.101/server/get_new_reply.php";
 		personal_xmlHttp.open("POST",url,true);
 		personal_xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 		personal_xmlHttp.send(str);
 	});
 });
+//个人主页初始化
+function initialQueryPersonNews(){
+	$("#personal-new").empty();
+	alert("in initialQueryPersonNews");
+	var personal_xmlHttp;
+		if(window.ActiveXObject){
+			personal_xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+		}
+		else if(window.XMLHttpRequest){
+			personal_xmlHttp = new XMLHttpRequest();
+		}
+	var url = "http://192.168.1.101/server/get_personal_status_refresh.php?t="+Math.random();
+	personal_xmlHttp.open("GET",url,true);
+	personal_xmlHttp.onreadystatechange = function (){
+		if(personal_xmlHttp.readyState==4){
+			if(personal_xmlHttp.status==200){			
+				str = personal_xmlHttp.responseText;
+				console.log(str);
+				var news = eval("("+str+")");
+				for(var i=0;i<news.length;i++) {
+					if(news[i].IMG)
+						$("#pic_status_no_reply_button").tmpl(news[i]).appendTo("#personal-new");
+					else
+						$("#text_status_no_reply_button").tmpl(news[i]).appendTo("#personal-new");
+					if(news[i].Reply)
+					{
+						for(var j=0;j<news[i].Reply.length;j++)
+						{
+							$("#reply-tmpl").tmpl(news[i].Reply[j]).appendTo("#personal-new");
+							replyListener();
+						}
+					}
+				}	
+			}
+		}
+	};
+	personal_xmlHttp.send(null);	
+}
+//状态发布辅助函数
+function replyListener(){
+	$(document).ready(function(){
+		$(".button-reply").tap(function(){
+			target_name_personal=$(this).parent().parent().attr("id");
+			entry_id_personal=$(this).parent().attr("id");
+		//alert(target_name_personal+" "+entry_id_personal);
+		});
+	});
+}
 </script>
 
  <script>//好友动态
-/*	var news;
- 	var xmlHttp;
-	var target_name;
-	var entry_id;
-$(document).ready(function(){
-		function createXMLHttpRequest(){
-			if(window.ActiveXObject){
-				xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
-			}
-			else if(window.XMLHttpRequest){
-				xmlHttp = new XMLHttpRequest();
-			}
+var target_name_friend;//用来找被回复者Id
+var entry_id_friend;//找回复者Id
+//好友状态初始化
+function initialFriendStatus(){
+	$("#friend-new").empty();
+	alert("in initialQueryPersonNews");
+	var xmlHttp;
+	if(window.ActiveXObject){
+			xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
 		}
-
-		function cb(){
-			if(xmlHttp.readyState==4){
-				if(xmlHttp.status==200){			
-					str = xmlHttp.responseText;
-					console.log(str);
-					var news = eval("("+str+")");
-					for(var i=0;i<news.length;i++) {
-						if(news[i].IMG)
-							$("#img").tmpl(news[i]).appendTo("#new");
-						else
-							$("#noimg").tmpl(news[i]).appendTo("#new");
-						if(news[i].Reply)
+		else if(window.XMLHttpRequest){
+			xmlHttp = new XMLHttpRequest();
+		}if(window.ActiveXObject){
+			xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+		}
+		else if(window.XMLHttpRequest){
+			xmlHttp = new XMLHttpRequest();
+		}
+	var url = "get_status_refresh.php?t="+Math.random();
+	xmlHttp.open("GET",url,true);
+	xmlHttp.onreadystatechange = function (){
+		if(xmlHttp.readyState==4){
+			if(xmlHttp.status==200){			
+				str = xmlHttp.responseText;
+				console.log(str);
+				var news = eval("("+str+")");
+				for(var i=0;i<news.length;i++) {
+					if(news[i].IMG)
+						$("#img").tmpl(news[i]).appendTo("#friend-new");
+					else
+						$("#noimg").tmpl(news[i]).appendTo("#friend-new");
+					if(news[i].Reply)
+					{
+						for(var j=0;j<news[i].Reply.length;j++)
 						{
-							for(var j=0;j<news[i].Reply.length;j++)
-							{
-								$("#reply").tmpl(news[i].Reply[j]).appendTo("#new");
-								replyListener();
-							}
+							$("#reply").tmpl(news[i].Reply[j]).appendTo("#friend-new");
+							replyListener2();
 						}
-					}	
-				}
+					}
+				}	
 			}
 		}
-
-
-		function replyListener(){
-			$(document).ready(function(){
-				$(".button-reply").tap(function(){
-					target_name=$(this).parent().parent().attr("id");
-					entry_id=$(this).parent().attr("id");
-				//alert(target_name+" "+entry_id);
-				});
-			});
+	}；
+	xmlHttp.send(null);	
+}
+//个人主页辅助函数
+function replyListener2(){
+	$(document).ready(function(){
+		$(".button-reply").tap(function(){
+			target_name_friend=$(this).parent().parent().attr("id");
+			entry_id_friend=$(this).parent().attr("id");
+		//alert(target_name_friend+" "+entry_id_friend);
+		});
+	});
+}
+$(document).ready(function(){
+	//好友点击加载更多
+	$("#friendLoadMore").click(function() {
+	//好友刷新
+	$("#friendRefresh").click(function() {
+	$("#new").empty();
+	var xmlHttp;
+	if(window.ActiveXObject){
+			xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
 		}
-
-		//初始显示状态
-		createXMLHttpRequest();
-		var url = "get_status_refresh.php?t="+Math.random();
-		xmlHttp.open("GET",url,true);
-		xmlHttp.onreadystatechange = cb;
-		xmlHttp.send(null);	
-		
-		//点击加载更多
-	    $("#friendLoadMore").click(function() {
-		createXMLHttpRequest();
-		var url = "get_status_down.php?t="+Math.random();
-		xmlHttp.open("GET",url,true);
-		xmlHttp.onreadystatechange = cb;
-		xmlHttp.send(null);	
-		});	
-		
-		//刷新
-		$("#friendRefresh").click(function() {
-		$("#new").empty();
-		createXMLHttpRequest();
-		var url = "get_status_refresh.php?t="+Math.random();
-		xmlHttp.open("GET",url,true);
-		xmlHttp.onreadystatechange = cb;
-		xmlHttp.send(null);	
-		});
-
-		//点击回复发送按钮
-		$("#button-send").tap(function(){
-			var content=$("#reply-content").val();
-			var str = "status_id="+entry_id+
-				"&object_name="+target_name+"&content="+content;
-			alert(str);
-			createXMLHttpRequest();
-			var url="get_new_reply.php";
-			xmlHttp.open("POST",url,true);
-			xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-			xmlHttp.send(str);
-			//xmlHttp.onreadystatechange=function stateChanged(){
-				//if(xmlHttp.readyState==4){
-					//if(xmlHttp.status == 200){
-						//console.log(xmlHttp.responseText);
-						//str = xmlHttp.responseText;
-						//console.log(str);
-						//var news = eval("("+str+")");
-					//}	
-				//}
+		else if(window.XMLHttpRequest){
+			xmlHttp = new XMLHttpRequest();
+		}
+	var url = "get_status_refresh.php?t="+Math.random();
+	xmlHttp.open("GET",url,true);
+	xmlHttp.onreadystatechange = function (){
+		if(xmlHttp.readyState==4){
+			if(xmlHttp.status==200){			
+				str = xmlHttp.responseText;
+				console.log(str);
+				var news = eval("("+str+")");
+				for(var i=0;i<news.length;i++) {
+					if(news[i].IMG)
+						$("#img").tmpl(news[i]).appendTo("#new");
+					else
+						$("#noimg").tmpl(news[i]).appendTo("#new");
+					if(news[i].Reply)
+					{
+						for(var j=0;j<news[i].Reply.length;j++)
+						{
+							$("#reply").tmpl(news[i].Reply[j]).appendTo("#new");
+							replyListener2();
+						}
+					}
+				}	
+			}
+		}
+	};
+	xmlHttp.send(null);	
+	});
+	//好友点击回复发送按钮
+	$("#button-send-friend").tap(function(){
+		var content=$("#reply-content-friend").val();
+		var str = "status_id="+entry_id_friend+
+			"&object_name="+target_name_friend+"&content="+content;
+		alert(str);
+		var xmlHttp;
+		if(window.ActiveXObject){
+			xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+		}
+		else if(window.XMLHttpRequest){
+			xmlHttp = new XMLHttpRequest();
+		}
+		var url="get_new_reply.php";
+		xmlHttp.open("POST",url,true);
+		xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+		xmlHttp.send(str);
+		//xmlHttp.onreadystatechange=function stateChanged(){
+			//if(xmlHttp.readyState==4){
+				//if(xmlHttp.status == 200){
+					//console.log(xmlHttp.responseText);
+					//str = xmlHttp.responseText;
+					//console.log(str);
+					//var news = eval("("+str+")");
+				//}	
 			//}
+		//}
 		});
-	});*/
+	});
+
 </script>
 </head>
 
@@ -1176,7 +1277,7 @@ $(document).ready(function(){
 			<li data-theme="c"><a href="#page2" data-transition="flip">好友动态</a></li>
 			<li data-theme="c"><a href="#page3" data-transition="flip">	景区新鲜事</a></li>
 			<li data-role="list-divider">关于我</li>
-			<li data-theme="c"><a href="#page4" data-transition="flip">	个人主页</a></li>
+			<li data-theme="c"><a href="#page4" data-transition="flip" >个人主页</a></li>
 			<li data-theme="c"><a href="#msg-reply" data-transition="flip">消息中心</a></li>
 			<li data-role="list-divider">操作</li>
 			<li data-theme="c"><a href="#page5" data-transition="flip">设置</a></li>
@@ -1471,7 +1572,7 @@ $(document).ready(function(){
 	</div>
     <div data-role="content" style="padding: 0%">
       <table cellspacing="0" cellpadding="3" border="0" width="100%">
-        <tbody id="new" style="border-bottom:5px solid #FF0000;">
+        <tbody id="friend-new" style="border-bottom:5px solid #FF0000;">
         </tbody>
       </table>
       <button type="button" id="friendLoadMore">点击加载更多</button>
@@ -1480,8 +1581,8 @@ $(document).ready(function(){
 				<div style="padding:10px 20px;">
 				  <h3>请输入回复内容</h3>
 		          <label for="un" class="ui-hidden-accessible">Comment:</label>
-		          <input type="text" name="comment" id="reply-content" value="" placeholder="回复内容" data-theme="a" />
-				  <button data-theme="b" id="button-send">发送</button>
+		          <input type="text" name="comment" id="reply-content-friend" value="" placeholder="回复内容" data-theme="a" />
+				  <button data-theme="b" id="button-send-friend">发送</button>
 				</div>
 		</div-->
 	<div data-role="footer" data-theme="c" data-position="fixed">
@@ -1494,7 +1595,7 @@ $(document).ready(function(){
 			<li data-theme="c"><a href="#page0" data-transition="flip">首页</a></li>
 			<li data-theme="c"><a href="#page1" data-transition="filp">景区地图</a></li>
 			<li data-role="list-divider" >动态</li>
-			<li data-theme="c"><a href="#panel2" data-transition="flip">好友动态</a></li>
+			<li data-theme="c"><a href="#panel2" data-trSansition="flip" onclick="initialFriendStatus()">好友动态</a></li>
 			<li data-theme="c"><a href="#page3" data-transition="flip">景区新鲜事</a></li>
 			<li data-role="list-divider">关于我</li>
 			<li data-theme="c"><a href="#page4" data-transition="flip">	个人主页</a></li>
@@ -1529,7 +1630,7 @@ $(document).ready(function(){
 			<li data-theme="c"><a href="#page1" data-transition="filp">景区地图</a></li>
 			<li data-role="list-divider" >动态</li>
 			<li data-theme="c"><a href="#page2" data-transition="flip">好友动态</a></li>
-			<li data-theme="c"><a href="#panel3" data-transition="flip">景区新鲜事</a></li>
+			<li data-theme="c"><a href="#panel3" data-transition="flip" onclick="initialQueryJDNews()">景区新鲜事</a></li>
 			<li data-role="list-divider">关于我</li>
 			<li data-theme="c"><a href="#page4" data-transition="flip">	个人主页</a></li>
 			<li data-theme="c"><a href="#msg-reply" data-transition="flip">消息中心</a></li>
@@ -1552,7 +1653,7 @@ $(document).ready(function(){
 </div>
 <div data-role="content" style="padding: 0%">
   <table cellspacing="0" cellpadding="3" border="0" width="100%">
-	<tbody id="personal-new" style="border-bottom:5px solid #FF0000;">
+	<tbody id="personal-new">
 	</tbody>
   </table>
   <button type="button" id="myStatusLoadMore">点击加载更多</button>
@@ -1561,8 +1662,8 @@ $(document).ready(function(){
 			<div style="padding:10px 20px;">
 			  <h3>请输入回复内容</h3>
 			  <label for="un" class="ui-hidden-accessible">Comment:</label>
-			  <input type="text" name="comment" id="reply-content" value="" placeholder="回复内容" data-theme="a" />
-			  <button data-theme="b" id="button-send">发送</button>
+			  <input type="text" name="comment" id="reply-content-personal" value="" placeholder="回复内容" data-theme="a" />
+			  <button data-theme="b" id="button-send-personal">发送</button>
 			</div>
 	</div-->
 	<div data-role="panel" id="panel4" data-position="left" data-display="push" data-theme="b">
@@ -1572,9 +1673,9 @@ $(document).ready(function(){
 			<li data-theme="c"><a href="#page1" data-transition="filp">景区地图</a></li>
 			<li data-role="list-divider" >动态</li>
 			<li data-theme="c"><a href="#page2" data-transition="flip">好友动态</a></li>
-			<li data-theme="c"><a href="#panel3" data-transition="flip">景区新鲜事</a></li>
+			<li data-theme="c"><a href="#page3" data-transition="flip">景区新鲜事</a></li>
 			<li data-role="list-divider">关于我</li>
-			<li data-theme="c"><a href="#panel4" data-transition="flip">个人主页</a></li>
+			<li data-theme="c"><a href="#panel4" data-transition="flip" onclick="initialQueryPersonNews()">个人主页</a></li>
 			<li data-theme="c"><a href="#msg-reply" data-transition="flip">消息中心</a></li>
 			<li data-role="list-divider">操作</li>
 			<li data-theme="c"><a href="#page5" data-transition="flip">设置</a></li>
@@ -1636,6 +1737,21 @@ $(document).ready(function(){
 			  </a>
 		  </li>
 	  </ul>
+	</div><div data-role="panel" id="panel5" data-position="left" data-display="push" data-theme="b">
+		<ul data-role="listview" data-divider-theme="b" data-inset="false">
+			<li data-theme="a"><img src="img/Avatar.jpg" height="100%">王小明</li>
+			<li data-theme="c"><a href="#page0" data-transition="flip">首页</a></li>
+			<li data-theme="c"><a href="#page1" data-transition="filp">景区地图</a></li>
+			<li data-role="list-divider" >动态</li>
+			<li data-theme="c"><a href="#page2" data-transition="flip">好友动态</a></li>
+			<li data-theme="c"><a href="#page3" data-transition="flip">景区新鲜事</a></li>
+			<li data-role="list-divider">关于我</li>
+			<li data-theme="c"><a href="#page4" data-transition="flip" >个人主页</a></li>
+			<li data-theme="c"><a href="#msg-reply" data-transition="flip">消息中心</a></li>
+			<li data-role="list-divider">操作</li>
+			<li data-theme="c"><a href="#panel5" data-transition="flip">设置</a></li>
+			<li data-theme="c"><a>注销</a></li>
+		</ul>
 	</div>
 </div>
 <script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1373077207876240" charset="utf-8"></script>
