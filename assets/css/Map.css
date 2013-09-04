@@ -30,9 +30,9 @@ body {
 	width: 100%;
 }
 #map-sketch {
-	background: url(../img/Map.jpg) no-repeat;
-	width: 2500px;
-	height:1598px;
+	background: url(../img/Disney.jpg) no-repeat;
+	width: 2967px;
+	height:3316px;
 	margin: 0;
 	padding: 0px 0 0 0;
 	position: relative;
@@ -86,8 +86,8 @@ a.spot{
 	float:left;
 }
 .avatar img{
-	width:67px;
-	height:67px;
+	width:66px;
+	height:66px;
 	padding-top:7px;
 	padding-left:9px;
 }

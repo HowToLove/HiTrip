@@ -851,7 +851,7 @@ function aaa(){
 		</div>
 				
 		<!----------------------进度条------------------------>
-		<div class="progress progress-warning active" id="progress">
+		<div class="progress progress-warning active progress-striped" id="progress">
 			<div class="bar" id="bar" style="width: 0;"></div>
 			<p style="position:absolute;margin-left:49%;"><span id="count">0</span>/10</p>
 		</div>
@@ -1043,13 +1043,22 @@ function aaa(){
 	<div data-role="content" data-theme="c">
 		<table cellspacing="0" cellpadding="3" border="0" width="100%">
 			<tbody id="status-reply" style="border-bottom:5px solid #FF0000;">
-					<tr><td><img src="img/Avatar.jpg" width="50px" height="50px"/></td><td>${Name}</td></tr>
-					<tr><td></td><td><img src="img/Avatar.jpg" width="100%" /></td></tr>
-					<tr><td></td><td>${Content}<a href="#popupReply" data-rel="popup" data-position-to="window"><img width="20px" height="20px" src="reply.png" style="float:right"/></a></td></tr>
-					<tr>
-						<td></td>
-						<td id=${Id}><div id=${Reply_id}><img src="img/Avatar.jpg" width="30px" height="30px"/>${Name} 回复${Target_Name}: ${Content}<a class="button-reply" ><img width="20px" height="20px" src="img/reply.png" style="float:right"/></a></div></td>
-					</tr>
+				<tr>
+					<td width="100px"><img src="img/Avatar.jpg" /></td>
+					<td>Name</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td><img src="img/Avatar.jpg" /></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td>Content<a><img width="20px" height="20px" src="reply.png" style="float:right"/></a></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td id=${Id}><div id=${Reply_id}><img src="img/Avatar.jpg" width="30px" height="30px"/>Name 回复Target_Name: Content<a class="button-reply" ><img width="20px" height="20px" src="img/reply.png" style="float:right"/></a></div></td>
+				</tr>
 
 			</tbody>
 		</table>
