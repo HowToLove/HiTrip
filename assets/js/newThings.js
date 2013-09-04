@@ -195,7 +195,7 @@ $(document).ready(function(){
 //个人主页初始化
 function initialQueryPersonNews(){
 	$("#personal-new").empty();
-	alert("in initialQueryPersonNews");
+	//alert("in initialQueryPersonNews");
 	var personal_xmlHttp;
 		if(window.ActiveXObject){
 			personal_xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
@@ -245,7 +245,7 @@ function replyListener(){
 			$(this).parent().parent().parent().parent().parent().parent().parent().parent().children("#page2-reply").show();
 			target_Id=$(this).parent().parent().attr("id");
 			entry_Id=$(this).parent().attr("id");
-			alert("target_Id:"+target_Id+" "+"entry_Id:"+entry_Id);
+			//alert("target_Id:"+target_Id+" "+"entry_Id:"+entry_Id);
 		});
 		$(".status-button-reply").tap(function(){
 		
@@ -253,7 +253,7 @@ function replyListener(){
 			$(this).parent().parent().parent().parent().parent().parent().parent().parent().children("#page2-reply").show();
 			target_Id=$(this).parent().parent().attr("id");
 			entry_Id=$(this).parent().attr("id");
-			alert("target_Id:"+target_Id+" "+"entry_Id:"+entry_Id);			
+			//alert("target_Id:"+target_Id+" "+"entry_Id:"+entry_Id);			
 		});
 	});
 }
@@ -261,7 +261,6 @@ function replyListener(){
 
 //好友状态初始化
 function initialFriendStatus(){
-	alert("in initialFriendStatus");
 	$("#friend-new").empty();
 	var xmlHttp;
 	if(window.ActiveXObject){
@@ -339,7 +338,7 @@ $(document).ready(function(){
 	});
 	//好友刷新
 	$("#friendRefresh").click(function() {
-	alert("in friendRefresh");
+	//alert("in friendRefresh");
 	$("#friend-new").empty();
 	var xmlHttp;
 	if(window.ActiveXObject){
@@ -381,7 +380,7 @@ $(document).ready(function(){
 		var content=$("#reply-content").val();
 		var str = "status_id="+entry_Id+
 			"&object_name="+target_Id+"&content="+content;
-		alert(str);
+		//alert(str);
 		var xmlHttp;
 		if(window.ActiveXObject){
 			xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
