@@ -225,16 +225,16 @@ function movemouse(e){
 		if(parseInt(dobj.style.top+0) > 0){//向下拖
 			dobj.style.top = '0px';
 		}
-		else if(parseInt(dobj.style.top+0) < (h-1598)){//向上拖
-			dobj.style.top=''+(h-1598)+'px';
+		else if(parseInt(dobj.style.top+0) < (h-3316)){//向上拖
+			dobj.style.top=''+(h-3316)+'px';
 		}
 		
 		dobj.style.left = tx + e.clientX - x +'px';
 		if(parseInt(dobj.style.left+0)>0){//向右拖
 			dobj.style.left = '0px';
 		}
-		else if(parseInt(dobj.style.left+0)<(w-2500)){//向左拖
-			dobj.style.left=''+(w-2500)+'px';
+		else if(parseInt(dobj.style.left+0)<(w-2967)){//向左拖
+			dobj.style.left=''+(w-2967)+'px';
 		}
 		return false;
 		}
@@ -282,16 +282,16 @@ $( function () {
 					if(parseInt(dobj.style.top+0) > 0){//向下拖
 						dobj.style.top = '0px';
 					}
-					else if(parseInt(dobj.style.top+0) < (h-1598)){//向上拖
-						dobj.style.top=''+(h-1598)+'px';
+					else if(parseInt(dobj.style.top+0) < (h-3316)){//向上拖
+						dobj.style.top=''+(h-3316)+'px';
 					}
 					
 					dobj.style.left = tx + e.clientX - x +'px';
 					if(parseInt(dobj.style.left+0)>0){//向右拖
 						dobj.style.left = '0px';
 					}
-					else if(parseInt(dobj.style.left+0)<(w-2500)){//向左拖
-						dobj.style.left=''+(w-2500)+'px';
+					else if(parseInt(dobj.style.left+0)<(w-2967)){//向左拖
+						dobj.style.left=''+(w-2967)+'px';
 					}
 					return false;
 				}
@@ -351,14 +351,14 @@ $(document).ready(function(){
 		var left=-(parseInt(getE("user-ego").style.left+0))+(parseInt(document.body.clientWidth+0))/2-38;
 		if(top>0)
 			$("#map-sketch").css("top","0px");
-		else if(top<(-1598+parseInt(document.body.clientHeight+0)))
-			$("#map-sketch").css("top",-1598+parseInt(document.body.clientHeight+0)+"px");
+		else if(top<(-3316+parseInt(document.body.clientHeight+0)))
+			$("#map-sketch").css("top",-3316+parseInt(document.body.clientHeight+0)+"px");
 		else $("#map-sketch").css("top",top+"px");
 		
 		if(left>0)
 			$("#map-sketch").css("left","0px");
-		else if(left<(-2500+parseInt(document.body.clientWidth+0)))
-			$("#map-sketch").css("left",-2500+parseInt(document.body.clientWidth+0)+"px");
+		else if(left<(-2967+parseInt(document.body.clientWidth+0)))
+			$("#map-sketch").css("left",-2967+parseInt(document.body.clientWidth+0)+"px");
 		else $("#map-sketch").css("left",left+"px");
 	});
 });
