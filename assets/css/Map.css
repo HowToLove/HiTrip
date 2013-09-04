@@ -73,14 +73,16 @@ a.spot{
 .user-ego{
 	background:url(../img/bg-ego.png) no-repeat;
 	position:absolute;
-	width:240px;
+	width:320px;
 	height:100px;
+	z-index:2;
 }
 .user-stranger{
 	background:url(../img/bg-stranger.png) no-repeat;
 	position:absolute;
-	width:240px;
+	width:320px;
 	height:100px;
+	z-index:2;
 }
 .avatar{
 	float:left;
@@ -191,6 +193,30 @@ a.spot{
 	bottom:10px;
 	right:10px;
 	z-index:1000;
+}
+#pub-bar-status{
+	position:absolute;
+	bottom:12px;
+	right:12px;
+	z-index:999;
+}
+#pub-bar-camera{
+	position:absolute;
+	bottom:12px;
+	right:12px;
+	z-index:999;
+}
+#pub-bar-gallery{
+	position:absolute;
+	bottom:12px;
+	right:12px;
+	z-index:999;
+}
+#pub-bar-footprint{
+	position:absolute;
+	bottom:12px;
+	right:12px;
+	z-index:999;
 }
 
 
@@ -330,9 +356,12 @@ a.spot{
 	z-index:1000;
 }
 #popupPanel{
-	width: 200px;
+	width: 250px;
 	border: 1px solid #000;
 	border-right: none;
 	background: rgba(0,0,0,.5);
 	margin: -1px 0;
+}
+#popupPanel .ui-btn {
+	margin: 2em 15px
 }

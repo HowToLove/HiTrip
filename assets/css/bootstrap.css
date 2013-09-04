@@ -77,7 +77,7 @@ img {
   left: 0;
   margin-top: -5px;
   border-right-color: #ffffff;
-  border-width: 5px 5px 5px 0;
+  border-width: 5px 5px 5px 1px;
 }
 
 .tooltip.left .tooltip-arrow {

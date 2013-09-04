@@ -39,6 +39,7 @@ function onPhotoURISuccess(imageURI){
 	immediatePhoto.src = imageURI;
 	upLoadFile(imageURI);
 	upLoadFile(imageURI);
+	$(#user-ego).append("<a class='bubble'><div class='tooltip fade right in bubble-img'><div class='tooltip-arrow'></div>	<div class='tooltip-inner'><img src="+imageURI"></div></div></a>");
 }
 
 function capturePhotoEdit(){
@@ -211,7 +212,7 @@ function upLoadFile(path){
 
 <!----------------------------足迹----------------------------->
 <script id="footprint-tmpl" type="text/x-jquery-tmpl">
-	<img class="footprint" src="img/footprint.png" style="top:${top}px;left:${left}px";/>
+	<img class="footprint" id=${Id} src="img/footprint.png" style="top:${top}px;left:${left}px";/>
 </script>
 
 <!--------------------------景点介绍-------------------------->
@@ -267,22 +268,6 @@ function init(){
 	//queryJingdianNewsId=setInterval(queryJingdianNews,1000);
 	//aaa();
 	
-}
-
-/********************显示足迹********************/
-function foot_print(){
-	var json_footprint=[{"top":"100","left":"100"},
-						{"top":"100","left":"200"},
-						{"top":"100","left":"300"},
-						{"top":"100","left":"400"}];
-	var footIntervalId = setInterval(foot,1000);
-	var i=0;
-	function foot(){
-		if(i>=json_footprint.length)
-			clearInterval(footIntervalId);
-		else
-			$("#footprint-tmpl").tmpl(json_footprint[i++]).appendTo("#map-sketch");
-	}
 }	
 
 /********************添加景点关注********************/
@@ -354,6 +339,7 @@ function queryJingdianNews(){
 /********************地图消息发送和请求好友消息，发布文字状态********************/
 function sendMessage(){
 	var content = $("#message").val();
+	$("#user-ego").append("<a class='bubble ui-link'><div class='tooltip fade right in bubble-word'><div class='tooltip-arrow'></div><div class='tooltip-inner'>"+content+"</div></div></a>");
 	var xmlHttp;
 	if(window.ActiveXObject){
 		xmlHttp = new ActiveXObject("Microsoft.XMLHttp");
@@ -749,7 +735,7 @@ function aaa(){
 
 </head>
 
-<body style="font-family:微软雅黑;padding:0;" onload="init()">
+<body style="font-family:微软雅黑;padding:0;" onload="init()" onresize="resize();">
 
 <div data-role="page" id="page0" data-theme="c" >
     <div data-role="header" data-theme="c">
@@ -907,13 +893,25 @@ function aaa(){
 		
 		<!---------------------照相按钮--------------------->
 		<div id="photo-button">
-			<a><img src="img/Photo.png"/></a>
+			<img src="img/Photo.png"/>
 		</div>
-		<div id="pub-bar">
+		<div id="pub-bar-status">
+			<a href="#pub" data-transition="slide" style="display:inline-block;height:50px;"><img src="img/zt.png"></a>
+		</div>
+		<div id="pub-bar-camera">
+			<img src="img/pz.png">
+		</div>
+		<div id="pub-bar-gallery">
+			<img src="img/tk.png">
+		</div>
+		<div id="pub-bar-footprint">
+			<img src="img/zj.png">
+		</div>
+		<!--div id="pub-bar">
 			<a href="#pub" data-transition="slide"  id="pub-bar-status" style="display:inline-block;height:50px;"><i class="icon-edit"></i>状态</a> |
 			<a id="pub-bar-camera" onclick="capturePhotoEdit();" style="display:inline-block;height:50px;"><i class="icon-camera"></i>拍照</a> |
 			<a id="pub-bar-gallery" onclick="getPhoto(pictureSource.PHOTOLIBRARY);" style="display:inline-block;height:50px;"><i class="icon-picture"></i>图库</a>
-		</div>
+		</div-->
 		
 		<!----------------------定位到我---------------------->
 		<div id="pinpoint-button">
@@ -923,7 +921,7 @@ function aaa(){
 		<!---------------------景点盖章--------------------->
 		<div id="box">
 			<img class="seal" src="img/bind.png" id="bind"/>
-			<img class="seal" src="img/badge.png" id="badge"/>
+			<img class="seal" src="img/Badge.png" id="badge"/>
 			<img class="seal" src="img/star-fill.png" id="star-fill"/>
 			<img class="seal" src="img/star-twinkle.png" id="star-twinkle"/>
 		</div>

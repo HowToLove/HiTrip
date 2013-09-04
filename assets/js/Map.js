@@ -301,6 +301,28 @@ $( function () {
 	});
 });
 
+/**********************************中心定位**********************************/
+function pinpointCenter(id){
+	var top=-(parseInt($(id).css("top")+0))+(parseInt(document.body.clientHeight+0))/2-50;
+	var left=-(parseInt($(id).css("left")+0))+(parseInt(document.body.clientWidth+0))/2-38;
+	if(top>0)
+		$("#map-sketch").css("top","0px");
+	else if(top<(-3316+parseInt(document.body.clientHeight+0)))
+		$("#map-sketch").css("top",-3316+parseInt(document.body.clientHeight+0)+"px");
+	else $("#map-sketch").css("top",top+"px");
+	
+	if(left>0)
+		$("#map-sketch").css("left","0px");
+	else if(left<(-2967+parseInt(document.body.clientWidth+0)))
+		$("#map-sketch").css("left",-2967+parseInt(document.body.clientWidth+0)+"px");
+	else $("#map-sketch").css("left",left+"px");
+}
+
+/**********************************中心定位**********************************/
+function resize(){
+	getE("minilayer").style.height=(parseInt(document.body.clientHeight+0)-43)+'px';
+	getE("switch-button").style.top=(parseInt(document.body.clientHeight+0)-103)/2+'px';
+}
 /**********************************ready**********************************/
 $(document).ready(function(){
 
@@ -312,13 +334,67 @@ $(document).ready(function(){
 	getE("switch-button").style.top=(parseInt(document.body.clientHeight+0)-103)/2+'px';
 	
 	/************************状态发布栏***********************/
-	$("#pub-bar").hide();
-
+	//$("#pub-bar").hide();
+	var button_flag=0;
 	$("#photo-button").tap(function(){
-		$("#pub-bar").fadeToggle("fast");
 		seal("lwz");
+		if(button_flag==0){
+			$("#pub-bar-status").animate({
+				//position:"absolute",
+				bottom:"140px",
+				right:"10px",
+				//z-index:"1000"
+			},300);
+
+			$("#pub-bar-camera").animate({
+				//position:"absolute",
+				bottom:"120px",
+				right:"74px",
+				//z-index:"1000"
+			},300);
+			$("#pub-bar-gallery").animate({
+				//position:"absolute",
+				bottom:"74px",
+				right:"120px",
+				//z-index:"1000"
+			},300);
+			$("#pub-bar-footprint").animate({
+				//position:"absolute",
+				bottom:"10px",
+				right:"140px",
+				//z-index:"1000"
+			},300);
+			button_flag=1;
+		}else{
+			$("#pub-bar-status").animate({
+				//position:"absolute",
+				bottom:"12px",
+				right:"12px",
+				//z-index:"1000"
+			},300);
+
+			$("#pub-bar-camera").animate({
+				//position:"absolute",
+				bottom:"12px",
+				right:"12px",
+				//z-index:"1000"
+			},300);
+			$("#pub-bar-gallery").animate({
+				//position:"absolute",
+				bottom:"12px",
+				right:"12px",
+				//z-index:"1000"
+			},300);
+			$("#pub-bar-footprint").animate({
+				//position:"absolute",
+				bottom:"12px",
+				right:"12px",
+				//z-index:"1000"
+			},300);
+			button_flag=0;
+		}
 	});
-	$("#pub-bar-status").tap(function(){
+	/*$("#pub-bar-status").tap(function(){
 		$("#pub-bar").hide();
 	});
 	$("#pub-bar-camera").tap(function(){
@@ -326,7 +402,7 @@ $(document).ready(function(){
 	});
 	$("#pub-bar-gallery").tap(function(){
 		$("#pub-bar").hide();
-	});
+	});*/
 	
 	/************************景点名字***********************/
 	$(".bubble-name").hide();
@@ -348,7 +424,7 @@ $(document).ready(function(){
 		$("#map-sketch").find(".user-stranger").show();
 	});
 	
-	/************************定位到我***********************/
+	/************************定位到我**********************
 	$("#pinpoint-button").tap(function(){
 		var top=-(parseInt(getE("user-ego").style.top+0))+(parseInt(getE("minilayer").style.height+0))/2-50;
 		var left=-(parseInt(getE("user-ego").style.left+0))+(parseInt(document.body.clientWidth+0))/2-38;
@@ -363,9 +439,35 @@ $(document).ready(function(){
 		else if(left<(-2967+parseInt(document.body.clientWidth+0)))
 			$("#map-sketch").css("left",-2967+parseInt(document.body.clientWidth+0)+"px");
 		else $("#map-sketch").css("left",left+"px");
+	});*/
+	$("#pinpoint-button").tap(function(){
+		pinpointCenter("#user-ego");
+	});
+	
+	/************************足迹**********************/
+	$("#pub-bar-footprint").tap(function(){
+		foot_print();
 	});
 });
 
+/********************显示足迹********************/
+function foot_print(){
+	var json_footprint=[{"Id":"footprint1","top":"250","left":"1000"},
+						{"Id":"footprint2","top":"250","left":"1100"},
+						{"Id":"footprint3","top":"250","left":"1200"},
+						{"Id":"footprint4","top":"250","left":"1300"}];
+	var footIntervalId = setInterval(foot,1000);
+	var i=0;
+	function foot(){
+		if(i>=json_footprint.length)
+			clearInterval(footIntervalId);
+		else{
+			$("#footprint-tmpl").tmpl(json_footprint[i]).appendTo("#map-sketch");
+			pinpointCenter("#"+json_footprint[i].Id+"");
+			i++;
+		}
+	}
+}
 
 /**********************************文字状态**********************************/
 var maxLength1 = 140; 
