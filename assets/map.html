@@ -890,7 +890,7 @@ function aaa(){
 		<!----------------------进度条------------------------>
 		<div class="progress progress-warning active progress-striped" id="progress">
 			<div class="bar" id="bar" style="width: 0;"></div>
-			<p style="position:absolute;margin-left:49%;"><span id="count">0</span>/10</p>
+			<p style="position:absolute;margin-left:48.5%;font-size:23px;padding-top:0.4%"><span id="count">0</span>/10</p>
 		</div>
 		
 		<!---------------------地图切换--------------------->
@@ -904,15 +904,13 @@ function aaa(){
 				<li><a href="" id="stranger-map">驴友地图</a></li>
 			</ul>
 		</div-->
-		<a id="switch-button"href="#popupPanel" data-rel="popup" data-transition="slide" data-position-to="window" data-role="button">Open panel</a>
- 
- 
+		<a id="switch-button" href="#popupPanel" data-rel="popup" data-transition="pop" data-position-to="window">
+			<img src="img/switch-button.png"/>
+		</a> 
 		<div data-role="popup" id="popupPanel" data-corners="false" data-theme="none" data-shadow="false" data-tolerance="0,0">
-		 
-			<button data-theme="a" data-icon="back" data-mini="true">Back</button>
-			<button data-theme="a" data-icon="grid" data-mini="true">Menu</button>
-			<button data-theme="a" data-icon="search" data-mini="true">Search</button>
-		 
+			<button data-theme="a" data-mini="true" id="simple-map">普通地图</button>
+			<button data-theme="a" data-mini="true" id="friend-map">好友地图</button>
+			<button data-theme="a" data-mini="true" id="stranger-map">驴友地图</button>
 		</div>
 		
 		<!---------------------照相按钮--------------------->

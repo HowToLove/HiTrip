@@ -308,6 +308,9 @@ $(document).ready(function(){
 	getE("minilayer").style.height=(parseInt(document.body.clientHeight+0)-43)+'px';
 	setstyle();
 	
+	/************************设置地图切换按钮位置***********************/
+	getE("switch-button").style.top=(parseInt(document.body.clientHeight+0)-103)/2+'px';
+	
 	/************************状态发布栏***********************/
 	$("#pub-bar").hide();
 

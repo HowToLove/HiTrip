@@ -177,9 +177,11 @@ a.spot{
 #progress{
 	position:absolute;
 	top:10px;
-	width:70%;
+	width:80%;
+	height:5%;
 	margin-left:10%;
 	margin-right:10%;
+	border-radius:20px;
 }
 
 
@@ -304,8 +306,8 @@ a.spot{
 /************************地图切换***********************/
 #switch-button{
 	position:absolute;
-	top:10px;
-	right:40px;
+	top:260px;
+	right:10px;
 }
 #switch-list{
 	position:absolute;
@@ -323,7 +325,14 @@ a.spot{
 /************************定位到我***********************/
 #pinpoint-button{
 	position:absolute;
-	left:10px;
-	bottom:10px;
+	top:10px;
+	right:10px;
 	z-index:1000;
+}
+#popupPanel{
+	width: 200px;
+	border: 1px solid #000;
+	border-right: none;
+	background: rgba(0,0,0,.5);
+	margin: -1px 0;
 }
