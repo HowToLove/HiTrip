@@ -7,6 +7,8 @@
 
 <title>HiTrip</title>
 
+<link rel="stylesheet" href="css/demo.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="css/flexslider.css" type="text/css" media="screen" />
 <link rel="stylesheet" href="js/jquery.mobile-1.3.2/jquery.mobile.theme-1.3.2.min.css">
 <link rel="stylesheet" href="js/jquery.mobile-1.3.2/jquery.mobile.structure-1.3.2.min.css">
 <link href="css/Map.css" rel="stylesheet">
@@ -18,8 +20,15 @@
 <script src="js/jquery.tmpl.min.js"></script>
 <script src="js/Map.js"></script>
 <script src="js/newThings.js"></script>
+<script src="js/jingdian_introduce.js"></script>
 <script src="js/Zone.js"></script>
+<script src="js/modernizr.js"></script>
+<script type="text/javascript" src="js/shCore.js"></script>
+<script type="text/javascript" src="js/shBrushXml.js"></script>
+<script type="text/javascript" src="js/shBrushJScript.js"></script>
 <script src="js/jquery.mobile-1.3.2/jquery.mobile-1.3.2.min.js"></script>
+<script>window.jQuery || document.write('<script src="js/libs/jquery-1.7.min.js">\x3C/script>')</script>
+<script defer src="js/jquery.flexslider.js"></script>
 
 <!--******************************************与拍照上传相关的代码******************************-->
 	
@@ -171,39 +180,39 @@ function upLoadFile(path){
 
 <!----------------------文字状态(无回复)----------------------->
 <script id='text_status_no_reply_button'  type='text/x-jquery-tmpl'>
-	<tr><td><img src=${Head} width="50px" height="50px"/></td><td>${Name}</td></tr>
-	<tr><td></td><td>${Content}<br /></td></tr>
+	<tr><td><img src=${Head} width="50px" height="50px"/></td><td style="text-align:left">${Name}</td></tr>
+	<tr><td></td><tdstyle="text-align:left">${Content}<br /></td></tr>
 </script>
 
 
 
 <!----------------------图片状态(无回复)---------------------->
 <script id='pic_status_no_reply_button'  type='text/x-jquery-tmpl'>
-	<tr><td><img src=${Head} width="50px" height="50px"/></td><td>${Name}</td></tr>
-	<tr><td></td><td><img src=${IMG} width="100%" /><br/>${Content}</br></td></tr>
+	<tr><td><img src=${Head} width="50px" height="50px"/></td><td style="text-align:left">${Name}</td></tr>
+	<tr><td></td><td style="text-align:left"><img src=${IMG} width="100%" /><br/>${Content}</br></td></tr>
 </script>
 
 
 <!---------------------------回复---------------------------->
 <script id='reply-tmpl' type='text/x-jquery-tmpl'>
 	<tr>
-		<td></td><td id=${Id}><div id=${Reply_id}><img src=${Head} width="30px" height="30px"/>${Name} 回复${Target_Name}: ${Content}<a class="button-reply" ><img width="20px" height="20px" src="img/reply.png" style="float:right"/></a></div></td>
+		<td></td><td id=${Id}><div id=${Reply_id} style="text-align:left"><img src=${Head} width="30px" height="30px"/>${Name} 回复${Target_Name}: ${Content}<a class="button-reply" ><img width="20px" height="20px" src="img/reply.png" style="float:right"/></a></div></td>
 	</tr>
 </script>
 
 
 <!----------------------文字状态(有回复)----------------------->
 <script id='text_status_reply_button'  type='text/x-jquery-tmpl'>
-	<tr><td><img src=${Head} width="50px" height="50px"/></td><td>${Name}</td></tr>
-	<tr><td></td><td id=${Id}><div id=${Entry_id}>${Content}<a class="status-button-reply"><img width="20px" height="20px" src="img/reply.png" style="float:right"/></a></div></td></tr>
+	<tr><td><img src=${Head} width="50px" height="50px"/></td><td style="text-align:left">${Name}</td></tr>
+	<tr><td></td><td id=${Id}><div id=${Entry_id} style="text-align:left">${Content}<a class="status-button-reply"><img width="20px" height="20px" src="img/reply.png" style="float:right"/></a></div></td></tr>
 </script>
 
 
 <!----------------------图片状态(有回复)---------------------->
 <script id='pic_status_reply_button'  type='text/x-jquery-tmpl'>
-	<tr><td><img src=${Head} width="50px" height="50px"/></td><td>${Name}</td></tr>
+	<tr><td><img src=${Head} width="50px" height="50px"/></td><td style="text-align:left">${Name}</td></tr>
 	<tr><td></td><td><img src=${IMG} width="100%" /></td></tr>
-	<tr><td></td><td id=${Id}><div id=${Entry_id}>${Content}<a class="status-button-reply"><img width="20px" height="20px" src="img/reply.png" style="float:right"/></a></div></td></tr>
+	<tr><td></td><td id=${Id}><div id=${Entry_id} style="text-align:left">${Content}<a class="status-button-reply"><img width="20px" height="20px" src="img/reply.png" style="float:right"/></a></div></td></tr>
 </script>
 
 
@@ -213,6 +222,34 @@ function upLoadFile(path){
 	<img class="footprint" src="img/footprint.png" style="top:${top}px;left:${left}px";/>
 </script>
 
+<!--------------------------景点介绍-------------------------->
+	<script id='jingdianImg1'  type='text/x-jquery-tmpl'>
+		<tr><td><img src=${portrait} width="50px" height="50px"/></td><td>${evaluator_name}</td></tr>
+		<tr><td></td><td>${content}<br /></td><td><img src="img/1star.gif"></td></tr>
+	</script>
+	<script id='jingdianImg2'  type='text/x-jquery-tmpl'>
+		<tr><td><img src=${portrait} width="50px" height="50px"/></td><td>${evaluator_name}</td></tr>
+		<tr><td></td><td>${content}<br /></td><td><img src="img/2star.gif"></td></tr>
+	</script>
+	<script id='jingdianImg3'  type='text/x-jquery-tmpl'>
+		<tr><td><img src=${portrait} width="50px" height="50px"/></td><td>${evaluator_name}</td></tr>
+		<tr><td></td><td>${content}<br /></td><td><img src="img/3star.gif"></td></tr>
+	</script>
+	<script id='jingdianImg4'  type='text/x-jquery-tmpl'>
+		<tr><td><img src=${portrait} width="50px" height="50px"/></td><td>${evaluator_name}</td></tr>
+		<tr><td></td><td>${content}<br /></td><td><img src="img/4star.gif"></td></tr>
+	</script>
+	<script id='jingdianImg5'  type='text/x-jquery-tmpl'>
+		<tr><td><img src=${portrait} width="50px" height="50px"/></td><td>${evaluator_name}</td></tr>
+		<tr><td></td><td>${content}<br /></td><td><img src="img/5star.gif"></td></tr>
+	</script>
+	<script id='newThing' type='text/x-jquery-tmpl'>
+		<tr><td>${Content}</td></tr>
+	</script>
+	<script id='newThingImg'  type='text/x-jquery-tmpl'>
+		<tr><td><img src=${IMG} width="300px" height="300px"/></td></tr>
+		<tr><td>${Content}</td></tr>
+	</script>
 
 <!---------------------------------------------------------后台--------------------------------------------------------->
 <script>
@@ -1071,46 +1108,6 @@ function aaa(){
 
 
 
-<!------------------------------------------------------景点介绍----------------------------------------------------------->
-<div data-role="page" id="introduce">
-	<div data-role="header">
-		<h1>李文正图书馆</h1>
-		<a data-rel="back">返回</a>
-		<div data-role="navbar">
-			<ul>
-				<li><a href="#" class="ui-btn-active ui-state-persist">介绍</a></li>
-				<li><a href="#comment">评价</a></li>
-			</ul>
-		</div>
-	</div>
-	<div data-role="content">
-		<div id="lwz">
-			<img src="img/lwz-img.jpg"; width="400px"; height="300px" align="bottom"/>
-			<div class="spot-eyeon">
-				<button class="eyeon-spot" data-inline="true" data-icon="plus">加关注</button>
-			</div>
-			<hr>
-			<p>李文正图书馆坐落在九龙湖校区的地理中心，庄重、典雅、充满现代气息。不仅有丰富的文献资源
-			还是优良的学习场所和文化交流中心。。。。。。</p>
-		</div>
-	</div>
-
-</div><!-- /page -->
-<div data-role="page" id="comment">
-	<div data-role="header">
-		<h1>李文正图书馆</h1>
-		<a data-rel="back">返回</a>
-		<div data-role="navbar">
-			<ul>
-				<li><a href="#introduce">介绍</a></li>
-				<li><a href="#" class="ui-btn-active ui-state-persist">评价</a></li>
-			</ul>
-		</div>
-		<div data-role="content">
-			<p>aaaaaaaa</p>
-		</div>
-	</div>
-</div>
 
 
 
@@ -1375,7 +1372,100 @@ function aaa(){
 	  </ul>
 	</div>
 </div>
+<!---------------------------------------------------------景点介绍-------------------------------------------------------->
+<div data-role="page" id="introduce" data-theme="c">
+	<div data-role="header">
+		<h1>详细信息</h1>
+		<a data-rel="back" data-theme="c" >返回</a>
+		<div data-role="navbar">
+			<ul>
+				<li><a href="#" class="ui-btn-active ui-state-persist">介绍</a></li>
+				<li><a href="#comment" id="toComment">评价</a></li>
+			</ul>
+		</div>
 
+	</div>
+	<div data-role="content">
+	<div id="intro"></div>
+		<img id="spot_head" style="float:left;" src="" width="100px" height="100px"  />
+		<div id="abc" style="position:relative; margin-left:250px; height:100px; "> 
+		<button data-inline="true" data-icon="plus" data-theme="e" >加关注</button>
+		<p id="spot_name" style="font-family:微软雅黑; margin-left: 15px;"></p>
+		</div>
+		<hr>
+		<br><br>
+		<!--<img id="spot_pic" src="" width="400px" height="300px" align="bottom"/>-->
+	<div id="main" role="main">
+      <section class="slider">
+        <div class="flexslider">
+		<div class="flex-viewport" style="overflow:hidden;position:relative;">
+          <ul class="slides">
+            <li>
+  	    	    <img src="img/1.jpg" />
+  	    		</li>
+  	    		<li>
+  	    	    <img src="img/2.jpg" />
+  	    		</li>
+  	    		<li>
+  	    	    <img src="img/3.jpg" />
+  	    		</li>
+  	    		<li>
+  	    	    <img src="img/4.jpg" />
+  	    		</li>
+          </ul>
+        </div>
+		</div>
+      </section>
+    </div>
+	
+		<p id="spot_intro"></p>
+ 
+		<hr>
+		<center>
+			<p>景点新鲜事</p>
+		</center>
+		<table cellspacing="0" cellpadding="3" border="0" width="100%">
+		<tbody id="newthings"></tbody>
+		</table>
+	</div>
+
+</div><!-- /page -->
+<div data-role="page" id="comment" data-theme="c">
+	<div data-role="header">
+		<h1>详细信息</h1>
+		<a data-rel="back" data-theme="c" >返回</a>
+		<button type="button" id="commentRefresh" data-icon="refresh">刷新</button>
+		<div data-role="navbar">
+			<ul>
+				<li><a href="#introduce">介绍</a></li>
+				<li><a href="#" class="ui-btn-active ui-state-persist">评价</a></li>
+			</ul>
+		</div>
+	</div>
+	<div data-role="content">
+
+	<p style="float:left;">发表评论~</p>
+	<p class="starWrapper" onmouseover="rate(this,event)"> 
+		<img src="" title="很烂" />
+		<img src="" title="一般" />
+		<img src="" title="还好" />
+		<img src="" title="较好" />
+		<img src="" title="很好" /> 
+	<textarea name="textarea" id="textarea"></textarea>
+	</div>
+
+	<center>
+	<button type="button" data-inline="true" data-theme="e" onClick="ensure()">确定</button>
+	</center>	
+	<hr>
+		<table cellspacing="0" cellpadding="3" border="0" width="100%">
+			<tbody id="comments"></tbody>
+		</table>
+		<button type="button" id="commentLoadMore">点击加载更多</button>
+
+	
+
+	</div>
 <script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1373077207876240" charset="utf-8"></script>
 <script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/buttonLite.js#uuid=<>&style=-1"></script>
 <script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/addons/bshareAp.js"></script>
