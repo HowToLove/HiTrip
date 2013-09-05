@@ -1,5 +1,16 @@
 var lastLongitude=1.1;//written by lanxiang 
 var lastLatitude=1.2;//written by lanxiang
+/********************************初始化一堆参数*******************************/
+var imgH,imgW,coverH,coverW,scale,windowH,windowW;
+function init_para(){
+	imgH=$("#map-panorama-map").height();
+	imgW=$("#map-panorama-map").width();
+	coverH=$("#cover").height();
+	coverW=$("#cover").width();
+	scale=imgH/3316;
+	windowH=parseInt(document.body.clientHeight+0);
+	windowW=parseInt(document.body.clientWidth+0);
+}
 
 /**********************************地理定位**********************************/
 function getE(ele){
@@ -305,6 +316,11 @@ $( function () {
 function pinpointCenter(id){
 	var top=-(parseInt($(id).css("top")+0))+(parseInt(document.body.clientHeight+0))/2-50;
 	var left=-(parseInt($(id).css("left")+0))+(parseInt(document.body.clientWidth+0))/2-38;
+	map_sketch_limit(top,left);
+}
+
+/*******************************地图移动限制*********************************/
+function map_sketch_limit(top,left){
 	if(top>0)
 		$("#map-sketch").css("top","0px");
 	else if(top<(-3316+parseInt(document.body.clientHeight+0)))
@@ -322,8 +338,8 @@ function pinpointCenter(id){
 function resize(){
 	//getE("minilayer").style.height=(parseInt(document.body.clientHeight+0)-43)+'px';
 	//getE("switch-button").style.top=(parseInt(document.body.clientHeight+0)-103)/2+'px';
-	setstyle();
-	$("#map-panorama-map").css("margin-top",($("#cover").height()-$("#map-panorama-map").height())/2+'px');
+	setstyle();init_para();
+	$("#map-panorama-map").css("margin-top",($("#cover").height()-$("#map-panorama-map").height())/2+'px');	
 }
 
 /************************************READY***********************************/
@@ -410,6 +426,11 @@ $(document).ready(function(){
 	var flag_cover=0;
 	$(document).on("vmouseover","#slide-right",function(){
 		$("#map-panorama-map").css("margin-top",($("#cover").height()-$("#map-panorama-map").height())/2+'px');
+
+		
+		document.onmousemove=select_box_move;
+		init_para();
+
 		$("#cover").animate({
 			right:"0"
 		},300);
@@ -421,6 +442,7 @@ $(document).ready(function(){
 	
 	/************************遮罩消失***********************/
 	$(document).on("vmouseover","#slide-left",function(){
+		//document.onmousemove=function(){};
 		if(flag_cover==1){
 			$("#cover").animate({
 				right:"-100%"
@@ -434,6 +456,15 @@ $(document).ready(function(){
 		flag_cover=0;
 	});
 	
+	/********************点击缩略图遮罩消失*******************/
+	$("#select-box").tap(function(){
+		$("#cover").animate({
+			right:"-100%"
+		},300);
+		$("#slide-left").animate({
+			zIndex:"10"
+		},300);
+	});
 });
 
 /**********************************显示足迹**********************************/
@@ -501,6 +532,52 @@ function button4_hide(){
 	},300);
 
 }
+
+/**********************************框跟随鼠标********************************/
+function select_box_move(e){
+	var fobj = e.target ;
+	while (fobj.tagName != "HTML"  &&  fobj.className != "cover"){
+		fobj = fobj.parentNode ;
+	}
+	if (fobj.className=="cover"){
+		var box=getE("select-box");
+		var o=e||window.event;
+		var mouseH=o.clientY;
+		var mouseW=o.clientX;
+		if(cover_cal_top(mouseH)>0 && (mouseH+(coverH-imgH)/2)<windowH){
+			box.style.top=mouseH-box.offsetHeight/2-43+'px';
+		}
+		if(cover_cal_left(mouseW)>0 && (mouseW+(coverW-imgW)/2)<windowW){
+			box.style.left=mouseW-box.offsetWidth/2+'px';
+		}
+			
+		mapping(mouseH,mouseW);
+	}
+}
+
+/**********************************遮罩层算数********************************/
+function cover_cal_top(t){
+	return(t-(coverH-imgH)/2);
+}
+function cover_cal_left(l){
+	return(l-(coverW-imgW)/2);
+}
+
+/***********************************映射函数*********************************/
+function mapping(mouseH,mouseW){
+	maptop=-((mouseH-38-(coverH-imgH)/2)/scale-windowH/2);
+	console.log(maptop);
+	mapleft=-((mouseW-(coverW-imgW)/2)/scale-windowW/2);
+	map_sketch_limit(maptop,mapleft);
+}
+function anti_mapping(){
+	
+}
+
+
+
+
+
 
 /**********************************文字状态**********************************/
 var maxLength1 = 140; 
