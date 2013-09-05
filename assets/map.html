@@ -13,7 +13,7 @@
 <link href="css/Zone.css" rel="stylesheet">
 <link href="css/bootstrap.css" rel="stylesheet">
 
-<script type="text/javascript" src="js/cordova.js"></script>
+<!--script type="text/javascript" src="js/cordova.js"></script-->
 <script src="js/jquery-1.10.2.min.js"></script>
 <script src="js/jquery.tmpl.min.js"></script>
 <script src="js/Map.js"></script>
@@ -25,7 +25,7 @@
 
 <!--******************************************与拍照上传相关的代码******************************-->
 	
-	<script type="text/javascript" charset="utf-8">
+	<!--<script type="text/javascript" charset="utf-8">
     var pictureSource;  
     var destinationType; 
     document.addEventListener("deviceready",onDeviceReady,false);
@@ -110,7 +110,7 @@ function upLoadFile(path){
 	{fileName:'file.jpg',chunkedMode:false},true);
 }
 
-</script>
+</script>-->
 
 <!--script src="https://d10ajoocuyu32n.cloudfront.net/codiqa.ext.js"></script-->
 
@@ -359,7 +359,7 @@ function upLoadFile(path){
   </script>
 <!-------------------------------------------------------景区地图--------------------------------------------------------->
 <div data-role="page" id="page1" data-theme="c" onload="alert('hiahai');">
-    <div data-role="header" data-theme="c" id="header">
+    <div data-role="header" data-theme="c" data-position="fixed" data-tap-toggle="false">
       <h1>景区地图</h1>
       <a href="#panel1" data-icon="bars" data-iconpos="notext" data-shadow="false" data-iconshadow="false">Menu</a>
     </div>
