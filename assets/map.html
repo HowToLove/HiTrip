@@ -13,7 +13,7 @@
 <link href="css/Zone.css" rel="stylesheet">
 <link href="css/bootstrap.css" rel="stylesheet">
 
-<!--script type="text/javascript" src="js/cordova.js"></script-->
+<script type="text/javascript" src="js/cordova.js"></script>
 <script src="js/jquery-1.10.2.min.js"></script>
 <script src="js/jquery.tmpl.min.js"></script>
 <script src="js/Map.js"></script>
@@ -25,14 +25,53 @@
 
 <!--******************************************与拍照上传相关的代码******************************-->
 	
-	<!--script type="text/javascript" charset="utf-8">
+	<script type="text/javascript" charset="utf-8">
     var pictureSource;  
     var destinationType; 
     document.addEventListener("deviceready",onDeviceReady,false);
     function onDeviceReady() {
+	document.addEventListener("backbutton",onBackKeyDown,false);
 	pictureSource=navigator.camera.PictureSourceType;
 	destinationType=navigator.camera.DestinationType;
     }
+
+	function openPanel(){
+	 var currentPage = $.mobile.activePage.attr("id");
+	 alert(currentPage);
+		switch(currentPage){
+	case "page0":
+		$( "#panel0" ).panel( "open" );
+		break;
+	case "page1":
+		$( "#panel1" ).panel( "open" );
+		break;
+	case "page2":
+		$( "#panel2" ).panel( "open" );
+		break;
+	case "page3":
+		$( "#panel3" ).panel( "open" );
+		break;
+	case "page4":
+		$( "#panel4" ).panel( "open" );
+		break;
+	case "msg-reply":
+		$( "#msg-reply-panel" ).panel( "open" );
+		break;
+	case "page5":
+		$( "#panel5" ).panel( "open" );
+		break;
+	case "msg-newf":
+		$("#msg-newf-panel").panel("open");
+		break;	
+	default:
+		navigator.app.backHistory();
+		break;
+	}
+	}
+	function onBackKeyDown(){
+	//alert("onbackkeydown!");
+		openPanel();		
+	}
 function onPhotoURISuccess(imageURI){
 	//alert("k.o!");
 	var immediatePhoto = document.getElementById('immediatePhoto');
@@ -40,7 +79,7 @@ function onPhotoURISuccess(imageURI){
 	immediatePhoto.src = imageURI;
 	upLoadFile(imageURI);
 	upLoadFile(imageURI);
-	$(#user-ego).append("<a class='bubble'><div class='tooltip fade right in bubble-img'><div class='tooltip-arrow'></div>	<div class='tooltip-inner'><img src="+imageURI"></div></div></a>");
+	//$("#user-ego").append("<a class='bubble'><div class='tooltip fade right in bubble-img'><div class='tooltip-arrow'></div>	<div class='tooltip-inner'><img src="+imageURI"></div></div></a>");
 }
 
 function capturePhotoEdit(){
@@ -71,7 +110,7 @@ function upLoadFile(path){
 	{fileName:'file.jpg',chunkedMode:false},true);
 }
 
-</script-->
+</script>
 
 <!--script src="https://d10ajoocuyu32n.cloudfront.net/codiqa.ext.js"></script-->
 
@@ -288,13 +327,13 @@ function upLoadFile(path){
     <div data-role="panel" id="panel0" data-theme="b" data-position-fixed="true">
 		<ul data-role="listview" data-divider-theme="b" data-inset="false">
 			<li data-theme="a" id="panelHead"><img id="panelHeadImg" src="img/Avatar.jpg" height="100%">王小明</li>
-			<li data-theme="c"><a href="#panel0" data-transition="flip" >首页</a></li>
-			<li data-theme="c"><a href="#page1" >景区地图</a></li>
-			<li data-role="list-divider" >动态</li>
-			<li data-theme="c"><a href="#page2" data-transition="flip">好友动态</a></li>
+			<li data-theme="c"><a href="#panel0" data-transition="flip">首页</a></li>
+			<li data-theme="c"><a onclick="window.location.href='#page1';">景区地图</a></li>
+			<li data-role="list-divider">动态</li>
+			<li data-theme="c"><a href="#page2" data-transition="flip" >好友动态</a></li>
 			<li data-theme="c"><a href="#page3" data-transition="flip">	景区新鲜事</a></li>
 			<li data-role="list-divider">关于我</li>
-			<li data-theme="c"><a href="#page4" data-transition="flip" >个人主页</a></li>
+			<li data-theme="c"><a href="#page4" data-transition="flip">个人主页</a></li>
 			<li data-theme="c"><a href="#msg-reply" data-transition="flip">消息中心</a></li>
 			<li data-role="list-divider">操作</li>
 			<li data-theme="c"><a href="#page5" data-transition="flip">设置</a></li>
@@ -304,10 +343,23 @@ function upLoadFile(path){
 </div> 
   
 
- 
+ <script type="text/javascript">
+ //alert("k.o!");
+   $("#page1").bind("pageshow",function(){         
+     alert("pageinit!!");
+   });
+   $("#page1").bind("pagecreate",function(){
+     alert("页面创建完成");
+   });
+   $('div[data-role="page"]').live('pageshow',function(){
+    if(true) {
+            alert("do something");
+    }
+});
+  </script>
 <!-------------------------------------------------------景区地图--------------------------------------------------------->
-<div data-role="page" id="page1" data-theme="c" >
-    <div data-role="header" data-theme="c" data-position="fixed" data-tap-toggle="false">
+<div data-role="page" id="page1" data-theme="c" onload="alert('hiahai');">
+    <div data-role="header" data-theme="c" id="header">
       <h1>景区地图</h1>
       <a href="#panel1" data-icon="bars" data-iconpos="notext" data-shadow="false" data-iconshadow="false">Menu</a>
     </div>
@@ -410,10 +462,10 @@ function upLoadFile(path){
 		<div id="pub-bar-status">
 			<a href="#pub" data-transition="slide" style="display:inline-block;height:50px;"><img src="img/zt.png"></a>
 		</div>
-		<div id="pub-bar-camera">
+		<div id="pub-bar-camera" onclick="capturePhotoEdit();">
 			<img src="img/pz.png">
 		</div>
-		<div id="pub-bar-gallery">
+		<div id="pub-bar-gallery" onclick="getPhoto(pictureSource.PHOTOLIBRARY);">
 			<img src="img/tk.png">
 		</div>
 		<div id="pub-bar-footprint">
@@ -457,13 +509,13 @@ function upLoadFile(path){
 	<div data-role="panel" id="panel1" data-theme="b" data-position-fixed="true">
 		<ul data-role="listview" data-divider-theme="b" data-inset="false">
 			<li data-theme="a" id="panelHead"><img id="panelHeadImg" src="img/Avatar.jpg" height="100%">王小明</li>
-			<li data-theme="c"><a href="#page0" data-transition="flip" >首页</a></li>
-			<li data-theme="c"><a href="#panel1" >景区地图</a></li>
+			<li data-theme="c"><a href="#page0" data-transition="flip">首页</a></li>
+			<li data-theme="c"><a onclick="window.location.href='#page1';">景区地图</a></li>
 			<li data-role="list-divider" >动态</li>
-			<li data-theme="c"><a href="#page2" data-transition="flip" onclick="initialFriendStatus()">好友动态</a></li>
-			<li data-theme="c"><a href="#page3" data-transition="flip" onclick="initialQueryJDNews()">景区新鲜事</a></li>
+			<li data-theme="c"><a href="#page2" data-transition="flip" onclick="initialFriendStatus();">好友动态</a></li>
+			<li data-theme="c"><a href="#page3" data-transition="flip" onclick="initialQueryJDNews();">景区新鲜事</a></li>
 			<li data-role="list-divider">关于我</li>
-			<li data-theme="c"><a href="#page4" data-transition="flip" onclick="initialQueryPersonNews()">个人主页</a></li>
+			<li data-theme="c"><a href="#page4" data-transition="flip" onclick="initialQueryPersonNews();">个人主页</a></li>
 			<li data-theme="c"><a href="#msg-reply" data-transition="flip">消息中心</a></li>
 			<li data-role="list-divider">操作</li>
 			<li data-theme="c"><a href="#page5" data-transition="flip">设置</a></li>
@@ -568,13 +620,13 @@ function upLoadFile(path){
 	<div data-role="panel" id="zone-others-panel" data-theme="b" data-position-fixed="true">
 		<ul data-role="listview" data-divider-theme="b" data-inset="false">
 			<li data-theme="a" id="panelHead"><img id="panelHeadImg" src="img/Avatar.jpg" height="100%">王小明</li>
-			<li data-theme="c"><a href="#page0" data-transition="flip" >首页</a></li>
-			<li data-theme="c"><a href="#page1" >景区地图</a></li>
+			<li data-theme="c"><a href="#page0" data-transition="flip">首页</a></li>
+			<li data-theme="c"><a onclick="window.location.href='#page1';">景区地图</a></li>
 			<li data-role="list-divider" >动态</li>
-			<li data-theme="c"><a href="#page2" data-transition="flip" onclick="initialFriendStatus()">好友动态</a></li>
-			<li data-theme="c"><a href="#page3" data-transition="flip" onclick="initialQueryJDNews()">景区新鲜事</a></li>
+			<li data-theme="c"><a href="#page2" data-transition="flip" onclick="initialFriendStatus();">好友动态</a></li>
+			<li data-theme="c"><a href="#page3" data-transition="flip" onclick="initialQueryJDNews();">景区新鲜事</a></li>
 			<li data-role="list-divider">关于我</li>
-			<li data-theme="c"><a href="#page4" data-transition="flip" onclick="initialQueryPersonNews()">个人主页</a></li>
+			<li data-theme="c"><a href="#page4" data-transition="flip" onclick="initialQueryPersonNews();">个人主页</a></li>
 			<li data-theme="c"><a href="#msg-reply" data-transition="flip">消息中心</a></li>
 			<li data-theme="c"><a href="#page5" data-transition="flip">设置</a></li>
 		</ul>
@@ -644,12 +696,12 @@ function upLoadFile(path){
 		<ul data-role="listview" data-divider-theme="b" data-inset="false">
 			<li data-theme="a"><img src="img/Avatar.jpg" height="100%">王小明</li>
 			<li data-theme="c"><a href="#page0" data-transition="flip">首页</a></li>
-			<li data-theme="c"><a href="#page1" data-transition="filp">景区地图</a></li>
+			<li data-theme="c"><a onclick="window.location.href='#page1';" data-transition="filp">景区地图</a></li>
 			<li data-role="list-divider" >动态</li>
-			<li data-theme="c"><a href="#page2" data-transition="flip" onclick="initialQueryPersonNews()">好友动态</a></li>
-			<li data-theme="c"><a href="#page3" data-transition="flip" onclick="initialQueryJDNews()">景区新鲜事</a></li>
+			<li data-theme="c"><a href="#page2" data-transition="flip" onclick="initialQueryPersonNews();>好友动态</a></li>
+			<li data-theme="c"><a href="#page3" data-transition="flip" onclick="initialQueryJDNews();">景区新鲜事</a></li>
 			<li data-role="list-divider">关于我</li>
-			<li data-theme="c"><a href="#page4" data-transition="flip" onclick="initialQueryPersonNews()">个人主页</a></li>
+			<li data-theme="c"><a href="#page4" data-transition="flip" onclick="initialQueryPersonNews();">个人主页</a></li>
 			<li data-theme="c"><a href="#msg-reply-panel" data-transition="flip">消息中心</a></li>
 			<li data-role="list-divider">操作</li>
 			<li data-theme="c"><a href="#page5" data-transition="flip">设置</a></li>
@@ -720,12 +772,12 @@ function upLoadFile(path){
 		<ul data-role="listview" data-divider-theme="b" data-inset="false">
 			<li data-theme="a"><img src="img/Avatar.jpg" height="100%">王小明</li>
 			<li data-theme="c"><a href="#page0" data-transition="flip">首页</a></li>
-			<li data-theme="c"><a href="#page1" data-transition="filp">景区地图</a></li>
+			<li data-theme="c"><a onclick="window.location.href='#page1';" data-transition="filp">景区地图</a></li>
 			<li data-role="list-divider" >动态</li>
-			<li data-theme="c"><a href="#page2" data-transition="flip" onclick="initialFriendStatus()">好友动态</a></li>
-			<li data-theme="c"><a href="#page3" data-transition="flip" onclick="initialQueryJDNews()">景区新鲜事</a></li>
+			<li data-theme="c"><a href="#page2" data-transition="flip" onclick="initialFriendStatus();">好友动态</a></li>
+			<li data-theme="c"><a href="#page3" data-transition="flip" onclick="initialQueryJDNews();">景区新鲜事</a></li>
 			<li data-role="list-divider">关于我</li>
-			<li data-theme="c"><a href="#page4" data-transition="flip" onclick="initialQueryPersonNews()">个人主页</a></li>
+			<li data-theme="c"><a href="#page4" data-transition="flip" onclick="initialQueryPersonNews();">个人主页</a></li>
 			<li data-theme="c"><a href="#msg-newf-panel" data-transition="flip">消息中心</a></li>
 			<li data-role="list-divider">操作</li>
 			<li data-theme="c"><a href="#page5" data-transition="flip">设置</a></li>
@@ -766,12 +818,12 @@ function upLoadFile(path){
 		<ul data-role="listview" data-divider-theme="b" data-inset="false">
 			<li data-theme="a"><img src="img/Avatar.jpg" height="100%">王小明</li>
 			<li data-theme="c"><a href="#page0" data-transition="flip">首页</a></li>
-			<li data-theme="c"><a href="#page1" data-transition="filp">景区地图</a></li>
+			<li data-theme="c"><a onclick="window.location.href='#page1';" data-transition="filp">景区地图</a></li>
 			<li data-role="list-divider" >动态</li>
-			<li data-theme="c"><a href="#panel2" data-transition="flip" onclick="initialFriendStatus()">好友动态</a></li>
-			<li data-theme="c"><a href="#page3" data-transition="flip" onclick="initialQueryJDNews()">景区新鲜事</a></li>
+			<li data-theme="c"><a href="#panel2" data-transition="flip" onclick="initialFriendStatus();">好友动态</a></li>
+			<li data-theme="c"><a href="#page3" data-transition="flip" onclick="initialQueryJDNews();">景区新鲜事</a></li>
 			<li data-role="list-divider">关于我</li>
-			<li data-theme="c"><a href="#page4" data-transition="flip" onclick="initialQueryPersonNews()">个人主页</a></li>
+			<li data-theme="c"><a href="#page4" data-transition="flip" onclick="initialQueryPersonNews();">个人主页</a></li>
 			<li data-theme="c"><a href="#msg-reply" data-transition="flip">消息中心</a></li>
 			<li data-role="list-divider">操作</li>
 			<li data-theme="c"><a href="#page5" data-transition="flip">设置</a></li>
@@ -800,12 +852,12 @@ function upLoadFile(path){
 		<ul data-role="listview" data-divider-theme="b" data-inset="false">
 			<li data-theme="a"><img src="img/Avatar.jpg" height="100%">王小明</li>
 			<li data-theme="c"><a href="#page0" data-transition="flip">首页</a></li>
-			<li data-theme="c"><a href="#page1" data-transition="filp">景区地图</a></li>
+			<li data-theme="c"><a onclick="window.location.href='#page1';" data-transition="filp">景区地图</a></li>
 			<li data-role="list-divider" >动态</li>
-			<li data-theme="c"><a href="#page2" data-transition="flip" onclick="initialFriendStatus()">好友动态</a></li>
-			<li data-theme="c"><a href="#panel3" data-transition="flip" onclick="initialQueryJDNews()">景区新鲜事</a></li>
+			<li data-theme="c"><a href="#page2" data-transition="flip" onclick="initialFriendStatus();">好友动态</a></li>
+			<li data-theme="c"><a href="#panel3" data-transition="flip" onclick="initialQueryJDNews();">景区新鲜事</a></li>
 			<li data-role="list-divider">关于我</li>
-			<li data-theme="c"><a href="#page4" data-transition="flip" onclick="initialQueryPersonNews()">个人主页</a></li>
+			<li data-theme="c"><a href="#page4" data-transition="flip" onclick="initialQueryPersonNews();">个人主页</a></li>
 			<li data-theme="c"><a href="#msg-reply" data-transition="flip">消息中心</a></li>
 			<li data-role="list-divider">操作</li>
 			<li data-theme="c"><a href="#page5" data-transition="flip">设置</a></li>
@@ -842,12 +894,12 @@ function upLoadFile(path){
 		<ul data-role="listview" data-divider-theme="b" data-inset="false">
 			<li data-theme="a"><img src="img/Avatar.jpg" height="100%">王小明</li>
 			<li data-theme="c"><a href="#page0" data-transition="flip">首页</a></li>
-			<li data-theme="c"><a href="#page1" data-transition="filp">景区地图</a></li>
+			<li data-theme="c"><a onclick="window.location.href='#page1';" data-transition="filp">景区地图</a></li>
 			<li data-role="list-divider" >动态</li>
-			<li data-theme="c"><a href="#page2" data-transition="flip" onclick="initialFriendStatus()">好友动态</a></li>
-			<li data-theme="c"><a href="#page3" data-transition="flip" onclick="initialQueryJDNews()">景区新鲜事</a></li>
+			<li data-theme="c"><a href="#page2" data-transition="flip" onclick="initialFriendStatus();">好友动态</a></li>
+			<li data-theme="c"><a href="#page3" data-transition="flip" onclick="initialQueryJDNews();">景区新鲜事</a></li>
 			<li data-role="list-divider">关于我</li>
-			<li data-theme="c"><a href="#panel4" data-transition="flip" onclick="initialQueryPersonNews()">个人主页</a></li>
+			<li data-theme="c"><a href="#panel4" data-transition="flip" onclick="initialQueryPersonNews();">个人主页</a></li>
 			<li data-theme="c"><a href="#msg-reply" data-transition="flip">消息中心</a></li>
 			<li data-role="list-divider">操作</li>
 			<li data-theme="c"><a href="#page5" data-transition="flip">设置</a></li>
@@ -871,12 +923,12 @@ function upLoadFile(path){
 	   <ul data-role="listview" data-divider-theme="b" data-inset="false">
 			<li data-theme="a"><img src="img/Avatar.jpg" height="100%">王小明</li>
 			<li data-theme="c"><a href="#page0" data-transition="flip">首页</a></li>
-			<li data-theme="c"><a href="#page1" data-transition="filp">景区地图</a></li>
+			<li data-theme="c"><a data-transition="filp" onclick="window.location.href='#page1';">景区地图</a></li>
 			<li data-role="list-divider" >动态</li>
-			<li data-theme="c"><a href="#page2" data-transition="flip" onclick="initialFriendStatus()">好友动态</a></li>
-			<li data-theme="c"><a href="#page3" data-transition="flip" onclick="initialQueryJDNews()">景区新鲜事</a></li>
+			<li data-theme="c"><a href="#page2" data-transition="flip" onclick="initialFriendStatus();">好友动态</a></li>
+			<li data-theme="c"><a href="#page3" data-transition="flip" onclick="initialQueryJDNews();">景区新鲜事</a></li>
 			<li data-role="list-divider">关于我</li>
-			<li data-theme="c"><a href="#page4" data-transition="flip" onclick="initialQueryPersonNews()">个人主页</a></li>
+			<li data-theme="c"><a href="#page4" data-transition="flip" onclick="initialQueryPersonNews();">个人主页</a></li>
 			<li data-theme="c"><a href="#msg-reply" data-transition="flip">消息中心</a></li>
 			<li data-role="list-divider">操作</li>
 			<li data-theme="c"><a href="#panel5" data-transition="flip">设置</a></li>
@@ -913,7 +965,7 @@ function upLoadFile(path){
 		<div class="flex-viewport" style="overflow:hidden;position:relative;">
           <ul class="slides">
             <li>
-  	    	    <img src = "img/1.jpg" id = "introducepic" onclick = "swipeToChangPic()" draggable = "false" >	
+  	    	    <img src = "img/1.jpg" id = "introducepic" draggable = "false" >	
   	    		</li>
           </ul>
         </div>
