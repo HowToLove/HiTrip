@@ -10,7 +10,7 @@ start
 written by lanxiang
 */
 function check(lat,lon){
-//console.log(LastLongitude+"  "+Lon);
+//////////console.log(LastLongitude+"  "+Lon);
 	if(lastLongitude==lon)
 	{
 	return false;
@@ -19,7 +19,7 @@ function check(lat,lon){
 	return true;
 }
 function sendLocation(){
-	//console.log("lanxiang!");
+	//////////console.log("lanxiang!");
 	//alert("")
 	/*
 	if (navigator.geolocation)
@@ -41,7 +41,7 @@ function getPosition(){
 	}else if(window.XMLHttpRequest){
 		xmlHttp = new XMLHttpRequest();
 	}
-  var lat=31.885700300000003;
+  var lat=31.885700300;
   var lon=118.8136401;
   if(check(lat,lon)){//用来判断用户的位置是否发生了变化
   lastLatitude=lat;
@@ -50,14 +50,14 @@ function getPosition(){
   var param ="longitude="+lon+
 		"&latitude="+lat+
 		"&t="+Math.random();
-		//console.log(param);
+		//////////console.log(param);
 	var url = "sendPosition.php";
 	xmlHttp.onreadystatechange = function(){
 		if(xmlHttp.readyState==4){
 		if(xmlHttp.status == 200){
 			var test = xmlHttp.responseText;
-			console.log("From:sendPosition.php:");
-			console.log(test);
+			//////////console.log("From:sendPosition.php:");
+			////////console.log(test);
 		}
 		}
 	};
@@ -66,9 +66,11 @@ function getPosition(){
 	xmlHttp.send(param);
 	}
 	//showAllPosition(position.coords.latitude,position.coords.longitude,"user-ego");
-	showMyPosition(31.88646,118.81918);
-	alert("hi")
-
+	//showMyPosition(31.88646,118.81918);
+	showMyPosition(31.885700300,118.8136401);
+	//var lat=31.885700300;
+ // var lon=118.8136401;
+	//alert("hi")
 }
 function showError(error){
   switch(error.code) 
@@ -117,11 +119,13 @@ function showMyPosition(lat,lon){
 	var left=calLeft(otop,oleft);
 	getE("user-ego").style.top=top+'px';
 	getE("user-ego").style.left=left+'px';
+	/*
 	for(var i=0;i<json.length;i++){
 		if(Math.sqrt(Math.pow((top-json[i].Top),2)-Math.pow((left-json[i].Left),2))<200){
 			seal(json[i]);
 		}
 	}
+	*/
 }
 function showAllPosition(lat,lon,id){
 	var ad=524;

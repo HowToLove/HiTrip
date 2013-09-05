@@ -9,15 +9,15 @@ var queryJingdianNewsId;
 /*************************************初始调用*************************************/
 function init(){
 
-	//getSelfInfo(); 
-	//getFriendInfo();
+	getSelfInfo(); 
+	getFriendInfo();
 	myListener();
 	showMyPosition(31.88736,118.83043);
 	//foot_print();
-	//queryMessageId=setInterval(queryMessage,1000);
-	//sendLocationIntervalId = setInterval(sendLocation,1000);
-	//queryFriendsId = setInterval(queryFriends,1000);
-	//queryJingdianNewsId=setInterval(queryJingdianNews,1000);
+	queryMessageId=setInterval(queryMessage,1000);
+	sendLocationIntervalId = setInterval(sendLocation,1000);
+	queryFriendsId = setInterval(queryFriends,1000);
+	queryJingdianNewsId=setInterval(queryJingdianNews,1000);
 	//aaa();
 	
 }	
@@ -32,14 +32,14 @@ function eyeOn(idName){
 		xmlHttp = new XMLHttpRequest();
 	}
     var param ="idName="+idName+"&t="+Math.random();
-		console.log(param);
+		//console.log(param);
 	var url = "http://192.168.1.101/server/eyeOn.php";
 	xmlHttp.onreadystatechange = function(){
 		if(xmlHttp.readyState==4){
 		if(xmlHttp.status == 200){
 			var test = xmlHttp.responseText;
-			console.log("From:eyeOn.php:");
-			console.log(test);
+			//console.log("From:eyeOn.php:");
+			//console.log(test);
 			}
 		}
 	};
@@ -62,10 +62,10 @@ function queryJingdianNews(){
 		if(xmlHttp.readyState == 4){
 		if(xmlHttp.status == 200){
 			var test = xmlHttp.responseText;
-			console.log("From:queryJingdianNews.php:");
-			console.log(test);
+			//console.log("From:queryJingdianNews.php:");
+			//console.log(test);
 			if(test=="1"){
-				console.log("没有新消息！");
+				//console.log("没有新消息！");
 			}
 			else{
 				var news = eval("("+test+")");//形如下面的JSON数组：
@@ -99,14 +99,14 @@ function sendMessage(){
 		xmlHttp = new XMLHttpRequest();
 	}
     var param ="content="+content+"&t="+Math.random();
-		console.log(param);
+		//console.log(param);
 	var url = "http://192.168.1.101/server/sendMessage.php";
 	xmlHttp.onreadystatechange = function(){
 		if(xmlHttp.readyState == 4){
 		if(xmlHttp.status == 200){
 			var test = xmlHttp.responseText;
-			console.log("From:sendMessage.php:");
-			console.log(test);
+			//console.log("From:sendMessage.php:");
+			//console.log(test);
 			if(test!="0"){
 			//var answer = eval("("+test+")");
 			alert("消息发送失败！");
@@ -130,14 +130,14 @@ function sendMessage2(){
 		xmlHttp = new XMLHttpRequest();
 	}
     var param ="content="+content+"&t="+Math.random();
-		console.log(param);
+		//console.log(param);
 	var url = "http://192.168.1.101/server/sendMessage.php";
 	xmlHttp.onreadystatechange = function(){
 		if(xmlHttp.readyState == 4){
 		if(xmlHttp.status == 200){
 			var test = xmlHttp.responseText;
-			console.log("From:sendMessage.php:");
-			console.log(test);
+			//console.log("From:sendMessage.php:");
+			//console.log(test);
 			if(test!="0"){
 			//var answer = eval("("+test+")");
 			alert("消息发送失败！");
@@ -159,16 +159,16 @@ function queryMessage(){//need to be added into init()
 		xmlHttp = new XMLHttpRequest();
 	}
     var param ="t="+Math.random();
-		console.log(param);
+		//console.log(param);
 	var url = "http://192.168.1.101/server/queryMessage.php";
 	xmlHttp.onreadystatechange = function(){
 		if(xmlHttp.readyState == 4){
 		if(xmlHttp.status == 200){
 			var test = xmlHttp.responseText;
-			console.log("From:queryMessage.php:");
-			console.log(test);
+			//console.log("From:queryMessage.php:");
+			//console.log(test);
 			if(test=="1"){
-				console.log("没有新消息！");
+				//console.log("没有新消息！");
 			}
 			else{
 				var news = eval("("+test+")");//形如下面的JSON数组：
@@ -200,7 +200,7 @@ function getSelfInfo(){
 		xmlHttp = new XMLHttpRequest();
 	}
     var param ="t="+Math.random();
-		console.log(param);
+		//console.log(param);
 	var url = "http://192.168.1.101/server/getSelfInfo.php";
 	xmlHttp.onreadystatechange = function(){
 		if(xmlHttp.readyState==4){
@@ -209,8 +209,8 @@ function getSelfInfo(){
 			//alert("QQQ: "+test);
 			var selfInfo = eval("("+test+")");
 			$("#user-ego-tmpl").tmpl(selfInfo).appendTo("#user-ego");
-			console.log("From:getSelfInfo.php:");
-			console.log(test);
+			//console.log("From:getSelfInfo.php:");
+			//console.log(test);
 			}
 		}
 	};
@@ -228,7 +228,7 @@ function getFriendInfo(){
 		xmlHttp = new XMLHttpRequest();
 	}
     var param ="t="+Math.random();
-		console.log(param);
+		//console.log(param);
 	var url = "http://192.168.1.101/server/getFriendInfo.php";
 	xmlHttp.onreadystatechange = function(){
 		if(xmlHttp.readyState==4){
@@ -245,9 +245,9 @@ function getFriendInfo(){
 			for(var i=0;i<friends.length;i++){
 				showAllPosition(friends[i].Latitude,friends[i].Longitude,friends[i].Id);
 			}
-			console.log("From:getFriendInfo.php:");
-			console.log(test);
-			console.log(friends[0].Name);
+			//console.log("From:getFriendInfo.php:");
+			//console.log(test);
+			//console.log(friends[0].Name);
 		}
 		}
 	};
@@ -265,7 +265,7 @@ function getStrangeInfo(){
 		xmlHttp = new XMLHttpRequest();
 	}
     var param ="t="+Math.random();
-		console.log(param);
+		//console.log(param);
 	var url = "http://192.168.1.101/server/getStrangeInfo.php";
 	xmlHttp.onreadystatechange = function(){
 		if(xmlHttp.readyState==4){
@@ -273,9 +273,9 @@ function getStrangeInfo(){
 			var test = xmlHttp.responseText;
 			var strange = eval("("+test+")");
 			//此处动态添加div
-			console.log("From:getStrangeInfo.php:");
-			console.log(test);
-			console.log(strange[0].Name);
+			//console.log("From:getStrangeInfo.php:");
+			//console.log(test);
+			//console.log(strange[0].Name);
 		}
 		}
 	};
@@ -299,14 +299,14 @@ function requestFriends(targetId){
 		xmlHttp = new XMLHttpRequest();
 	}
     var param ="targetId="+targetId+"&t="+Math.random();
-		console.log(param);
+		//console.log(param);
 	var url = "http://192.168.1.101/server/requestFriends.php";
 	xmlHttp.onreadystatechange = function(){
 		if(xmlHttp.readyState==4){
 		if(xmlHttp.status == 200){
 			var test = xmlHttp.responseText;
-			console.log("From:requestFriends.php:");
-			console.log(test);
+			//console.log("From:requestFriends.php:");
+			//console.log(test);
 			}
 		}
 	};
@@ -324,14 +324,14 @@ function queryFriends(){
 		xmlHttp = new XMLHttpRequest();
 	}
     var param ="t="+Math.random();
-		console.log(param);
+		//console.log(param);
 	var url = "http://192.168.1.101/server/queryFriends.php";
 	xmlHttp.onreadystatechange = function(){
 		if(xmlHttp.readyState==4){
 		if(xmlHttp.status == 200){
 			var test = xmlHttp.responseText;
-			console.log("From:queryFriends.php:");
-			console.log(test);
+			//console.log("From:queryFriends.php:");
+			//console.log(test);
 			if(test==-1){
 				alert("Update 失败！");
 			}else{
@@ -367,14 +367,14 @@ function answerFriends(answer,answerUserId){
 		xmlHttp = new XMLHttpRequest();
 	}
     var param ="answer="+answer+"&answerUserId="+answerUserId+"&t="+Math.random();
-		console.log(param);
+		//console.log(param);
 	var url = "http://192.168.1.101/server/answerFriends.php";
 	xmlHttp.onreadystatechange = function(){
 		if(xmlHttp.readyState == 4){
 		if(xmlHttp.status == 200){
 			var test = xmlHttp.responseText;
-			console.log("From:answerFriends.php:");
-			console.log(test);
+			//console.log("From:answerFriends.php:");
+			//console.log(test);
 			}
 		}
 	};
@@ -392,14 +392,14 @@ function queryAnswer(){
 		xmlHttp = new XMLHttpRequest();
 	}
     var param ="t="+Math.random();
-		console.log(param);
+		//console.log(param);
 	var url = "http://192.168.1.101/server/queryAnswer.php";
 	xmlHttp.onreadystatechange = function(){
 		if(xmlHttp.readyState == 4){
 		if(xmlHttp.status == 200){
 			var test = xmlHttp.responseText;
-			console.log("From:queryAnswer.php:");
-			console.log(test);
+			//console.log("From:queryAnswer.php:");
+			//console.log(test);
 			if(test!=""){
 				var answer = eval("("+test+")");//得到了对方的JSON变量和结果
 				for(var i=0;i<answer.length;i++){
