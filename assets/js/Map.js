@@ -318,145 +318,131 @@ function pinpointCenter(id){
 	else $("#map-sketch").css("left",left+"px");
 }
 
-/**********************************中心定位**********************************/
+/**********************************窗口重绘**********************************/
 function resize(){
-	getE("minilayer").style.height=(parseInt(document.body.clientHeight+0)-43)+'px';
-	getE("switch-button").style.top=(parseInt(document.body.clientHeight+0)-103)/2+'px';
-}
-/**********************************ready**********************************/
-$(document).ready(function(){
-
-	/************************设置盖章***********************/
-	getE("minilayer").style.height=(parseInt(document.body.clientHeight+0)-43)+'px';
+	//getE("minilayer").style.height=(parseInt(document.body.clientHeight+0)-43)+'px';
+	//getE("switch-button").style.top=(parseInt(document.body.clientHeight+0)-103)/2+'px';
 	setstyle();
+	$("#map-panorama-map").css("margin-top",($("#cover").height()-$("#map-panorama-map").height())/2+'px');
+}
+
+/************************************READY***********************************/
+$(document).ready(function(){
+	/************************设置盖章***********************/
+	//getE("minilayer").style.height=(parseInt(document.body.clientHeight+0)-43)+'px';
+	
 	
 	/************************设置地图切换按钮位置***********************/
-	getE("switch-button").style.top=(parseInt(document.body.clientHeight+0)-103)/2+'px';
+	//getE("switch-button").style.top=(parseInt(document.body.clientHeight+0)-103)/2+'px';
+	
+
 	
 	/************************状态发布栏***********************/
 	//$("#pub-bar").hide();
-	var button_flag=0;
+	var flag_button=0;
 	$("#photo-button").tap(function(){
 		seal("lwz");
-		if(button_flag==0){
-			$("#pub-bar-status").animate({
-				//position:"absolute",
-				bottom:"140px",
-				right:"10px",
-				//z-index:"1000"
-			},300);
-
-			$("#pub-bar-camera").animate({
-				//position:"absolute",
-				bottom:"120px",
-				right:"74px",
-				//z-index:"1000"
-			},300);
-			$("#pub-bar-gallery").animate({
-				//position:"absolute",
-				bottom:"74px",
-				right:"120px",
-				//z-index:"1000"
-			},300);
-			$("#pub-bar-footprint").animate({
-				//position:"absolute",
-				bottom:"10px",
-				right:"140px",
-				//z-index:"1000"
-			},300);
-			button_flag=1;
+		if(flag_button==0){
+			button4_show();
+			flag_button=1;
 		}else{
-			$("#pub-bar-status").animate({
-				//position:"absolute",
-				bottom:"12px",
-				right:"12px",
-				//z-index:"1000"
-			},300);
-
-			$("#pub-bar-camera").animate({
-				//position:"absolute",
-				bottom:"12px",
-				right:"12px",
-				//z-index:"1000"
-			},300);
-			$("#pub-bar-gallery").animate({
-				//position:"absolute",
-				bottom:"12px",
-				right:"12px",
-				//z-index:"1000"
-			},300);
-			$("#pub-bar-footprint").animate({
-				//position:"absolute",
-				bottom:"12px",
-				right:"12px",
-				//z-index:"1000"
-			},300);
-			button_flag=0;
+			button4_hide();
+			flag_button=0;
 		}
 	});
-	/*$("#pub-bar-status").tap(function(){
-		$("#pub-bar").hide();
+	$("#pub-bar-status").tap(function(){
+		button4_hide();
+		flag_button=0;
 	});
 	$("#pub-bar-camera").tap(function(){
-		$("#pub-bar").hide();
+		button4_hide();
+		flag_button=0;
 	});
 	$("#pub-bar-gallery").tap(function(){
-		$("#pub-bar").hide();
-	});*/
+		button4_hide();
+		flag_button=0;
+	});
+	
+	/************************足迹**********************/
+	var flag_footprint=0;
+	$("#pub-bar-footprint").tap(function(){
+		if(!flag_footprint){
+			foot_print();
+			flag_footprint=1;
+		}else{
+			foot_print_hide();
+			flag_footprint=0;
+			button4_hide();
+			flag_button=0;
+			
+		}
+	});
 	
 	/************************景点名字***********************/
 	$(".bubble-name").hide();
 	$(".pin").tap(function(){
-		$(this).parent().find(".bubble-name").toggle();
+		$(this).parent().find(".bubble-name").toggle("fast");
 	});
 	
 	/************************地图切换***********************/
 	$("#simple-map").tap(function(){
 		$("#map-sketch").find(".user-friend").hide();
 		$("#map-sketch").find(".user-stranger").hide();
+		$("#popupPanel").popup("close");
 	});
 	$("#friend-map").tap(function(){
 		$("#map-sketch").find(".user-friend").show();
 		$("#map-sketch").find(".user-stranger").hide();
+		$("#popupPanel").popup("close");
 	});
 	$("#stranger-map").tap(function(){
 		$("#map-sketch").find(".user-friend").show();
 		$("#map-sketch").find(".user-stranger").show();
+		$("#popupPanel").popup("close");
 	});
 	
-	/************************定位到我**********************
-	$("#pinpoint-button").tap(function(){
-		var top=-(parseInt(getE("user-ego").style.top+0))+(parseInt(getE("minilayer").style.height+0))/2-50;
-		var left=-(parseInt(getE("user-ego").style.left+0))+(parseInt(document.body.clientWidth+0))/2-38;
-		if(top>0)
-			$("#map-sketch").css("top","0px");
-		else if(top<(-3316+parseInt(document.body.clientHeight+0)))
-			$("#map-sketch").css("top",-3316+parseInt(document.body.clientHeight+0)+"px");
-		else $("#map-sketch").css("top",top+"px");
-		
-		if(left>0)
-			$("#map-sketch").css("left","0px");
-		else if(left<(-2967+parseInt(document.body.clientWidth+0)))
-			$("#map-sketch").css("left",-2967+parseInt(document.body.clientWidth+0)+"px");
-		else $("#map-sketch").css("left",left+"px");
-	});*/
+	/************************定位到我***********************/
 	$("#pinpoint-button").tap(function(){
 		pinpointCenter("#user-ego");
 	});
-	
-	/************************足迹**********************/
-	$("#pub-bar-footprint").tap(function(){
-		foot_print();
+
+	/************************遮罩出现***********************/
+	var flag_cover=0;
+	$(document).on("vmouseover","#slide-right",function(){
+		$("#map-panorama-map").css("margin-top",($("#cover").height()-$("#map-panorama-map").height())/2+'px');
+		$("#cover").animate({
+			right:"0"
+		},300);
+		$("#slide-left").animate({
+			zIndex:"1001"
+		},300);
+		flag_cover=1;
 	});
+	
+	/************************遮罩消失***********************/
+	$(document).on("vmouseover","#slide-left",function(){
+		if(flag_cover==1){
+			$("#cover").animate({
+				right:"-100%"
+			},300);
+			$("#slide-left").animate({
+				zIndex:"10"
+			},300);
+		}else{
+			//此处添加滑动出现面板的函数
+		}
+		flag_cover=0;
+	});
+	
 });
 
-/********************显示足迹********************/
+/**********************************显示足迹**********************************/
 function foot_print(){
 	var json_footprint=[{"Id":"footprint1","top":"250","left":"1000"},
 						{"Id":"footprint2","top":"250","left":"1100"},
 						{"Id":"footprint3","top":"250","left":"1200"},
 						{"Id":"footprint4","top":"250","left":"1300"}];
-	var footIntervalId = setInterval(foot,1000);
+	var footIntervalId = setInterval(foot,500);
 	var i=0;
 	function foot(){
 		if(i>=json_footprint.length)
@@ -467,6 +453,53 @@ function foot_print(){
 			i++;
 		}
 	}
+}
+
+/**********************************消失足迹**********************************/
+function foot_print_hide(){
+	$(".footprint").remove();
+}
+
+/********************************四个按钮出现********************************/
+function button4_show(){
+	$("#pub-bar-status").animate({
+		bottom:"140px",
+		right:"10px"
+	},300);
+	$("#pub-bar-camera").animate({
+		bottom:"120px",
+		right:"74px"
+	},300);
+	$("#pub-bar-gallery").animate({
+		bottom:"74px",
+		right:"120px"
+	},300);
+	$("#pub-bar-footprint").animate({
+		bottom:"10px",
+		right:"140px"
+	},300);
+}
+
+/********************************四个按钮消失********************************/
+function button4_hide(){
+	$("#pub-bar-status").animate({
+		bottom:"12px",
+		right:"12px"
+	},300);
+
+	$("#pub-bar-camera").animate({
+		bottom:"12px",
+		right:"12px"
+	},300);
+	$("#pub-bar-gallery").animate({
+		bottom:"12px",
+		right:"12px"
+	},300);
+	$("#pub-bar-footprint").animate({
+		bottom:"12px",
+		right:"12px"
+	},300);
+
 }
 
 /**********************************文字状态**********************************/
