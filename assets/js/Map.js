@@ -39,8 +39,9 @@ function sendLocation(){
 //function getPosition(position)
 function getPosition(){
 	showMyPosition(900,1600);
-		getE("user-ego-small").style.top=anti_mapping_user_top(parseInt(getE("user-ego").style.top+0))+'px';
-	getE("user-ego-small").style.left=anti_mapping_user_left(parseInt(getE("user-ego").style.left+0))+'px';
+	init_para();
+	getE("user-ego-small").style.top=anti_mapping_user_top(900)+'px';
+	getE("user-ego-small").style.left=anti_mapping_user_left(1600)+'px';
 	//var lat=31.885700300;
 }
 function showError(error){
@@ -630,6 +631,7 @@ function anti_mapping(mapT,mapL){
 }
 /***********************************头像映射*********************************/
 function anti_mapping_user_top(userT){
+	console.log(imgH)
 	return (userT*scale+(coverH-imgH)/2);
 }
 function anti_mapping_user_left(userL){
