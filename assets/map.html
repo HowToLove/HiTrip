@@ -7,7 +7,7 @@
 
 <title>HiTrip</title>
 
-<link rel="stylesheet" href="js/jquery.mobile-1.3.2/jquery.mobile.theme-1.3.2.min.css">
+<link rel="stylesheet" href="themes/8new.css">
 <link rel="stylesheet" href="js/jquery.mobile-1.3.2/jquery.mobile.structure-1.3.2.min.css">
 <link href="css/Map.css" rel="stylesheet">
 <link href="css/Zone.css" rel="stylesheet">
@@ -25,7 +25,7 @@
 
 <!--******************************************与拍照上传相关的代码******************************-->
 	
-	<script type="text/javascript" charset="utf-8">
+	<!--script type="text/javascript" charset="utf-8">
     var pictureSource;  
     var destinationType; 
     document.addEventListener("deviceready",onDeviceReady,false);
@@ -110,7 +110,7 @@ function upLoadFile(path){
 	{fileName:'file.jpg',chunkedMode:false},true);
 }
 
-</script>
+</script-->
 
 <!--script src="https://d10ajoocuyu32n.cloudfront.net/codiqa.ext.js"></script-->
 
@@ -132,17 +132,17 @@ function upLoadFile(path){
 
 <!----------------------新的好友请求------------------------->
 <script id="newf-tmpl" type="text/x-jquery-tmpl">
-	<li id=${Id} data-corners="false" data-shadow="false" data-iconshadow="true" data-wrapperels="div" data-icon="arrow-r" data-iconpos="right" data-theme="c" class="ui-btn ui-btn-icon-right ui-li-has-arrow ui-li ui-li-has-thumb ui-first-child ui-btn-up-c">
+	<li id=${Id} data-corners="false" data-shadow="false" data-iconshadow="true" data-wrapperels="div" data-icon="arrow-r" data-iconpos="right" data-theme="g" class="ui-btn ui-btn-icon-right ui-li-has-arrow ui-li ui-li-has-thumb ui-first-child ui-btn-up-c">
 		<div class="ui-btn-inner ui-li">
 			<div class="ui-btn-text">
 				<div class="ui-li-aside">
-					<div data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="c" data-inline="true" data-disabled="false" class="ui-btn ui-shadow ui-btn-corner-all ui-btn-inline ui-btn-up-c" aria-disabled="false">
+					<div data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="g" data-inline="true" data-disabled="false" class="ui-btn ui-shadow ui-btn-corner-all ui-btn-inline ui-btn-up-c" aria-disabled="false">
 						<span class="ui-btn-inner">
 							<span class="ui-btn-text">同意</span>
 						</span>
 						<button class="newfY ui-btn-hidden" data-inline="true" data-disabled="false">同意</button>
 					</div>
-					<div data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="c" data-inline="true" data-disabled="false" class="ui-btn ui-shadow ui-btn-corner-all ui-btn-inline ui-btn-up-c" aria-disabled="false">
+					<div data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="g" data-inline="true" data-disabled="false" class="ui-btn ui-shadow ui-btn-corner-all ui-btn-inline ui-btn-up-c" aria-disabled="false">
 						<span class="ui-btn-inner">
 							<span class="ui-btn-text">拒绝</span>
 						</span>
@@ -288,10 +288,10 @@ function upLoadFile(path){
 
 <body style="font-family:微软雅黑;padding:0;" onload="init()" onresize="resize();">
 
-<div data-role="page" id="page0" data-theme="c" >
-    <div data-role="header" data-theme="c">
-      <h1>首页</h1>
-      <a href="#panel0" data-icon="bars" data-iconpos="notext" data-s hadow="false" data-iconshadow="false">Menu</a>
+<div data-role="page" id="page0" data-theme="g" >
+    <div data-role="header" data-theme="g">
+      <img src="img/hitrip_logo_mini.png">
+      <a href="#panel0" data-icon="bars" data-iconpos="notext" data-shadow="false" data-iconshadow="false">Menu</a>
     </div>
     <div data-role="content" style="padding: 0%">
 		<div>
@@ -324,26 +324,26 @@ function upLoadFile(path){
 			</script>
         </div>
     </div>
-    <div data-role="panel" id="panel0" data-theme="b" data-position-fixed="true">
-		<ul data-role="listview" data-divider-theme="b" data-inset="false">
-			<li data-theme="a" id="panelHead"><img id="panelHeadImg" src="img/Avatar.jpg" height="100%">王小明</li>
-			<li data-theme="c"><a href="#panel0" data-transition="flip">首页</a></li>
-			<li data-theme="c"><a onclick="window.location.href='#page1';">景区地图</a></li>
+    <div data-role="panel" id="panel0" data-theme="g" data-position-fixed="true">
+		<ul data-role="listview" data-divider-theme="g" data-inset="false">
+			<li data-theme="g" id="panelHead"><img id="panelHeadImg" src="img/Avatar.jpg" height="100%">王小明</li>
+			<li data-theme="g"><a href="#panel0" data-transition="flip">首页</a></li>
+			<li data-theme="g"><a onclick="window.location.href='#page1';">景区地图</a></li>
 			<li data-role="list-divider">动态</li>
-			<li data-theme="c"><a href="#page2" data-transition="flip" >好友动态</a></li>
-			<li data-theme="c"><a href="#page3" data-transition="flip">	景区新鲜事</a></li>
+			<li data-theme="g"><a href="#page2" data-transition="flip" >好友动态</a></li>
+			<li data-theme="g"><a href="#page3" data-transition="flip">	景区新鲜事</a></li>
 			<li data-role="list-divider">关于我</li>
-			<li data-theme="c"><a href="#page4" data-transition="flip">个人主页</a></li>
-			<li data-theme="c"><a href="#msg-reply" data-transition="flip">消息中心</a></li>
+			<li data-theme="g"><a href="#page4" data-transition="flip">个人主页</a></li>
+			<li data-theme="g"><a href="#msg-reply" data-transition="flip">消息中心</a></li>
 			<li data-role="list-divider">操作</li>
-			<li data-theme="c"><a href="#page5" data-transition="flip">设置</a></li>
-			<li data-theme="c"><a>注销</a></li>
+			<li data-theme="g"><a href="#page5" data-transition="flip">设置</a></li>
+			<li data-theme="g"><a>注销</a></li>
 		</ul>
     </div>
 </div> 
 <!-------------------------------------------------------景区地图--------------------------------------------------------->
-<div data-role="page" id="page1" data-theme="c">
-    <div data-role="header" data-theme="c" data-tap-toggle="false" data-position="fixed">
+<div data-role="page" id="page1" data-theme="g">
+    <div data-role="header" data-theme="g" data-tap-toggle="false" data-position="fixed">
       <h1>景区地图</h1>
       <a href="#panel1" data-icon="bars" data-iconpos="notext" data-shadow="false" data-iconshadow="false">Menu</a>
     </div>
@@ -434,9 +434,9 @@ function upLoadFile(path){
 			<img src="img/switch-button.png"/>
 		</a> 
 		<div data-role="popup" id="popupPanel" data-corners="false" data-theme="none" data-shadow="false" data-tolerance="0,0">
-			<button data-theme="a" data-mini="true" id="simple-map">普通地图</button>
-			<button data-theme="a" data-mini="true" id="friend-map">好友地图</button>
-			<button data-theme="a" data-mini="true" id="stranger-map">驴友地图</button>
+			<button data-theme="g" data-mini="true" id="simple-map">普通地图</button>
+			<button data-theme="g" data-mini="true" id="friend-map">好友地图</button>
+			<button data-theme="g" data-mini="true" id="stranger-map">驴友地图</button>
 		</div>
 		
 		<!---------------------照相按钮--------------------->
@@ -473,7 +473,10 @@ function upLoadFile(path){
 			<img class="seal" src="img/star-fill.png" id="star-fill"/>
 			<img class="seal" src="img/star-twinkle.png" id="star-twinkle"/>
 		</div>
-		
+		<!--------------------新消息提醒-------------------->
+		<div id="msg-img">
+			<img src="img/msg.png"/>
+		</div>
 		<!----------------------滑动层---------------------->
 		<div class="slide" id="slide-left" draggable="false"></div>
 		<div class="slide" id="slide-right" draggable="false"></div>
@@ -483,28 +486,37 @@ function upLoadFile(path){
 			<div id="map-panorama">
 				<img id="map-panorama-map" src="img/Disney.jpg" />
 				<div id="select-box"></div>
+				<div class="user-ego-small" id="user-ego-small">
+					<img src="img/red.png"/>
+				</div>
+				<div class="user-friend-small" id="1-small">
+					<img src="img/orange.png"/>
+				</div>
+				<div class="user-friend-small" id="2-small">
+					<img src="img/orange.png"/>
+				</div>
+				<div class="user-stranger-small" id="3-small">
+					<img src="img/grey.png"/>
+				</div>
 			</div>
 		</div>
-		<!----------------------全景地图---------------------->
-		
-		
 	</div>
 	
 	<!---------------------景区地图panel--------------------->
-	<div data-role="panel" id="panel1" data-theme="b" data-position-fixed="true">
-		<ul data-role="listview" data-divider-theme="b" data-inset="false">
-			<li data-theme="a" id="panelHead"><img id="panelHeadImg" src="img/Avatar.jpg" height="100%">王小明</li>
-			<li data-theme="c"><a href="#page0" data-transition="flip">首页</a></li>
-			<li data-theme="c"><a href="#panel1">景区地图</a></li>
+	<div data-role="panel" id="panel1" data-theme="g" data-position-fixed="true">
+		<ul data-role="listview" data-divider-theme="g" data-inset="false">
+			<li data-theme="g" id="panelHead"><img id="panelHeadImg" src="img/Avatar.jpg" height="100%">王小明</li>
+			<li data-theme="g"><a href="#page0" data-transition="flip">首页</a></li>
+			<li data-theme="g"><a href="#panel1">景区地图</a></li>
 			<li data-role="list-divider" >动态</li>
-			<li data-theme="c"><a href="#page2" data-transition="flip" onclick="initialFriendStatus();">好友动态</a></li>
-			<li data-theme="c"><a href="#page3" data-transition="flip" onclick="initialQueryJDNews();">景区新鲜事</a></li>
+			<li data-theme="g"><a href="#page2" data-transition="flip" onclick="initialFriendStatus();">好友动态</a></li>
+			<li data-theme="g"><a href="#page3" data-transition="flip" onclick="initialQueryJDNews();">景区新鲜事</a></li>
 			<li data-role="list-divider">关于我</li>
-			<li data-theme="c"><a href="#page4" data-transition="flip" onclick="initialQueryPersonNews();">个人主页</a></li>
-			<li data-theme="c"><a href="#msg-reply" data-transition="flip">消息中心</a></li>
+			<li data-theme="g"><a href="#page4" data-transition="flip" onclick="initialQueryPersonNews();">个人主页</a></li>
+			<li data-theme="g"><a href="#msg-reply" data-transition="flip">消息中心</a></li>
 			<li data-role="list-divider">操作</li>
-			<li data-theme="c"><a href="#page5" data-transition="flip">设置</a></li>
-			<li data-theme="c"><a>注销</a></li>
+			<li data-theme="g"><a href="#page5" data-transition="flip">设置</a></li>
+			<li data-theme="g"><a>注销</a></li>
 		</ul>
 	</div>
 </div>
@@ -512,13 +524,13 @@ function upLoadFile(path){
 
 
 <!------------------------------------------------------状态发布---------------------------------------------------------->
-<div data-role="page" id="pub" data-theme="c" data-add-back-btn="true">
-	<div data-role="header" data-theme="c">
+<div data-role="page" id="pub" data-theme="g" data-add-back-btn="true">
+	<div data-role="header" data-theme="g">
 		<h1>发布状态</h1>
 		<a data-icon="arrow-l" data-iconpos="notext" data-shadow="false" data-iconshadow="false" data-rel="back">Menu</a>
 		<a data-role="button" data-rel="back" class="ui-btn-right" id="button-pub" onclick="sendMessage()">发布</a>
     </div>
-	<div data-role="content" data-theme="c" style="padding:0">
+	<div data-role="content" data-theme="g" style="padding:0">
 		<!--------------分享功能-------------->
 		<div class="jiathis_style_32x32" id="jiathis">
 		<div class="count-word">
@@ -531,11 +543,7 @@ function upLoadFile(path){
 			<div id="jiathis2">
 				<div style="margin:0 auto;width:180px;height:32px;">
 					<p style="padding-top:12px;padding-bottom:10px;">分享到...</p>
-					<a class="jiathis_button_tsina"></a>
-					<a class="jiathis_button_tqq"></a>
-					<a class="jiathis_button_douban"></a>
-					<a class="jiathis_button_renren"></a>
-					<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+					
 				</div>
 				<a class="bshareDiv" href="http://www.bshare.cn/share">分享</a>
 			</div>
@@ -543,9 +551,9 @@ function upLoadFile(path){
 		
 		
 		<!----------------输入栏------------------>
-		<div class="input" style="height:400px;background-image:url(img/ztbg.jpg);">
+		<div class="input" style="background-image:url(img/ztbg.jpg);">
 			<form name="myform" id="myform1" style="height:100%;">
-				<textarea  style="margin-top:20px;border-radius:10px; height:200px;" autofocus="true" id="message" placeholder="想说点什么？" onKeyDown="MaxInput1(this.form)" onKeyUp="MaxInput1(this.form)"></textarea>
+				<textarea  style="" autofocus="true" id="message" placeholder="想说点什么？" onKeyDown="MaxInput1(this.form)" onKeyUp="MaxInput1(this.form)"></textarea>
 			</form>
 		</div>
 
@@ -555,13 +563,13 @@ function upLoadFile(path){
 
 
 <!------------------------------------------------------照片发布---------------------------------------------------------->
-<div data-role="page" id="photo" data-theme="C" data-add-back-btn="true">
-	<div data-role="header" data-theme="c">
+<div data-role="page" id="photo" data-theme="g" data-add-back-btn="true">
+	<div data-role="header" data-theme="g">
 		<h1>发布照片</h1>
 		<a data-icon="arrow-l" data-iconpos="notext" data-shadow="false" data-iconshadow="false" data-rel="back">Menu</a>
 		<a data-role="button" data-rel="back" class="ui-btn-right" id="button-pub" onclick="sendMessage2()">发布</a>
     </div>
-	<div data-role="content" data-theme="c" style="padding:0;">
+	<div data-role="content" data-theme="g" style="padding:0;">
 		<!----------------输入栏------------------>
 		<div class="input" style="background-image:url(imgbg.jpg);">
 			<form name="myform" id="myform2" style="height:100%">
@@ -581,12 +589,12 @@ function upLoadFile(path){
 
 
 <!----------------------------------------------------好友/驴友主页------------------------------------------------------->
-<div data-role="page" id="zone-others" data-theme="c">
-	<div data-role="header" data-theme="c">
+<div data-role="page" id="zone-others" data-theme="g">
+	<div data-role="header" data-theme="g">
 		<h1>个人主页</h1>
 		<a href="#zone-others-panel" data-icon="bars" data-iconpos="notext" data-shadow="false" data-iconshadow="false">Menu</a>
     </div>
-	<div data-role="content" data-theme="c" style="padding:0">
+	<div data-role="content" data-theme="g" style="padding:0">
 		<div class="zone-header" id="2">
 			<!---------------------用户头像----------------------->
 			<div class="zone-avatar">
@@ -607,18 +615,18 @@ function upLoadFile(path){
 	</div>
 	
 	<!---------------------好友主页panel--------------------->
-	<div data-role="panel" id="zone-others-panel" data-theme="b" data-position-fixed="true">
-		<ul data-role="listview" data-divider-theme="b" data-inset="false">
-			<li data-theme="a" id="panelHead"><img id="panelHeadImg" src="img/Avatar.jpg" height="100%">王小明</li>
-			<li data-theme="c"><a href="#page0" data-transition="flip">首页</a></li>
-			<li data-theme="c"><a onclick="window.location.href='#page1';">景区地图</a></li>
+	<div data-role="panel" id="zone-others-panel" data-theme="g" data-position-fixed="true">
+		<ul data-role="listview" data-divider-theme="g" data-inset="false">
+			<li data-theme="g" id="panelHead"><img id="panelHeadImg" src="img/Avatar.jpg" height="100%">王小明</li>
+			<li data-theme="g"><a href="#page0" data-transition="flip">首页</a></li>
+			<li data-theme="g"><a onclick="window.location.href='#page1';">景区地图</a></li>
 			<li data-role="list-divider" >动态</li>
-			<li data-theme="c"><a href="#page2" data-transition="flip" onclick="initialFriendStatus();">好友动态</a></li>
-			<li data-theme="c"><a href="#page3" data-transition="flip" onclick="initialQueryJDNews();">景区新鲜事</a></li>
+			<li data-theme="g"><a href="#page2" data-transition="flip" onclick="initialFriendStatus();">好友动态</a></li>
+			<li data-theme="g"><a href="#page3" data-transition="flip" onclick="initialQueryJDNews();">景区新鲜事</a></li>
 			<li data-role="list-divider">关于我</li>
-			<li data-theme="c"><a href="#page4" data-transition="flip" onclick="initialQueryPersonNews();">个人主页</a></li>
-			<li data-theme="c"><a href="#msg-reply" data-transition="flip">消息中心</a></li>
-			<li data-theme="c"><a href="#page5" data-transition="flip">设置</a></li>
+			<li data-theme="g"><a href="#page4" data-transition="flip" onclick="initialQueryPersonNews();">个人主页</a></li>
+			<li data-theme="g"><a href="#msg-reply" data-transition="flip">消息中心</a></li>
+			<li data-theme="g"><a href="#page5" data-transition="flip">设置</a></li>
 		</ul>
 	</div>
 </div>
@@ -627,11 +635,11 @@ function upLoadFile(path){
 
 <!------------------------------------------------------状态回复----------------------------------------------------------->
 <div data-role="page" id="status">
-	<div data-role="header" data-theme="c" data-tap-toggle="false">
+	<div data-role="header" data-theme="g" data-tap-toggle="false">
 		<h1>状态回复</h1>
 		<a data-icon="arrow-l" data-iconpos="notext" data-shadow="false" data-iconshadow="false" data-rel="back">Menu</a>
     </div>
-	<div data-role="content" data-theme="c">
+	<div data-role="content" data-theme="g">
 		<table cellspacing="0" cellpadding="3" border="0" width="100%">
 			<tbody id="status-reply" style="border-bottom:5px solid #FF0000;">
 				<tr>
@@ -654,7 +662,7 @@ function upLoadFile(path){
 			</tbody>
 		</table>
 	</div>
-	<div data-role="footer" data-theme="c" data-position="fixed" data-tap-toggle="false">
+	<div data-role="footer" data-theme="g" data-position="fixed" data-tap-toggle="false">
 		<div style="width:93%;margin-left:1%;"><input type="text" name="" id="" value="" data-mini="true" /></div>
 		<a data-role="button" data-rel="back" class="ui-btn-right" style="margin-top:1px;margin-right:1%">发布</a>
 	</div>
@@ -666,15 +674,28 @@ function upLoadFile(path){
 
 
 <!--------------------------------------------------消息中心-回复评论------------------------------------------------------>
-<div  data-role="page" id="msg-reply" data-theme="c">
-	<div data-role="header" data-theme="c">
+<div  data-role="page" id="msg-reply" data-theme="g">
+	<div data-role="header" data-theme="g">
 		<h1>消息中心</h1>
 		<a href="#msg-reply-panel" data-icon="bars" data-iconpos="notext" data-shadow="false" data-iconshadow="false">Menu</a>
     </div>
-	<div data-role="content" data-theme="c" style="padding:0">
-		
+	<div data-role="content" data-theme="g">
+		<ul data-role="listview" id="reply-list">
+			<li id="">
+				<a href="#status">
+					<img src="img/Avatar.jpg"/>
+					<h3>王小明</h3><p>评论了您的状态</p>
+				</a>
+			</li>
+			<li>
+				<a href="#zone-others">
+					<img src="img/Avatar.jpg"/>
+					<h3>王小明</h3><p>回复了您的状态</p>
+				</a>
+			</li>
+		</ul>
 	</div>
-	<div data-role="footer" data-theme="c" data-position="fixed">	
+	<div data-role="footer" data-theme="g" data-position="fixed">	
 		<div data-role="navbar">
 			<ul>
 				<li><a href="#" class="ui-btn-active ui-state-persist">评论回复</a></li>
@@ -682,20 +703,20 @@ function upLoadFile(path){
 			</ul>
 		</div>
 	</div>
-	<div data-role="panel" id="msg-reply-panel" data-theme="b" data-position-fixed="true">
-		<ul data-role="listview" data-divider-theme="b" data-inset="false">
-			<li data-theme="a"><img src="img/Avatar.jpg" height="100%">王小明</li>
-			<li data-theme="c"><a href="#page0" data-transition="flip">首页</a></li>
-			<li data-theme="c"><a onclick="window.location.href='#page1';" data-transition="filp">景区地图</a></li>
+	<div data-role="panel" id="msg-reply-panel" data-theme="g" data-position-fixed="true">
+		<ul data-role="listview" data-divider-theme="g" data-inset="false">
+			<li data-theme="g"><img src="img/Avatar.jpg" height="100%">王小明</li>
+			<li data-theme="g"><a href="#page0" data-transition="flip">首页</a></li>
+			<li data-theme="g"><a onclick="window.location.href='#page1';" data-transition="filp">景区地图</a></li>
 			<li data-role="list-divider" >动态</li>
-			<li data-theme="c"><a href="#page2" data-transition="flip" onclick="initialQueryPersonNews()";>好友动态</a></li>
-			<li data-theme="c"><a href="#page3" data-transition="flip" onclick="initialQueryJDNews();">景区新鲜事</a></li>
+			<li data-theme="g"><a href="#page2" data-transition="flip" onclick="initialQueryPersonNews()";>好友动态</a></li>
+			<li data-theme="g"><a href="#page3" data-transition="flip" onclick="initialQueryJDNews();">景区新鲜事</a></li>
 			<li data-role="list-divider">关于我</li>
-			<li data-theme="c"><a href="#page4" data-transition="flip" onclick="initialQueryPersonNews();">个人主页</a></li>
-			<li data-theme="c"><a href="#msg-reply-panel" data-transition="flip">消息中心</a></li>
+			<li data-theme="g"><a href="#page4" data-transition="flip" onclick="initialQueryPersonNews();">个人主页</a></li>
+			<li data-theme="g"><a href="#msg-reply-panel" data-transition="flip">消息中心</a></li>
 			<li data-role="list-divider">操作</li>
-			<li data-theme="c"><a href="#page5" data-transition="flip">设置</a></li>
-			<li data-theme="c"><a>注销</a></li>
+			<li data-theme="g"><a href="#page5" data-transition="flip">设置</a></li>
+			<li data-theme="g"><a>注销</a></li>
 		</ul>
 	</div>
 </div>
@@ -703,14 +724,14 @@ function upLoadFile(path){
 
 
 <!--------------------------------------------------消息中心-新的朋友------------------------------------------------------>
-<div  data-role="page" id="msg-newf" data-theme="c">
-	<div data-role="header" data-theme="c">
+<div  data-role="page" id="msg-newf" data-theme="g">
+	<div data-role="header" data-theme="g">
 		<h1>消息中心</h1>
 		<a href="#msg-newf-panel" data-icon="bars" data-iconpos="notext" data-shadow="false" data-iconshadow="false">Menu</a>
     </div>
 	
 	<!-----------------------------消息列表------------------------------->
-	<div data-role="content" data-theme="c">
+	<div data-role="content" data-theme="g">
 		<ul data-role="listview" id="newf-list">
 			<li id="2-newf">
 				<a href="#zone-others">
@@ -748,7 +769,7 @@ function upLoadFile(path){
 			</li>
 		</ul>
 	</div>
-	<div data-role="footer" data-theme="c" data-position="fixed" >	
+	<div data-role="footer" data-theme="g" data-position="fixed" >	
 		<div data-role="navbar">
 			<ul>
 				<li><a href="#msg-reply">评论回复</a></li>
@@ -758,20 +779,20 @@ function upLoadFile(path){
 	</div>
 	
 	<!---------------------------------新的朋友panel----------------------------------->
-	<div data-role="panel" id="msg-newf-panel" data-theme="b" data-position-fixed="true">
-		<ul data-role="listview" data-divider-theme="b" data-inset="false">
-			<li data-theme="a"><img src="img/Avatar.jpg" height="100%">王小明</li>
-			<li data-theme="c"><a href="#page0" data-transition="flip">首页</a></li>
-			<li data-theme="c"><a onclick="window.location.href='#page1';" data-transition="filp">景区地图</a></li>
+	<div data-role="panel" id="msg-newf-panel" data-theme="g" data-position-fixed="true">
+		<ul data-role="listview" data-divider-theme="g" data-inset="false">
+			<li data-theme="g"><img src="img/Avatar.jpg" height="100%">王小明</li>
+			<li data-theme="g"><a href="#page0" data-transition="flip">首页</a></li>
+			<li data-theme="g"><a onclick="window.location.href='#page1';" data-transition="filp">景区地图</a></li>
 			<li data-role="list-divider" >动态</li>
-			<li data-theme="c"><a href="#page2" data-transition="flip" onclick="initialFriendStatus();">好友动态</a></li>
-			<li data-theme="c"><a href="#page3" data-transition="flip" onclick="initialQueryJDNews();">景区新鲜事</a></li>
+			<li data-theme="g"><a href="#page2" data-transition="flip" onclick="initialFriendStatus();">好友动态</a></li>
+			<li data-theme="g"><a href="#page3" data-transition="flip" onclick="initialQueryJDNews();">景区新鲜事</a></li>
 			<li data-role="list-divider">关于我</li>
-			<li data-theme="c"><a href="#page4" data-transition="flip" onclick="initialQueryPersonNews();">个人主页</a></li>
-			<li data-theme="c"><a href="#msg-newf-panel" data-transition="flip">消息中心</a></li>
+			<li data-theme="g"><a href="#page4" data-transition="flip" onclick="initialQueryPersonNews();">个人主页</a></li>
+			<li data-theme="g"><a href="#msg-newf-panel" data-transition="flip">消息中心</a></li>
 			<li data-role="list-divider">操作</li>
-			<li data-theme="c"><a href="#page5" data-transition="flip">设置</a></li>
-			<li data-theme="c"><a>注销</a></li>
+			<li data-theme="g"><a href="#page5" data-transition="flip">设置</a></li>
+			<li data-theme="g"><a>注销</a></li>
 		</ul>
 	</div>
 </div>
@@ -779,8 +800,8 @@ function upLoadFile(path){
 
 
 <!-------------------------------------------------------好友动态---------------------------------------------------------->
-<div data-role="page" id="page2" data-theme="c" >
-    <div data-role="header" data-theme="c" data-tap-toggle="false">
+<div data-role="page" id="page2" data-theme="g" >
+    <div data-role="header" data-theme="g" data-tap-toggle="false">
       <h1>好友动态</h1>
       <a href="#panel2" data-icon="bars" data-iconpos="notext" data-shadow="false" data-iconshadow="false">Menu</a>
 	  <button type="button" id="friendRefresh" data-icon="refresh">刷新</button>
@@ -792,32 +813,32 @@ function upLoadFile(path){
       </table>
       <button type="button" id="friendLoadMore">点击加载更多</button>
     </div>
-    <!--div data-role="popup" id="popupReply" data-theme="c" class="ui-corner-all">
+    <!--div data-role="popup" id="popupReply" data-theme="g" class="ui-corner-all">
 				<div style="padding:10px 20px;">
 				  <h3>请输入回复内容</h3>
 		          <label for="un" class="ui-hidden-accessible">Comment:</label>
-		          <input type="text" name="comment" id="reply-content-friend" value="" placeholder="回复内容" data-theme="a" />
-				  <button data-theme="b" id="button-send-friend">发送</button>
+		          <input type="text" name="comment" id="reply-content-friend" value="" placeholder="回复内容" data-theme="g" />
+				  <button data-theme="g" id="button-send-friend">发送</button>
 				</div>
 		</div-->
-	<div data-role="footer" data-theme="c" data-position="fixed" data-tap-toggle="false" id="page2-reply"style="display:none">
+	<div data-role="footer" data-theme="g" data-position="fixed" data-tap-toggle="false" id="page2-reply"style="display:none">
 		<div style="width:88%;margin-left:1%;"><input type="text" id="reply-content" value="" data-mini="true" /></div>
 		<a id="button-send-friend" data-role="button" class="ui-btn-right" style="margin-top:1px;margin-right:1%;width:8%">发布</a>
 	</div>
-    <div data-role="panel" id="panel2" data-position="left" data-display="push" data-theme="b" data-position-fixed="true">
-		<ul data-role="listview" data-divider-theme="b" data-inset="false">
-			<li data-theme="a"><img src="img/Avatar.jpg" height="100%">王小明</li>
-			<li data-theme="c"><a href="#page0" data-transition="flip">首页</a></li>
-			<li data-theme="c"><a onclick="window.location.href='#page1';" data-transition="filp">景区地图</a></li>
+    <div data-role="panel" id="panel2" data-position="left" data-display="push" data-theme="g" data-position-fixed="true">
+		<ul data-role="listview" data-divider-theme="g" data-inset="false">
+			<li data-theme="g"><img src="img/Avatar.jpg" height="100%">王小明</li>
+			<li data-theme="g"><a href="#page0" data-transition="flip">首页</a></li>
+			<li data-theme="g"><a onclick="window.location.href='#page1';" data-transition="filp">景区地图</a></li>
 			<li data-role="list-divider" >动态</li>
-			<li data-theme="c"><a href="#panel2" data-transition="flip" onclick="initialFriendStatus();">好友动态</a></li>
-			<li data-theme="c"><a href="#page3" data-transition="flip" onclick="initialQueryJDNews();">景区新鲜事</a></li>
+			<li data-theme="g"><a href="#panel2" data-transition="flip" onclick="initialFriendStatus();">好友动态</a></li>
+			<li data-theme="g"><a href="#page3" data-transition="flip" onclick="initialQueryJDNews();">景区新鲜事</a></li>
 			<li data-role="list-divider">关于我</li>
-			<li data-theme="c"><a href="#page4" data-transition="flip" onclick="initialQueryPersonNews();">个人主页</a></li>
-			<li data-theme="c"><a href="#msg-reply" data-transition="flip">消息中心</a></li>
+			<li data-theme="g"><a href="#page4" data-transition="flip" onclick="initialQueryPersonNews();">个人主页</a></li>
+			<li data-theme="g"><a href="#msg-reply" data-transition="flip">消息中心</a></li>
 			<li data-role="list-divider">操作</li>
-			<li data-theme="c"><a href="#page5" data-transition="flip">设置</a></li>
-			<li data-theme="c"><a>注销</a></li>
+			<li data-theme="g"><a href="#page5" data-transition="flip">设置</a></li>
+			<li data-theme="g"><a>注销</a></li>
 		</ul>
     </div>
 </div>
@@ -825,8 +846,8 @@ function upLoadFile(path){
 
 
 <!------------------------------------------------------景区新鲜事--------------------------------------------------------->
-<div data-role="page" id="page3" data-theme="c" >
-    <div data-role="header" data-theme="c">
+<div data-role="page" id="page3" data-theme="g" >
+    <div data-role="header" data-theme="g">
       <h1>景区新鲜事</h1>
       <a href="#panel3" data-icon="bars" data-iconpos="notext" data-shadow="false" data-iconshadow="false">Menu</a>
 	  <button type="button" id="spotRefresh" data-icon="refresh">刷新</button>
@@ -838,20 +859,20 @@ function upLoadFile(path){
       </table>
       <button type="button" id="spotLoadMore">点击加载更多</button>
     </div>
-	<div data-role="panel" id="panel3" data-position="left" data-theme="b" data-position-fixed="true">
-		<ul data-role="listview" data-divider-theme="b" data-inset="false">
-			<li data-theme="a"><img src="img/Avatar.jpg" height="100%">王小明</li>
-			<li data-theme="c"><a href="#page0" data-transition="flip">首页</a></li>
-			<li data-theme="c"><a onclick="window.location.href='#page1';" data-transition="filp">景区地图</a></li>
+	<div data-role="panel" id="panel3" data-position="left" data-theme="g" data-position-fixed="true">
+		<ul data-role="listview" data-divider-theme="g" data-inset="false">
+			<li data-theme="g"><img src="img/Avatar.jpg" height="100%">王小明</li>
+			<li data-theme="g"><a href="#page0" data-transition="flip">首页</a></li>
+			<li data-theme="g"><a onclick="window.location.href='#page1';" data-transition="filp">景区地图</a></li>
 			<li data-role="list-divider" >动态</li>
-			<li data-theme="c"><a href="#page2" data-transition="flip" onclick="initialFriendStatus();">好友动态</a></li>
-			<li data-theme="c"><a href="#panel3" data-transition="flip" onclick="initialQueryJDNews();">景区新鲜事</a></li>
+			<li data-theme="g"><a href="#page2" data-transition="flip" onclick="initialFriendStatus();">好友动态</a></li>
+			<li data-theme="g"><a href="#panel3" data-transition="flip" onclick="initialQueryJDNews();">景区新鲜事</a></li>
 			<li data-role="list-divider">关于我</li>
-			<li data-theme="c"><a href="#page4" data-transition="flip" onclick="initialQueryPersonNews();">个人主页</a></li>
-			<li data-theme="c"><a href="#msg-reply" data-transition="flip">消息中心</a></li>
+			<li data-theme="g"><a href="#page4" data-transition="flip" onclick="initialQueryPersonNews();">个人主页</a></li>
+			<li data-theme="g"><a href="#msg-reply" data-transition="flip">消息中心</a></li>
 			<li data-role="list-divider">操作</li>
-			<li data-theme="c"><a href="#page5" data-transition="flip">设置</a></li>
-			<li data-theme="c"><a>注销</a></li>
+			<li data-theme="g"><a href="#page5" data-transition="flip">设置</a></li>
+			<li data-theme="g"><a>注销</a></li>
 		</ul>
 	</div>
 </div>
@@ -859,8 +880,8 @@ function upLoadFile(path){
 
 
 <!--------------------------------------------------个人主页-------------------------------------------------------->
-<div data-role="page" id="page4" data-theme="c" >
-<div data-role="header" data-theme="c">
+<div data-role="page" id="page4" data-theme="g" >
+<div data-role="header" data-theme="g">
   <h1>个人主页</h1>
   <a href="#panel4" data-icon="bars" data-iconpos="notext" data-shadow="false" data-iconshadow="false">Menu</a>
   <button type="button" id="myStatusRefresh" data-icon="refresh">刷新</button>
@@ -872,28 +893,28 @@ function upLoadFile(path){
   </table>
   <button type="button" id="myStatusLoadMore">点击加载更多</button>
 </div>
-	<!--div data-role="popup" id="popupReply" data-theme="c" class="ui-corner-all">
+	<!--div data-role="popup" id="popupReply" data-theme="g" class="ui-corner-all">
 			<div style="padding:10px 20px;">
 			  <h3>请输入回复内容</h3>
 			  <label for="un" class="ui-hidden-accessible">Comment:</label>
-			  <input type="text" name="comment" id="reply-content-personal" value="" placeholder="回复内容" data-theme="a" />
-			  <button data-theme="b" id="button-send-personal">发送</button>
+			  <input type="text" name="comment" id="reply-content-personal" value="" placeholder="回复内容" data-theme="g" />
+			  <button data-theme="g" id="button-send-personal">发送</button>
 			</div>
 	</div-->
-	<div data-role="panel" id="panel4" data-position="left" data-theme="b" data-position-fixed="true">
-		<ul data-role="listview" data-divider-theme="b" data-inset="false">
-			<li data-theme="a"><img src="img/Avatar.jpg" height="100%">王小明</li>
-			<li data-theme="c"><a href="#page0" data-transition="flip">首页</a></li>
-			<li data-theme="c"><a onclick="window.location.href='#page1';" data-transition="filp">景区地图</a></li>
+	<div data-role="panel" id="panel4" data-position="left" data-theme="g" data-position-fixed="true">
+		<ul data-role="listview" data-divider-theme="g" data-inset="false">
+			<li data-theme="g"><img src="img/Avatar.jpg" height="100%">王小明</li>
+			<li data-theme="g"><a href="#page0" data-transition="flip">首页</a></li>
+			<li data-theme="g"><a onclick="window.location.href='#page1';" data-transition="filp">景区地图</a></li>
 			<li data-role="list-divider" >动态</li>
-			<li data-theme="c"><a href="#page2" data-transition="flip" onclick="initialFriendStatus();">好友动态</a></li>
-			<li data-theme="c"><a href="#page3" data-transition="flip" onclick="initialQueryJDNews();">景区新鲜事</a></li>
+			<li data-theme="g"><a href="#page2" data-transition="flip" onclick="initialFriendStatus();">好友动态</a></li>
+			<li data-theme="g"><a href="#page3" data-transition="flip" onclick="initialQueryJDNews();">景区新鲜事</a></li>
 			<li data-role="list-divider">关于我</li>
-			<li data-theme="c"><a href="#panel4" data-transition="flip" onclick="initialQueryPersonNews();">个人主页</a></li>
-			<li data-theme="c"><a href="#msg-reply" data-transition="flip">消息中心</a></li>
+			<li data-theme="g"><a href="#panel4" data-transition="flip" onclick="initialQueryPersonNews();">个人主页</a></li>
+			<li data-theme="g"><a href="#msg-reply" data-transition="flip">消息中心</a></li>
 			<li data-role="list-divider">操作</li>
-			<li data-theme="c"><a href="#page5" data-transition="flip">设置</a></li>
-			<li data-theme="c"><a>注销</a></li>
+			<li data-theme="g"><a href="#page5" data-transition="flip">设置</a></li>
+			<li data-theme="g"><a>注销</a></li>
 		</ul>
 	</div>
 </div>
@@ -901,36 +922,36 @@ function upLoadFile(path){
 
 
 <!------------------------------------------------------设置---------------------------------------------------------->
-<div data-role="page" id="page5" data-theme="c" >
-	<div data-role="header" data-theme="c">
+<div data-role="page" id="page5" data-theme="g" >
+	<div data-role="header" data-theme="g">
 	  <h1>设置</h1>
 	  <a href="#panel5" data-icon="bars" data-iconpos="notext" data-shadow="false" data-iconshadow="false">Menu</a>
 	</div>
 	<div data-role="content" style="padding: 0%">
 	   
 	</div>
-	<div data-role="panel" id="panel5" data-theme="b" data-position-fixed="true">
-	   <ul data-role="listview" data-divider-theme="b" data-inset="false">
-			<li data-theme="a"><img src="img/Avatar.jpg" height="100%">王小明</li>
-			<li data-theme="c"><a href="#page0" data-transition="flip">首页</a></li>
-			<li data-theme="c"><a data-transition="filp" onclick="window.location.href='#page1';">景区地图</a></li>
+	<div data-role="panel" id="panel5" data-theme="g" data-position-fixed="true">
+	   <ul data-role="listview" data-divider-theme="g" data-inset="false">
+			<li data-theme="g"><img src="img/Avatar.jpg" height="100%">王小明</li>
+			<li data-theme="g"><a href="#page0" data-transition="flip">首页</a></li>
+			<li data-theme="g"><a data-transition="filp" onclick="window.location.href='#page1';">景区地图</a></li>
 			<li data-role="list-divider" >动态</li>
-			<li data-theme="c"><a href="#page2" data-transition="flip" onclick="initialFriendStatus();">好友动态</a></li>
-			<li data-theme="c"><a href="#page3" data-transition="flip" onclick="initialQueryJDNews();">景区新鲜事</a></li>
+			<li data-theme="g"><a href="#page2" data-transition="flip" onclick="initialFriendStatus();">好友动态</a></li>
+			<li data-theme="g"><a href="#page3" data-transition="flip" onclick="initialQueryJDNews();">景区新鲜事</a></li>
 			<li data-role="list-divider">关于我</li>
-			<li data-theme="c"><a href="#page4" data-transition="flip" onclick="initialQueryPersonNews();">个人主页</a></li>
-			<li data-theme="c"><a href="#msg-reply" data-transition="flip">消息中心</a></li>
+			<li data-theme="g"><a href="#page4" data-transition="flip" onclick="initialQueryPersonNews();">个人主页</a></li>
+			<li data-theme="g"><a href="#msg-reply" data-transition="flip">消息中心</a></li>
 			<li data-role="list-divider">操作</li>
-			<li data-theme="c"><a href="#panel5" data-transition="flip">设置</a></li>
-			<li data-theme="c"><a>注销</a></li>
+			<li data-theme="g"><a href="#panel5" data-transition="flip">设置</a></li>
+			<li data-theme="g"><a>注销</a></li>
 	  </ul>
 	</div>
 </div>
 <!---------------------------------------------------------景点介绍-------------------------------------------------------->
-<div data-role="page" id="introduce" data-theme="c">
+<div data-role="page" id="introduce" data-theme="g">
 	<div data-role="header">
 		<h1>详细信息</h1>
-		<a data-rel="back" data-theme="c" >返回</a>
+		<a data-rel="back" data-theme="g" >返回</a>
 		<div data-role="navbar">
 			<ul>
 				<li><a href="#" class="ui-btn-active ui-state-persist">介绍</a></li>
@@ -975,10 +996,10 @@ function upLoadFile(path){
 	</div>
 
 </div><!-- /page -->
-<div data-role="page" id="comment" data-theme="c">
+<div data-role="page" id="comment" data-theme="g">
 	<div data-role="header">
 		<h1>详细信息</h1>
-		<a data-rel="back" data-theme="c" >返回</a>
+		<a data-rel="back" data-theme="g" >返回</a>
 		<button type="button" id="commentRefresh" data-icon="refresh">刷新</button>
 		<div data-role="navbar">
 			<ul>
