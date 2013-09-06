@@ -5,22 +5,14 @@ var queryAnswerCount=0;
 var queryFriendsId;
 var queryMessageId;
 var queryJingdianNewsId;
-
+var queryAllId;
 /*************************************初始调用*************************************/
 function init(){
-
 	getSelfInfo(); 
-	getFriendInfo();
 	myListener();
-	showMyPosition(31.88736,118.83043);
-	//foot_print();
-	queryMessageId=setInterval(queryMessage,1000);
-	sendLocationIntervalId = setInterval(sendLocation,1000);
-	queryFriendsId = setInterval(queryFriends,1000);
-	queryJingdianNewsId=setInterval(queryJingdianNews,1000);
-	//aaa();
-	
-}	
+	//queryAllId = setInterval(queryAll,1000);
+	queryAll();
+}
 
 /***********************************添加景点关注***********************************/
 function eyeOn(idName){
@@ -33,13 +25,11 @@ function eyeOn(idName){
 	}
     var param ="idName="+idName+"&t="+Math.random();
 		//console.log(param);
-	var url = "http://192.168.1.101/server/eyeOn.php";
+	var url = "http://localhost/server/eyeOn.php";
 	xmlHttp.onreadystatechange = function(){
 		if(xmlHttp.readyState==4){
 		if(xmlHttp.status == 200){
 			var test = xmlHttp.responseText;
-			//console.log("From:eyeOn.php:");
-			//console.log(test);
 			}
 		}
 	};
@@ -48,45 +38,6 @@ function eyeOn(idName){
 	xmlHttp.send(param);
 }
 
-/********************************实时查找景点消息**********************************/
-function queryJingdianNews(){
-	var xmlHttp;
-	if(window.ActiveXObject){
-		xmlHttp = new ActiveXObject("Microsoft.XMLHttp");
-	}else if(window.XMLHttpRequest){
-		xmlHttp = new XMLHttpRequest();
-	}
-    var param ="t="+Math.random();
-	var url = "http://192.168.1.101/server/queryJingdianNews.php";
-	xmlHttp.onreadystatechange = function(){
-		if(xmlHttp.readyState == 4){
-		if(xmlHttp.status == 200){
-			var test = xmlHttp.responseText;
-			//console.log("From:queryJingdianNews.php:");
-			//console.log(test);
-			if(test=="1"){
-				//console.log("没有新消息！");
-			}
-			else{
-				var news = eval("("+test+")");//形如下面的JSON数组：
-				//[{"Id":"1","Head":"","Name":"\u7126\u5ef7\u6807\u9986","Picture":"jj","Content":"\u5feb\u4e50\u7684\u8682\u86b1"}] 
-				for(var i=0;i<news.length;i++){
-					var id=news[i].IdName;
-					var pic=news[i].Picture;
-					if(pic==""){
-						$("#spot-word-tmpl").tmpl(news[i]).appendTo("#"+id);
-					}else{
-						$("#spot-pic-tmpl").tmpl(news[i]).appendTo("#"+id);
-					}
-				}
-			}
-			}
-		}
-	};
-	xmlHttp.open("POST",url);
-	xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-	xmlHttp.send(param);
-}
 
 /********************地图消息发送和请求好友消息，发布文字状态**********************/
 function sendMessage(){
@@ -100,7 +51,7 @@ function sendMessage(){
 	}
     var param ="content="+content+"&t="+Math.random();
 		//console.log(param);
-	var url = "http://192.168.1.101/server/sendMessage.php";
+	var url = "http://localhost/server/sendMessage.php";
 	xmlHttp.onreadystatechange = function(){
 		if(xmlHttp.readyState == 4){
 		if(xmlHttp.status == 200){
@@ -131,7 +82,7 @@ function sendMessage2(){
 	}
     var param ="content="+content+"&t="+Math.random();
 		//console.log(param);
-	var url = "http://192.168.1.101/server/sendMessage.php";
+	var url = "http://localhost/server/sendMessage.php";
 	xmlHttp.onreadystatechange = function(){
 		if(xmlHttp.readyState == 4){
 		if(xmlHttp.status == 200){
@@ -141,47 +92,6 @@ function sendMessage2(){
 			if(test!="0"){
 			//var answer = eval("("+test+")");
 			alert("消息发送失败！");
-			}
-			}
-		}
-	};
-	xmlHttp.open("POST",url);
-	xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-	xmlHttp.send(param);
-}
-
-/******************************实时查询好友发布的状态******************************/
-function queryMessage(){//need to be added into init()
-	var xmlHttp;
-	if(window.ActiveXObject){
-		xmlHttp = new ActiveXObject("Microsoft.XMLHttp");
-	}else if(window.XMLHttpRequest){
-		xmlHttp = new XMLHttpRequest();
-	}
-    var param ="t="+Math.random();
-		//console.log(param);
-	var url = "http://192.168.1.101/server/queryMessage.php";
-	xmlHttp.onreadystatechange = function(){
-		if(xmlHttp.readyState == 4){
-		if(xmlHttp.status == 200){
-			var test = xmlHttp.responseText;
-			//console.log("From:queryMessage.php:");
-			//console.log(test);
-			if(test=="1"){
-				//console.log("没有新消息！");
-			}
-			else{
-				var news = eval("("+test+")");//形如下面的JSON数组：
-				//[{"Longitude":"0","Latitude":"0","Head":"http:\/\/192.168.1.101\/register8.24\/files\/D.jpg","Id":"4","Name":"D","Picture":"","Content":"\u7537\u4eba\u5c31\u662f\u7d2f\uff01"},{"Longitude":"0","Latitude":"0","Head":"http:\/\/192.168.1.101\/register8.24\/files\/D.jpg","Id":"4","Name":"D","Picture":"","Content":"\u7537\u4eba\u5c31\u662f\u7d2f\uff01"},{"Longitude":"0","Latitude":"0","Head":"http:\/\/192.168.1.101\/register8.24\/files\/D.jpg","Id":"4","Name":"D","Picture":"","Content":"\u7537\u4eba\u5c31\u662f\u7d2f\uff01"},{"Longitude":"0","Latitude":"0","Head":"http:\/\/192.168.1.101\/register8.24\/files\/C.jpg","Id":"3","Name":"C","Picture":"","Content":"\u7537\u4eba\u5c31\u662f\u7d2f\uff01"},{"Longitude":"0","Latitude":"0","Head":"http:\/\/192.168.1.101\/register8.24\/files\/D.jpg","Id":"4","Name":"D","Picture":"","Content":"\u7537\u4eba\u5c31\u662f\u7d2f\uff01"},{"Longitude":"0","Latitude":"0","Head":"http:\/\/192.168.1.101\/register8.24\/files\/D.jpg","Id":"4","Name":"D","Picture":"","Content":"\u7537\u4eba\u5c31\u662f\u7d2f\uff01"},{"Longitude":"0","Latitude":"0","Head":"http:\/\/192.168.1.101\/register8.24\/files\/D.jpg","Id":"4","Name":"D","Picture":"","Content":"\u7537\u4eba\u5c31\u662f\u7d2f\uff01"}]
-				for(var i=0;i<news.length;i++){
-					var id=news[i].Id;
-					var pic=news[i].Picture;
-					if(pic==""){
-						$("#status-word-tmpl").tmpl(news[i]).appendTo("#"+id);
-					}else{
-						$("#status-pic-tmpl").tmpl(news[i]).appendTo("#"+id);
-					}
-				}
 			}
 			}
 		}
@@ -201,7 +111,7 @@ function getSelfInfo(){
 	}
     var param ="t="+Math.random();
 		//console.log(param);
-	var url = "http://192.168.1.101/server/getSelfInfo.php";
+	var url = "http://localhost/server/getSelfInfo.php";
 	xmlHttp.onreadystatechange = function(){
 		if(xmlHttp.readyState==4){
 		if(xmlHttp.status == 200){
@@ -219,70 +129,6 @@ function getSelfInfo(){
 	xmlHttp.send(param);
 }
 
-/***********************************添加好友到地图*********************************/
-function getFriendInfo(){
-	var xmlHttp;
-	if(window.ActiveXObject){
-		xmlHttp = new ActiveXObject("Microsoft.XMLHttp");
-	}else if(window.XMLHttpRequest){
-		xmlHttp = new XMLHttpRequest();
-	}
-    var param ="t="+Math.random();
-		//console.log(param);
-	var url = "http://192.168.1.101/server/getFriendInfo.php";
-	xmlHttp.onreadystatechange = function(){
-		if(xmlHttp.readyState==4){
-		if(xmlHttp.status == 200){
-			var test = xmlHttp.responseText;
-			var friends = eval("("+test+")");
-			var flag=0;
-			if(flag==0){
-				for(var i=0;i<friends.length;i++){
-					$("#user-friend-tmpl").tmpl(friends[i]).appendTo("#map-sketch");
-				}
-				flag=1;
-			}
-			for(var i=0;i<friends.length;i++){
-				showAllPosition(friends[i].Latitude,friends[i].Longitude,friends[i].Id);
-			}
-			//console.log("From:getFriendInfo.php:");
-			//console.log(test);
-			//console.log(friends[0].Name);
-		}
-		}
-	};
-	xmlHttp.open("POST",url);
-	xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-	xmlHttp.send(param);
-}
-
-/***********************************添加驴友到地图*********************************/
-function getStrangeInfo(){
-	var xmlHttp;
-	if(window.ActiveXObject){
-		xmlHttp = new ActiveXObject("Microsoft.XMLHttp");
-	}else if(window.XMLHttpRequest){
-		xmlHttp = new XMLHttpRequest();
-	}
-    var param ="t="+Math.random();
-		//console.log(param);
-	var url = "http://192.168.1.101/server/getStrangeInfo.php";
-	xmlHttp.onreadystatechange = function(){
-		if(xmlHttp.readyState==4){
-		if(xmlHttp.status == 200){
-			var test = xmlHttp.responseText;
-			var strange = eval("("+test+")");
-			//此处动态添加div
-			//console.log("From:getStrangeInfo.php:");
-			//console.log(test);
-			//console.log(strange[0].Name);
-		}
-		}
-	};
-	xmlHttp.open("POST",url);
-	xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-	xmlHttp.send(param);
-}
 
 /**********************************发送好友请求************************************/
 function requestFriends(targetId){
@@ -300,54 +146,13 @@ function requestFriends(targetId){
 	}
     var param ="targetId="+targetId+"&t="+Math.random();
 		//console.log(param);
-	var url = "http://192.168.1.101/server/requestFriends.php";
+	var url = "http://localhost/server/requestFriends.php";
 	xmlHttp.onreadystatechange = function(){
 		if(xmlHttp.readyState==4){
 		if(xmlHttp.status == 200){
 			var test = xmlHttp.responseText;
 			//console.log("From:requestFriends.php:");
 			//console.log(test);
-			}
-		}
-	};
-	xmlHttp.open("POST",url);
-	xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-	xmlHttp.send(param);
-}
-
-/*******用户登录成功后调用，查询是否有新的好友请求，返回请求该用户的JSON数组*******/
-function queryFriends(){
-	var xmlHttp;
-	if(window.ActiveXObject){
-		xmlHttp = new ActiveXObject("Microsoft.XMLHttp");
-	}else if(window.XMLHttpRequest){
-		xmlHttp = new XMLHttpRequest();
-	}
-    var param ="t="+Math.random();
-		//console.log(param);
-	var url = "http://192.168.1.101/server/queryFriends.php";
-	xmlHttp.onreadystatechange = function(){
-		if(xmlHttp.readyState==4){
-		if(xmlHttp.status == 200){
-			var test = xmlHttp.responseText;
-			//console.log("From:queryFriends.php:");
-			//console.log(test);
-			if(test==-1){
-				alert("Update 失败！");
-			}else{
-			if(test!="1"){
-				var strange = eval("("+test+")");
-				for(var i=0;i<strange.length;i++){
-					$("#newf-tmpl").tmpl(strange[i]).prependTo("#newf-list");
-					//alert(i)
-				}	
-					myListener();
-
-			}else{
-			test = "没有人请求添加我为好友";
-			}
-			}
-			
 			}
 		}
 	};
@@ -368,7 +173,7 @@ function answerFriends(answer,answerUserId){
 	}
     var param ="answer="+answer+"&answerUserId="+answerUserId+"&t="+Math.random();
 		//console.log(param);
-	var url = "http://192.168.1.101/server/answerFriends.php";
+	var url = "http://localhost/server/answerFriends.php";
 	xmlHttp.onreadystatechange = function(){
 		if(xmlHttp.readyState == 4){
 		if(xmlHttp.status == 200){
@@ -393,7 +198,7 @@ function queryAnswer(){
 	}
     var param ="t="+Math.random();
 		//console.log(param);
-	var url = "http://192.168.1.101/server/queryAnswer.php";
+	var url = "http://localhost/server/queryAnswer.php";
 	xmlHttp.onreadystatechange = function(){
 		if(xmlHttp.readyState == 4){
 		if(xmlHttp.status == 200){
@@ -472,7 +277,7 @@ function aaa(){
 		$("#newf-tmpl").tmpl(json1[i]).prependTo("#newf-list");
 	}
 	myListener();
-	var json2=[{"Longitude":"0","Latitude":"0","Head":"http:\/\/192.168.1.101\/register8.24\/files\/D.jpg","Id":"4","Name":"D","Picture":"","Content":"\u7537\u4eba\u5c31\u662f\u7d2f\uff01"},{"Longitude":"0","Latitude":"0","Head":"http:\/\/192.168.1.101\/register8.24\/files\/D.jpg","Id":"4","Name":"D","Picture":"","Content":"\u7537\u4eba\u5c31\u662f\u7d2f\uff01"},{"Longitude":"0","Latitude":"0","Head":"http:\/\/192.168.1.101\/register8.24\/files\/D.jpg","Id":"4","Name":"D","Picture":"","Content":"\u7537\u4eba\u5c31\u662f\u7d2f\uff01"},{"Longitude":"0","Latitude":"0","Head":"http:\/\/192.168.1.101\/register8.24\/files\/C.jpg","Id":"3","Name":"C","Picture":"","Content":"\u7537\u4eba\u5c31\u662f\u7d2f\uff01"},{"Longitude":"0","Latitude":"0","Head":"http:\/\/192.168.1.101\/register8.24\/files\/D.jpg","Id":"4","Name":"D","Picture":"","Content":"\u7537\u4eba\u5c31\u662f\u7d2f\uff01"},{"Longitude":"0","Latitude":"0","Head":"http:\/\/192.168.1.101\/register8.24\/files\/D.jpg","Id":"4","Name":"D","Picture":"","Content":"\u7537\u4eba\u5c31\u662f\u7d2f\uff01"},{"Longitude":"0","Latitude":"0","Head":"http:\/\/192.168.1.101\/register8.24\/files\/D.jpg","Id":"4","Name":"D","Picture":"","Content":"\u7537\u4eba\u5c31\u662f\u7d2f\uff01"}]
+	var json2=[{"Longitude":"0","Latitude":"0","Head":"http:\/\/localhost\/register8.24\/files\/D.jpg","Id":"4","Name":"D","Picture":"","Content":"\u7537\u4eba\u5c31\u662f\u7d2f\uff01"},{"Longitude":"0","Latitude":"0","Head":"http:\/\/localhost\/register8.24\/files\/D.jpg","Id":"4","Name":"D","Picture":"","Content":"\u7537\u4eba\u5c31\u662f\u7d2f\uff01"},{"Longitude":"0","Latitude":"0","Head":"http:\/\/localhost\/register8.24\/files\/D.jpg","Id":"4","Name":"D","Picture":"","Content":"\u7537\u4eba\u5c31\u662f\u7d2f\uff01"},{"Longitude":"0","Latitude":"0","Head":"http:\/\/localhost\/register8.24\/files\/C.jpg","Id":"3","Name":"C","Picture":"","Content":"\u7537\u4eba\u5c31\u662f\u7d2f\uff01"},{"Longitude":"0","Latitude":"0","Head":"http:\/\/localhost\/register8.24\/files\/D.jpg","Id":"4","Name":"D","Picture":"","Content":"\u7537\u4eba\u5c31\u662f\u7d2f\uff01"},{"Longitude":"0","Latitude":"0","Head":"http:\/\/localhost\/register8.24\/files\/D.jpg","Id":"4","Name":"D","Picture":"","Content":"\u7537\u4eba\u5c31\u662f\u7d2f\uff01"},{"Longitude":"0","Latitude":"0","Head":"http:\/\/localhost\/register8.24\/files\/D.jpg","Id":"4","Name":"D","Picture":"","Content":"\u7537\u4eba\u5c31\u662f\u7d2f\uff01"}]
 	for(var i=0;i<json2.length;i++){
 		var id=json2[i].Id;
 		var pic=json2[i].Picture;
@@ -482,4 +287,109 @@ function aaa(){
 			$("#status-pic-tmpl").tmpl(json2[i]).appendTo("#"+id);
 		}
 	}
+}
+
+function queryAll(){//查询所有的景点消息
+	 var flag = 0;
+	var xmlHttp;
+	if(window.ActiveXObject){
+		xmlHttp = new ActiveXObject("Microsoft.XMLHttp");
+	}else if(window.XMLHttpRequest){
+		xmlHttp = new XMLHttpRequest();
+	}
+	sendLocation();//此处应该是向后台发送位置的函数，而且发送数据应该采用下面注掉的方法。
+	/*
+	var param ="longitude="+lon+
+		"&latitude="+lat+
+		"&t="+Math.random();
+		*/
+	var param ="t="+Math.random();
+	var url = "http://localhost/server/totalHiTripMapServer.php";
+	xmlHttp.onreadystatechange = function(){
+		if(xmlHttp.readyState == 4){
+		if(xmlHttp.status == 200){
+			var allMessage = xmlHttp.responseText;
+			//console.log("All.php:");
+			//console.log(allMessage);
+			
+			if(allMessage==""){
+				console.log("没有新消息！");
+			}
+			else{
+				var all = eval("("+allMessage+")");	
+				var friends =all["friendInfoInMap"];
+				var stranges = all['strangeInfoInMap'];
+				var strangeToBeFriend = all['strangeRequestInfo'];
+				//console.log(strangeToBeFriend);
+				var friendNews = all['friendNews'];
+				var JdNews = all['JdNews'];
+				if(friends!="")
+				{				
+					var flag=0;
+					if(flag==0){
+						for(var i=0;i<friends.length;i++){
+							$("#user-friend-tmpl").tmpl(friends[i]).appendTo("#map-sketch");
+						}
+						flag=1;
+					}
+					for(var i=0;i<friends.length;i++){
+						showAllPosition(friends[i].Latitude,friends[i].Longitude,friends[i].Id);
+					}
+				}
+				if(stranges!="")
+				{				
+					var flag=0;
+					if(flag==0){
+						for(var i=0;i<friends.length;i++){
+							$("#user-friend-tmpl").tmpl(friends[i]).appendTo("#map-sketch");
+						}
+						flag=1;
+					}
+					for(var i=0;i<friends.length;i++){
+						if(flag==0){
+						showAllPosition(friends[i].Latitude,friends[i].Longitude,friends[i].Id);
+						flag=1;
+						}
+					}
+				}
+				if(strangeToBeFriend!="")
+				{
+					for(var i=0;i<strangeToBeFriend.length;i++){
+						$("#newf-tmpl").tmpl(strangeToBeFriend[i]).prependTo("#newf-list");
+				}	
+					myListener();
+				}
+				if(friendNews!="")
+				{
+					for(var i=0;i<friendNews.length;i++){
+					var id=friendNews[i].Id;
+					var pic=friendNews[i].Picture;
+					if(pic==""){
+						$("#status-word-tmpl").tmpl(friendNews[i]).appendTo("#"+id);
+					}else{
+						$("#status-pic-tmpl").tmpl(friendNews[i]).appendTo("#"+id);
+					}
+				}
+				}
+				if(JdNews!="")
+				{
+					for(var i=0;i<JdNews.length;i++){
+					var id=JdNews[i].IdName;
+					var pic=JdNews[i].Picture;
+					if(pic==""){
+						$("#spot-word-tmpl").tmpl(JdNews[i]).appendTo("#"+id);
+					}else{
+						$("#spot-pic-tmpl").tmpl(JdNews[i]).appendTo("#"+id);
+					}
+				}
+				}
+				
+			}
+			
+			}
+		}
+	};
+	xmlHttp.open("POST",url);
+	xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+	xmlHttp.send(param);
 }
