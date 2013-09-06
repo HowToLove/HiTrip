@@ -371,7 +371,12 @@ a.spot{
 #popupPanel .ui-btn {
 	margin: 2em 15px
 }
-
+/***********************新消息提醒**********************/
+#msg-img{
+	position:absolute;
+	top:0;
+	right:-100px;
+}
 /************************滑动区域***********************/
 .slide{
 	position:absolute;
@@ -411,4 +416,19 @@ a.spot{
 	height:50px;
 	width:50px;
 	border:5px solid red;
+}
+.user-ego-small{
+	position:absolute;
+
+}
+.user-friend-small{
+	position:absolute;
+}
+.user-friend-small{
+	position:absolute;
+
+}
+.user-ego-small img,.user-friend-small img,.user-friend-small img{
+	max-width:10px;
+	max-height:10px;
 }

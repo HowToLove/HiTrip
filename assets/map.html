@@ -13,7 +13,7 @@
 <link href="css/Zone.css" rel="stylesheet">
 <link href="css/bootstrap.css" rel="stylesheet">
 
-<script type="text/javascript" src="js/cordova.js"></script>
+<!--script type="text/javascript" src="js/cordova.js"></script-->
 <script src="js/jquery-1.10.2.min.js"></script>
 <script src="js/jquery.tmpl.min.js"></script>
 <script src="js/Map.js"></script>
@@ -25,7 +25,7 @@
 
 <!--******************************************与拍照上传相关的代码******************************-->
 	
-	<script type="text/javascript" charset="utf-8">
+	<!--script type="text/javascript" charset="utf-8">
     var pictureSource;  
     var destinationType; 
     document.addEventListener("deviceready",onDeviceReady,false);
@@ -110,7 +110,7 @@ function upLoadFile(path){
 	{fileName:'file.jpg',chunkedMode:false},true);
 }
 
-</script>
+</script-->
 
 <!--script src="https://d10ajoocuyu32n.cloudfront.net/codiqa.ext.js"></script-->
 
@@ -473,7 +473,10 @@ function upLoadFile(path){
 			<img class="seal" src="img/star-fill.png" id="star-fill"/>
 			<img class="seal" src="img/star-twinkle.png" id="star-twinkle"/>
 		</div>
-		
+		<!--------------------新消息提醒-------------------->
+		<div id="msg-img">
+			<img src="img/msg.png"/>
+		</div>
 		<!----------------------滑动层---------------------->
 		<div class="slide" id="slide-left" draggable="false"></div>
 		<div class="slide" id="slide-right" draggable="false"></div>
@@ -483,11 +486,20 @@ function upLoadFile(path){
 			<div id="map-panorama">
 				<img id="map-panorama-map" src="img/Disney.jpg" />
 				<div id="select-box"></div>
+				<div class="user-ego-small" id="user-ego-small">
+					<img src="img/red.png"/>
+				</div>
+				<div class="user-friend-small" id="1-small">
+					<img src="img/orange.png"/>
+				</div>
+				<div class="user-friend-small" id="2-small">
+					<img src="img/orange.png"/>
+				</div>
+				<div class="user-stranger-small" id="3-small">
+					<img src="img/grey.png"/>
+				</div>
 			</div>
 		</div>
-		<!----------------------全景地图---------------------->
-		
-		
 	</div>
 	
 	<!---------------------景区地图panel--------------------->

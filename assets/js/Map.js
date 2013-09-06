@@ -79,6 +79,8 @@ function getPosition(){
 	//showAllPosition(position.coords.latitude,position.coords.longitude,"user-ego");
 	//showMyPosition(31.88646,118.81918);
 	showMyPosition(31.885700300,118.8136401);
+		getE("user-ego-small").style.top=anti_mapping_user_top(parseInt(getE("user-ego").style.top+0))+'px';
+	getE("user-ego-small").style.left=anti_mapping_user_left(parseInt(getE("user-ego").style.left+0))+'px';
 	//var lat=31.885700300;
  // var lon=118.8136401;
 	//alert("hi")
@@ -251,8 +253,10 @@ function movemouse(e){
 		else if(parseInt(dobj.style.left+0)<(w-2967)){//向左拖
 			dobj.style.left=''+(w-2967)+'px';
 		}
+		init_para();
+		anti_mapping(parseInt(dobj.style.top+0),parseInt(dobj.style.left+0))
 		return false;
-		}
+	}
 }
 
 function selectmouse(e){
@@ -350,11 +354,11 @@ function resize(){
 $(document).ready(function(){
 	/************************设置盖章***********************/
 	//getE("minilayer").style.height=(parseInt(document.body.clientHeight+0)-43)+'px';
-	
+
 	
 	/************************设置地图切换按钮位置***********************/
 	//getE("switch-button").style.top=(parseInt(document.body.clientHeight+0)-103)/2+'px';
-	
+	init_para()
 
 	
 	/************************状态发布栏***********************/
@@ -424,16 +428,19 @@ $(document).ready(function(){
 	/************************定位到我***********************/
 	$("#pinpoint-button").tap(function(){
 		pinpointCenter("#user-ego");
+		jump("user-ego");
+		jump("user-ego-small");
+		msg_show();
 	});
 
 	/************************遮罩出现***********************/
 	var flag_cover=0;
 	$(document).on("vmouseover","#slide-right",function(){
 		$("#map-panorama-map").css("margin-top",($("#cover").height()-$("#map-panorama-map").height())/2+'px');
-
-		
-		document.onmousemove=select_box_move;
 		init_para();
+		anti_mapping(getE("map-sketch").style.top,getE("map-sketch").style.left)
+		msg_hide();
+		
 
 		$("#cover").animate({
 			right:"0"
@@ -537,7 +544,8 @@ function button4_hide(){
 
 }
 
-/**********************************框跟随鼠标********************************/
+/**********************************框跟随鼠标*******************************
+document.onmousemove=select_box_move;
 function select_box_move(e){
 	var fobj = e.target ;
 	while (fobj.tagName != "HTML"  &&  fobj.className != "cover"){
@@ -557,7 +565,7 @@ function select_box_move(e){
 			
 		mapping(mouseH,mouseW);
 	}
-}
+}*/
 
 /**********************************遮罩层算数********************************/
 function cover_cal_top(t){
@@ -569,20 +577,45 @@ function cover_cal_left(l){
 
 /***********************************映射函数*********************************/
 function mapping(mouseH,mouseW){
-	maptop=-((mouseH-38-(coverH-imgH)/2)/scale-windowH/2);
-	console.log(maptop);
-	mapleft=-((mouseW-(coverW-imgW)/2)/scale-windowW/2);
+	var maptop=-((mouseH-38-(coverH-imgH)/2)/scale-windowH/2);
+	var mapleft=-((mouseW-(coverW-imgW)/2)/scale-windowW/2);
 	map_sketch_limit(maptop,mapleft);
 }
-function anti_mapping(){
-	
+/***********************************反向映射*********************************/
+function anti_mapping(mapT,mapL){
+	getE("select-box").style.top=((-mapT+windowH/2)*scale+(coverH-imgH)/2-30)+'px';
+	getE("select-box").style.left=((-mapL+windowW/2)*scale+(coverW-imgW)/2-30)+'px';
 }
-
-
-
-
-
-
+/***********************************头像映射*********************************/
+function anti_mapping_user_top(userT){
+	return (userT*scale+(coverH-imgH)/2);
+}
+function anti_mapping_user_left(userL){
+	return (userL*scale+(coverW-imgW)/2);
+}
+/***********************************头像跳动*********************************/
+function jump(id){
+	for(var i=0;i<10;i++){
+		$('#'+id).animate({
+			top:"-=25"
+		},300);
+		$('#'+id).animate({
+			top:"+=25"
+		},300);
+	}
+}
+/*******************************新消息提醒出现*******************************/
+function msg_show(){
+	$("#msg-img").animate({
+		right:"0"
+	},300);
+}
+/*******************************新消息提醒消失*******************************/
+function msg_hide(){
+	$("#msg-img").animate({
+		right:"-100"
+	},300);
+}
 /**********************************文字状态**********************************/
 var maxLength1 = 140; 
 function MaxInput1(form) {
