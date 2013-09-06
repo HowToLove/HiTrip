@@ -1,5 +1,3 @@
-var lastLongitude=1.1;//written by lanxiang 
-var lastLatitude=1.2;//written by lanxiang
 /********************************初始化一堆参数*******************************/
 var imgH,imgW,coverH,coverW,scale,windowH,windowW;
 function init_para(){
@@ -16,12 +14,8 @@ function init_para(){
 function getE(ele){
 	return document.getElementById(ele);
 }
-/*
-start
-written by lanxiang
-*/
+
 function check(lat,lon){
-//////////console.log(LastLongitude+"  "+Lon);
 	if(lastLongitude==lon)
 	{
 	return false;
@@ -30,8 +24,6 @@ function check(lat,lon){
 	return true;
 }
 function sendLocation(){
-	//////////console.log("lanxiang!");
-	//alert("")
 	/*
 	if (navigator.geolocation)
     {
@@ -46,44 +38,10 @@ function sendLocation(){
 
 //function getPosition(position)
 function getPosition(){
-  var xmlHttp;
-	if(window.ActiveXObject){
-		xmlHttp = new ActiveXObject("Microsoft.XMLHttp");
-	}else if(window.XMLHttpRequest){
-		xmlHttp = new XMLHttpRequest();
-	}
-  var lat=31.885700300;
-  var lon=118.8136401;
-  if(check(lat,lon)){//用来判断用户的位置是否发生了变化
-  lastLatitude=lat;
-  lastLongitude=lon; 
-  
-  var param ="longitude="+lon+
-		"&latitude="+lat+
-		"&t="+Math.random();
-		//////////console.log(param);
-	var url = "sendPosition.php";
-	xmlHttp.onreadystatechange = function(){
-		if(xmlHttp.readyState==4){
-		if(xmlHttp.status == 200){
-			var test = xmlHttp.responseText;
-			//////////console.log("From:sendPosition.php:");
-			////////console.log(test);
-		}
-		}
-	};
-	xmlHttp.open("POST",url);
-	xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-	xmlHttp.send(param);
-	}
-	//showAllPosition(position.coords.latitude,position.coords.longitude,"user-ego");
-	//showMyPosition(31.88646,118.81918);
-	showMyPosition(31.885700300,118.8136401);
+	showMyPosition(900,1600);
 		getE("user-ego-small").style.top=anti_mapping_user_top(parseInt(getE("user-ego").style.top+0))+'px';
 	getE("user-ego-small").style.left=anti_mapping_user_left(parseInt(getE("user-ego").style.left+0))+'px';
 	//var lat=31.885700300;
- // var lon=118.8136401;
-	//alert("hi")
 }
 function showError(error){
   switch(error.code) 
@@ -102,12 +60,18 @@ function showError(error){
       break;
     }
   }
-  /*
-  end 
-  written by lanxiang 
-  */
 
-var json=[{"IdName":"lwz","Top":"628","Left":"1064"},{"IdName":"jtbg","Top":"916","Left":"1600"},{"IdName":"jsjl","Top":"820","Left":"710"},{"IdName":"jzl","Top":"916","Left":"865"}];
+var json=[{"IdName":"hgndcb","Top":"1180","Left":"1500"},
+		  {"IdName":"mfqyzt","Top":"616","Left":"639"},
+		  {"IdName":"zygc","Top":"1300","Left":"740"},
+		  {"IdName":"hxsj","Top":"500","Left":"2095"},
+		  {"IdName":"mrsj","Top":"1469","Left":"2573"},
+		  {"IdName":"txsj","Top":"2000","Left":"87"},
+		  {"IdName":"mgxzdj","Top":"2535","Left":"1497"},
+		  {"IdName":"smjs","Top":"2535","Left":"297"},
+		  {"IdName":"yzfc","Top":"1843","Left":"2696"},
+		  {"IdName":"gwgs","Top":"1914","Left":"2313"},
+		  {"IdName":"fkch","Top":"900","Left":"2313"},];
 function Distance(latA,lonA,latB,lonB){
 	return (25960.23679735*(Math.acos(Math.sin(latA)*Math.sin(latB)+Math.cos(latA)*Math.cos(latB)*Math.cos(lonA-lonB))));
 }
@@ -122,7 +86,8 @@ function calLeft(x,y){
 	return 2.953059756*y-2.96137829*x+945;
 }
 var isSealed=false;
-function showMyPosition(lat,lon){
+function showMyPosition(top,left){
+	/*
 	var ad=524;
 	var an=Distance(31.8948,118.8090,lat,lon);
 	var dn=Distance(31.8948,118.8318,lat,lon);
@@ -130,6 +95,7 @@ function showMyPosition(lat,lon){
 	var oleft=Math.sqrt(Math.pow(an,2)-Math.pow(otop,2));
 	var top=calTop(otop,oleft);
 	var left=calLeft(otop,oleft);
+	*/
 	getE("user-ego").style.top=top+'px';
 	getE("user-ego").style.left=left+'px';
 	/*
@@ -140,14 +106,17 @@ function showMyPosition(lat,lon){
 	}
 	*/
 }
-function showAllPosition(lat,lon,id){
+function showAllPosition(top,left,id){
+	/*
 	var ad=524;
 	var an=Distance(31.8948,118.8090,lat,lon);
 	var dn=Distance(31.8948,118.8318,lat,lon);
 	var otop=2*triArea(ad,an,dn)/ad;
-	var oleft=Math.sqrt(Math.pow(an,2)-Math.pow(otop,2));
-	getE(id).style.top=calTop(otop,oleft)+'px';
-	getE(id).style.left=calLeft(otop,oleft)+'px';
+	var oleft=Math.sqrt(Math.pow(an,2)-Math.pow(otop,2));*/
+	//getE(id).style.top=calTop(otop,oleft)+'px';
+	//getE(id).style.left=calLeft(otop,oleft)+'px';
+	getE(id).style.top=top+'px';
+	getE(id).style.left=left+'px';
 }
 
 /**********************************景点盖章**********************************/
@@ -480,11 +449,84 @@ $(document).ready(function(){
 
 /**********************************显示足迹**********************************/
 function foot_print(){
-	var json_footprint=[{"Id":"footprint1","top":"250","left":"1000"},
-						{"Id":"footprint2","top":"250","left":"1100"},
-						{"Id":"footprint3","top":"250","left":"1200"},
-						{"Id":"footprint4","top":"250","left":"1300"}];
-	var footIntervalId = setInterval(foot,500);
+	var json_footprint=[{"Id":"footprint1","top":"2994","left":"1514"},
+						{"Id":"footprint2","top":"2915","left":"1614"},
+						{"Id":"footprint3","top":"2742","left":"1497"},
+						{"Id":"footprint4","top":"1860","left":"1497"},
+						{"Id":"footprint5","top":"1738","left":"1643"},
+						{"Id":"footprint6","top":"1771","left":"1926"},
+						{"Id":"footprint7","top":"1812","left":"2241"},
+						{"Id":"footprint8","top":"1996","left":"2500"},
+						{"Id":"footprint9","top":"2063","left":"2702"},
+						{"Id":"footprint10","top":"1875","left":"2910"},
+						{"Id":"footprint11","top":"1640","left":"2872"},
+						{"Id":"footprint12","top":"1488","left":"2557"},
+						{"Id":"footprint13","top":"1247","left":"2400"},
+						{"Id":"footprint14","top":"962","left":"2326"},
+						{"Id":"footprint15","top":"791","left":"2207"},
+						{"Id":"footprint16","top":"732","left":"2053"},
+						{"Id":"footprint17","top":"700","left":"1897"},
+						{"Id":"footprint18","top":"627","left":"1970"},
+						{"Id":"footprint19","top":"585","left":"1644"},
+						{"Id":"footprint20","top":"659","left":"1244"},
+						{"Id":"footprint21","top":"636","left":"1117"},
+						{"Id":"footprint22","top":"664","left":"931"},
+						{"Id":"footprint23","top":"711","left":"699"},
+						{"Id":"footprint24","top":"735","left":"666"},
+						{"Id":"footprint25","top":"804","left":"633"},
+						{"Id":"footprint26","top":"895","left":"705"},
+						{"Id":"footprint27","top":"982","left":"724"},
+						{"Id":"footprint28","top":"1122","left":"687"},
+						{"Id":"footprint29","top":"1299","left":"684"},
+						{"Id":"footprint30","top":"1408","left":"639"},
+						{"Id":"footprint31","top":"1482","left":"550"},
+						{"Id":"footprint32","top":"1564","left":"315"},
+						{"Id":"footprint33","top":"1650","left":"160"},
+						{"Id":"footprint34","top":"1800","left":"149"},
+						{"Id":"footprint35","top":"1917","left":"141"},
+						{"Id":"footprint36","top":"1900","left":"205"},
+						{"Id":"footprint37","top":"2055","left":"228"},
+						{"Id":"footprint38","top":"2162","left":"248"},
+						{"Id":"footprint39","top":"2226","left":"192"},
+						{"Id":"footprint40","top":"2357","left":"220"},
+						{"Id":"footprint41","top":"2382","left":"110"},
+						{"Id":"footprint42","top":"2487","left":"75"},
+						{"Id":"footprint43","top":"2575","left":"174"},
+						{"Id":"footprint44","top":"2565","left":"285"},
+						{"Id":"footprint45","top":"2571","left":"101"},
+						{"Id":"footprint46","top":"2429","left":"77"},
+						{"Id":"footprint47","top":"2358","left":"210"},
+						{"Id":"footprint48","top":"2262","left":"344"},
+						{"Id":"footprint49","top":"2171","left":"398"},
+						{"Id":"footprint50","top":"2101","left":"384"},
+						{"Id":"footprint51","top":"2027","left":"459"},
+						{"Id":"footprint52","top":"1899","left":"554"},
+						{"Id":"footprint53","top":"1862","left":"598"},
+						{"Id":"footprint54","top":"1873","left":"673"},
+						{"Id":"footprint55","top":"1896","left":"715"},
+						{"Id":"footprint56","top":"1914","left":"762"},
+						{"Id":"footprint57","top":"1920","left":"859"},
+						{"Id":"footprint58","top":"1901","left":"924"},
+						{"Id":"footprint59","top":"1872","left":"982"},
+						{"Id":"footprint60","top":"1846","left":"1044"},
+						{"Id":"footprint61","top":"1820","left":"1111"},
+						{"Id":"footprint62","top":"1794","left":"1156"},
+						{"Id":"footprint63","top":"1772","left":"1213"},
+						{"Id":"footprint64","top":"1756","left":"1281"},
+						{"Id":"footprint65","top":"1758","left":"1335"},
+						{"Id":"footprint66","top":"1686","left":"1351"},
+						{"Id":"footprint67","top":"1629","left":"1369"},
+						{"Id":"footprint68","top":"1580","left":"1411"},
+						{"Id":"footprint69","top":"1564","left":"1441"},
+						{"Id":"footprint70","top":"1540","left":"1490"},
+						{"Id":"footprint71","top":"1446","left":"1490"},
+						{"Id":"footprint72","top":"1338","left":"1490"},
+						{"Id":"footprint73","top":"1650","left":"1490"},
+						{"Id":"footprint74","top":"1669","left":"1463"},
+						{"Id":"footprint75","top":"1695","left":"1452"},
+						{"Id":"footprint76","top":"1746","left":"1483"},
+						{"Id":"footprint77","top":"1778","left":"1495"}];
+	var footIntervalId = setInterval(foot,300);
 	var i=0;
 	function foot(){
 		if(i>=json_footprint.length)

@@ -291,7 +291,7 @@ function upLoadFile(path){
 <div data-role="page" id="page0" data-theme="c" >
     <div data-role="header" data-theme="c">
       <h1>首页</h1>
-      <a href="#panel0" data-icon="bars" data-iconpos="notext" data-shadow="false" data-iconshadow="false">Menu</a>
+      <a href="#panel0" data-icon="bars" data-iconpos="notext" data-s hadow="false" data-iconshadow="false">Menu</a>
     </div>
     <div data-role="content" style="padding: 0%">
 		<div>
@@ -533,10 +533,13 @@ function upLoadFile(path){
 	<div data-role="content" data-theme="c" style="padding:0">
 		<!--------------分享功能-------------->
 		<div class="jiathis_style_32x32" id="jiathis">
-			<div class="count-word">
-				<div style="margin-left:8px;float:left;">景点盖章</div>
+		<div class="count-word">
+				<div style="margin-left:8px;float:left;">
+					<p style="white-space:pre;color:gray" >2013年9月7日      星期六      小雨</p>
+				</div>
 				<p style="margin-right:8px;float:right;"><span id="length1">0</span>/140</p>
 			</div>
+
 			<div id="jiathis2">
 				<div style="margin:0 auto;width:180px;height:32px;">
 					<p style="padding-top:12px;padding-bottom:10px;">分享到...</p>
@@ -552,11 +555,12 @@ function upLoadFile(path){
 		
 		
 		<!----------------输入栏------------------>
-		<div class="input">
-			<form name="myform" id="myform1" style="height:100%">
-				<textarea autofocus="true" id="message" placeholder="想说点什么？" onKeyDown="MaxInput1(this.form)" onKeyUp="MaxInput1(this.form)"></textarea>
+		<div class="input" style="height:400px;background-image:url(img/ztbg.jpg);">
+			<form name="myform" id="myform1" style="height:100%;">
+				<textarea  style="margin-top:20px;border-radius:10px; height:200px;" autofocus="true" id="message" placeholder="想说点什么？" onKeyDown="MaxInput1(this.form)" onKeyUp="MaxInput1(this.form)"></textarea>
 			</form>
-		</div>	
+		</div>
+
 	</div>
 </div>
 
@@ -569,20 +573,21 @@ function upLoadFile(path){
 		<a data-icon="arrow-l" data-iconpos="notext" data-shadow="false" data-iconshadow="false" data-rel="back">Menu</a>
 		<a data-role="button" data-rel="back" class="ui-btn-right" id="button-pub" onclick="sendMessage2()">发布</a>
     </div>
-	<div data-role="content" data-theme="c" style="padding:0">
+	<div data-role="content" data-theme="c" style="padding:0;">
 		<!----------------输入栏------------------>
-		<div class="input">
+		<div class="input" style="background-image:url(imgbg.jpg);">
 			<form name="myform" id="myform2" style="height:100%">
-				<textarea autofocus="true" id="message2" placeholder="想说点什么？" onKeyDown="MaxInput2(this.form)" onKeyUp="MaxInput2(this.form)"></textarea>
+				<textarea style="margin-top:20px;border-radius:10px;" autofocus="true" id="message2" placeholder="想说点什么？" onKeyDown="MaxInput2(this.form)" onKeyUp="MaxInput2(this.form)"></textarea>
 				
 			</form>
 			<div class="count-word">
-				<div style="margin-left:8px;float:left;">景点盖章</div>
+				<!--iv style="margin-left:8px;float:left;">景点盖章</div-->
 				<p style="margin-right:8px;float:right;"><span id="length2">0</span>/140</p>
 			</div>
-			<img id="immediatePhoto" src=""/>
+			<img id="immediatePhoto" width="200px" height="200px" src=""/>
 		</div>	
 	</div>
+
 </div>
 
 
