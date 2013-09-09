@@ -61,6 +61,19 @@ function upLoadFile(path){
 }
 
 </script>
+<!--使用localStorage存储用户的信息-->
+<script>
+window.onload = function(){
+var userName = localStorage.getItem("userName");
+var pwd = localStorage.getItem("pwd");
+
+if(userName != null){
+	document.getElementById("l_username").value = userName;
+	if(pwd != null)
+	document.getElementById("l_password").value = pwd;
+}
+}
+</script>
 </head>
 <body>
 
@@ -81,8 +94,6 @@ function upLoadFile(path){
 					<center>
 						<a href="#regist" data-inline="true" data-role="button" data-theme="e" id="toregister">注册</a>
 					</center>
-					
-					
 				</form>
 		</div>
 	</div>
@@ -143,7 +154,6 @@ function upLoadFile(path){
 	}
 	function l_isPassword(){
 		var password=document.form2.l_password.value;
-		//alert(password);
 		if(password==""){
 			document.getElementById("l_passwordTip").innerHTML="<font color=red>请输入密码后再登陆</font>";
 			document.form2.l_password.focus();
@@ -184,9 +194,9 @@ function upLoadFile(path){
 			if(xmlHttp.readyState==4){
 				if(xmlHttp.status == 200){
 					console.log(xmlHttp.responseText);
-					//alert("dda");
-					//alert(xmlHttp.responseText);
-					if(xmlHttp.responseText=="0"){		
+					if(xmlHttp.responseText=="0"){
+						localStorage.setItem("userName",name);//登录成功后使用localStorage存贮用户名和密码。
+						localStorage.setItem("pwd",password);
 						alert("恭喜！您已经成功登陆点击确定返回到主界面");
 						window.location='map.html';//登陆成功返回到主界面
 					}
@@ -204,9 +214,7 @@ function upLoadFile(path){
 			}
 		}
 		;
-		xmlHttp.send(str);	
-		
-		
+		xmlHttp.send(str);		
 	}
 	
 	

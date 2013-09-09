@@ -273,7 +273,7 @@ $(document).ready(function(){
 		$(".bubble-name").click(function(){
 		var jingdian_id_name=$(this).parent().attr("id");
 		//alert(jingdian_id_name);
-		swipeToChangPic();
+		//swipeToChangPic();
 		initialJDInfos(jingdian_id_name);
 		});
 		//Ë¢ÐÂÆÀÂÛ

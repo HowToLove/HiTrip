@@ -129,6 +129,12 @@ function upLoadFile(path){
 	</div>
 </script>
 
+<!----------------------添加好友到地图------------------------->
+<script id='user-stranger-tmpl' type='text/x-jquery-tmpl'>
+	<div class="user-stranger" id=${Id}>
+		<a class="avatar"><img src=${Head}></img></a>
+	</div>
+</script>
 
 <!----------------------新的好友请求------------------------->
 <script id="newf-tmpl" type="text/x-jquery-tmpl">
@@ -164,8 +170,8 @@ function upLoadFile(path){
 <script id="newf-accept-tmpl" type="text/x-jquery-tmpl">
 	<li>
 		<a href="#zone-others">
-			<img src=${Head}/>
-			<h3>王小明</h3><p>已添加您为好友</p>
+			<img src=${Head}>
+			<h3>${Name}</h3><p>已添加您为好友</p>
 		</a>
 	</li>
 </script>
@@ -395,9 +401,8 @@ function upLoadFile(path){
 			
 			<!-------------------用户头像和状态显示--------------------->
 			<div class="user-ego" id="user-ego">
-				<a class="avatar"><img src="img/Avatar.jpg"></img></a>
 			</div>
-			<div class="user-friend" id="3" style="top:1000px;left:1000px;">
+			<div class="user-friend" id="" style="top:1000px;left:1000px;">
 				<a class="avatar"><img src="img/Avatar.jpg"></img></a>
 				<a class="bubble" href="#status"><div class="tooltip fade right in bubble-img">
 					<div class="tooltip-arrow"></div>
@@ -921,32 +926,28 @@ function upLoadFile(path){
 
 
 
-<!------------------------------------------------------设置---------------------------------------------------------->
-<div data-role="page" id="page5" data-theme="g" >
-	<div data-role="header" data-theme="g">
-	  <h1>设置</h1>
-	  <a href="#panel5" data-icon="bars" data-iconpos="notext" data-shadow="false" data-iconshadow="false">Menu</a>
+<div data-role="page" id="page5" data-theme="g">
+		<div data-role="header">
+			<h1>设置</h1>
+		</div>
+		<br>
+			<form name = "form" action="" method="POST">
+			
+				更改昵称<input type="text" id="username" name="username" onblur="isNameUnique()"/>
+				<p id="usernameTip" bgcolor="#FFFFFF"></p>
+				旧密码<input type="password" id="oldPassword" name="oldPassword" onblur=""/>
+				新密码<input type="password" id="password" name="password" onblur=""/>
+				<p id="passwordTip" bgcolor="#FFFFFF"></p> <!--判断密码是否合法-->
+				确认密码<input type="password" id="password2" name="password2" onblur=""/>
+				<p id="userpasswordTip" bgcolor="#FFFFFF"></p><!-- 判断前后密码是否一致-->
+				更改头像
+				<button onclick="">拍照</button><br>
+				<button onclick="">图库</button><br>
+				<img id="largeImage" src=""/>
+				<input id="login" type="submit" data-theme="b" value="确认" onClick=""/>
+				<br><br>
+			</form>
 	</div>
-	<div data-role="content" style="padding: 0%">
-	   
-	</div>
-	<div data-role="panel" id="panel5" data-theme="g" data-position-fixed="true">
-	   <ul data-role="listview" data-divider-theme="g" data-inset="false">
-			<li data-theme="g"><img src="img/Avatar.jpg" height="100%">王小明</li>
-			<li data-theme="g"><a href="#page0" data-transition="flip">首页</a></li>
-			<li data-theme="g"><a data-transition="filp" onclick="window.location.href='#page1';">景区地图</a></li>
-			<li data-role="list-divider" >动态</li>
-			<li data-theme="g"><a href="#page2" data-transition="flip" onclick="initialFriendStatus();">好友动态</a></li>
-			<li data-theme="g"><a href="#page3" data-transition="flip" onclick="initialQueryJDNews();">景区新鲜事</a></li>
-			<li data-role="list-divider">关于我</li>
-			<li data-theme="g"><a href="#page4" data-transition="flip" onclick="initialQueryPersonNews();">个人主页</a></li>
-			<li data-theme="g"><a href="#msg-reply" data-transition="flip">消息中心</a></li>
-			<li data-role="list-divider">操作</li>
-			<li data-theme="g"><a href="#panel5" data-transition="flip">设置</a></li>
-			<li data-theme="g"><a>注销</a></li>
-	  </ul>
-	</div>
-</div>
 <!---------------------------------------------------------景点介绍-------------------------------------------------------->
 <div data-role="page" id="introduce" data-theme="g">
 	<div data-role="header">
@@ -1032,8 +1033,10 @@ function upLoadFile(path){
 	
 
 	</div>
+	<!--
 <script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1373077207876240" charset="utf-8"></script>
 <script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/buttonLite.js#uuid=<>&style=-1"></script>
 <script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/addons/bshareAp.js"></script>
+-->
 </body>
 </html>
