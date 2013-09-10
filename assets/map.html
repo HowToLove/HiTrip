@@ -116,8 +116,6 @@ function upLoadFile(path){
 
 </script-->
 
-<script src="https://d10ajoocuyu32n.cloudfront.net/codiqa.ext.js"></script>
-
 <!----------------------------------------------------- template ------------------------------------------------------>
 
 <!----------------------添加自己到地图------------------------->
@@ -133,7 +131,7 @@ function upLoadFile(path){
 	</div>
 </script>
 
-<!----------------------添加好友到地图------------------------->
+<!----------------------添加驴友到地图------------------------->
 <script id='user-stranger-tmpl' type='text/x-jquery-tmpl'>
 	<div class="user-stranger" id=${Id}>
 		<a class="avatar"><img src=${Head}></img></a>
@@ -395,37 +393,6 @@ function upLoadFile(path){
 		<a href="#panel0" data-icon="bars" data-iconpos="notext" data-shadow="false" data-iconshadow="false"></a>
 	</div>
 	<div data-role="content" style="padding:0;height:100%;width:100%">
-		<!--div style="width:100%;height:100%">
-			<div id="googlemapsjs3" class="google-map" style="width: 90%; height: 200px;margin-top:1%; margin-left: 5%; margin-right: 5%; position: relative; ">
-			</div>
-			<script type="text/javascript">
-				window.CodiqaControls && window.CodiqaControls.register('googlemaps', 'googlemapsjs3', {
-					ready: function(control) {
-
-						control.options = {
-							zoom: 14,
-							mapTypeId: google.maps.MapTypeId.ROADMAP
-						};
-
-						control.el = document.getElementById(control._id);
-						control.map = new google.maps.Map(control.el, control.options);
-
-						var geocoder = new google.maps.Geocoder();
-						geocoder.geocode({'address': 'Cinderella Castle, Bay Lake, FL, United States'}, function(results, status) {
-							if (status == google.maps.GeocoderStatus.OK) {
-								var marker = new google.maps.Marker({
-									map: control.map,
-									position: results[0].geometry.location
-								});
-								control.center = results[0].geometry.location;
-								control.map.setCenter(control.center);
-							}
-						});
-
-					}
-				});
-              </script>
-        </div-->
 		<div id="mapholder"></div>
 		<p id="hottest">热门推荐</p>
 		
@@ -482,11 +449,14 @@ function upLoadFile(path){
 	</div>
     <div data-role="panel" id="panel0" data-theme="g" data-position-fixed="true">
 		<ul data-role="listview" data-divider-theme="g" data-inset="false">
-			<li data-theme="g" id="panelHead"><img id="panelHeadImg" src="img/Avatar.jpg" height="100%">王小明</li>
+			<li data-theme="g" class="panelHead">
+				<img class="panelHeadImg" src="img/Avril.jpg" >
+				<p class="panelHeadName">王小明</p>
+			</li>
 			<li data-theme="g"><a href="#panel0" data-transition="flip">首页</a></li>
 			<li data-theme="g"><a onclick="window.location.href='#page1';">景区地图</a></li>
 			<li data-role="list-divider">动态</li>
-			<li data-theme="g"><a href="#page2" data-transition="flip" >好友动态</a></li>
+			<li data-theme="g"><a href="#page2" data-transition="pop" >好友动态</a></li>
 			<li data-theme="g"><a href="#page3" data-transition="flip">	景区新鲜事</a></li>
 			<li data-role="list-divider">关于我</li>
 			<li data-theme="g"><a href="#page4" data-transition="flip">个人主页</a></li>
@@ -587,9 +557,9 @@ function upLoadFile(path){
 
 			<!-------------------用户头像和状态显示--------------------->
 			<div class="user-ego" id="user-ego">
-				<a class="avatar"><img src="img/Avatar.jpg"></img></a>
+				<!--a class="avatar"><img src="img/Avatar.jpg"></img></a-->
 			</div>
-			<div class="user-friend" id="3" style="top:1000px;left:1000px;">
+			<!--div class="user-friend" id="3" style="top:1000px;left:1000px;">
 				<a class="avatar"><img src="img/Avatar.jpg"></img></a>
 				<a class="bubble" href="#status"><div class="tooltip fade right in bubble-img">
 					<div class="tooltip-arrow"></div>
@@ -602,7 +572,7 @@ function upLoadFile(path){
 					<div class="tooltip-arrow"></div>
 					<div class="tooltip-inner">啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊</div>
 				</div></a>
-			</div>
+			</div-->
 		</div>
 				
 		<!----------------------进度条------------------------>
@@ -697,12 +667,15 @@ function upLoadFile(path){
 	<!---------------------景区地图panel--------------------->
 	<div data-role="panel" id="panel1" data-theme="g" data-position-fixed="true">
 		<ul data-role="listview" data-divider-theme="g" data-inset="false">
-			<li data-theme="g" id="panelHead"><img id="panelHeadImg" src="img/Avatar.jpg" height="100%">王小明</li>
-			<li data-theme="g"><a href="#page0" data-transition="flip">首页</a></li>
+			<li data-theme="g" class="panelHead">
+				<img class="panelHeadImg" src="img/Avatar.jpg">
+				<p class="panelHeadName">王小明</p>
+			</li>
+			<li data-theme="g"><a href="#page0" data-transition="pop">首页</a></li>
 			<li data-theme="g"><a href="#panel1">景区地图</a></li>
 			<li data-role="list-divider" >动态</li>
-			<li data-theme="g"><a href="#page2" data-transition="flip" onclick="initialFriendStatus();">好友动态</a></li>
-			<li data-theme="g"><a href="#page3" data-transition="flip" onclick="initialQueryJDNews();">景区新鲜事</a></li>
+			<li data-theme="g"><a href="#page2" data-transition="pop" onclick="initialFriendStatus();">好友动态</a></li>
+			<li data-theme="g"><a href="#page3" data-transition="pop" onclick="initialQueryJDNews();">景区新鲜事</a></li>
 			<li data-role="list-divider">关于我</li>
 			<li data-theme="g"><a href="#page4" data-transition="flip" onclick="initialQueryPersonNews();">个人主页</a></li>
 			<li data-theme="g"><a href="#msg-reply" data-transition="flip">消息中心</a></li>
@@ -809,7 +782,10 @@ function upLoadFile(path){
 	<!---------------------好友主页panel--------------------->
 	<div data-role="panel" id="zone-others-panel" data-theme="g" data-position-fixed="true">
 		<ul data-role="listview" data-divider-theme="g" data-inset="false">
-			<li data-theme="g" id="panelHead"><img id="panelHeadImg" src="img/Avatar.jpg" height="100%">王小明</li>
+			<li data-theme="g" class="panelHead">
+				<img class="panelHeadImg" src="img/Avatar.jpg">
+				<p class="panelHeadName">王小明</p>
+			</li>
 			<li data-theme="g"><a href="#page0" data-transition="flip">首页</a></li>
 			<li data-theme="g"><a onclick="window.location.href='#page1';">景区地图</a></li>
 			<li data-role="list-divider" >动态</li>
@@ -897,7 +873,10 @@ function upLoadFile(path){
 	</div>
 	<div data-role="panel" id="msg-reply-panel" data-theme="g" data-position-fixed="true">
 		<ul data-role="listview" data-divider-theme="g" data-inset="false">
-			<li data-theme="g"><img src="img/Avatar.jpg" height="100%">王小明</li>
+			<li data-theme="g" class="panelHead">
+				<img class="panelHeadImg" src="img/Avatar.jpg">
+				<p class="panelHeadName">王小明</p>
+			</li>
 			<li data-theme="g"><a href="#page0" data-transition="flip">首页</a></li>
 			<li data-theme="g"><a onclick="window.location.href='#page1';" data-transition="filp">景区地图</a></li>
 			<li data-role="list-divider" >动态</li>
@@ -973,7 +952,10 @@ function upLoadFile(path){
 	<!---------------------------------新的朋友panel----------------------------------->
 	<div data-role="panel" id="msg-newf-panel" data-theme="g" data-position-fixed="true">
 		<ul data-role="listview" data-divider-theme="g" data-inset="false">
-			<li data-theme="g"><img src="img/Avatar.jpg" height="100%">王小明</li>
+			<li data-theme="g" class="panelHead">
+				<img class="panelHeadImg" src="img/Avatar.jpg">
+				<p class="panelHeadName">王小明</p>
+			</li>
 			<li data-theme="g"><a href="#page0" data-transition="flip">首页</a></li>
 			<li data-theme="g"><a onclick="window.location.href='#page1';" data-transition="filp">景区地图</a></li>
 			<li data-role="list-divider" >动态</li>
@@ -1019,7 +1001,10 @@ function upLoadFile(path){
 	</div>
     <div data-role="panel" id="panel2" data-position="left" data-display="push" data-theme="g" data-position-fixed="true">
 		<ul data-role="listview" data-divider-theme="g" data-inset="false">
-			<li data-theme="g"><img src="img/Avatar.jpg" height="100%">王小明</li>
+			<li data-theme="g" class="panelHead">
+				<img class="panelHeadImg" src="img/Avatar.jpg">
+				<p class="panelHeadName">王小明</p>
+			</li>
 			<li data-theme="g"><a href="#page0" data-transition="flip">首页</a></li>
 			<li data-theme="g"><a onclick="window.location.href='#page1';" data-transition="filp">景区地图</a></li>
 			<li data-role="list-divider" >动态</li>
@@ -1053,7 +1038,10 @@ function upLoadFile(path){
     </div>
 	<div data-role="panel" id="panel3" data-position="left" data-theme="g" data-position-fixed="true">
 		<ul data-role="listview" data-divider-theme="g" data-inset="false">
-			<li data-theme="g"><img src="img/Avatar.jpg" height="100%">王小明</li>
+			<li data-theme="g" class="panelHead">
+				<img class="panelHeadImg" src="img/Avatar.jpg">
+				<p class="panelHeadName">王小明</p>
+			</li>
 			<li data-theme="g"><a href="#page0" data-transition="flip">首页</a></li>
 			<li data-theme="g"><a onclick="window.location.href='#page1';" data-transition="filp">景区地图</a></li>
 			<li data-role="list-divider" >动态</li>
@@ -1095,7 +1083,10 @@ function upLoadFile(path){
 	</div-->
 	<div data-role="panel" id="panel4" data-position="left" data-theme="g" data-position-fixed="true">
 		<ul data-role="listview" data-divider-theme="g" data-inset="false">
-			<li data-theme="g"><img src="img/Avatar.jpg" height="100%">王小明</li>
+			<li data-theme="g" class="panelHead">
+				<img class="panelHeadImg" src="img/Avatar.jpg">
+				<p class="panelHeadName">王小明</p>
+			</li>
 			<li data-theme="g"><a href="#page0" data-transition="flip">首页</a></li>
 			<li data-theme="g"><a onclick="window.location.href='#page1';" data-transition="filp">景区地图</a></li>
 			<li data-role="list-divider" >动态</li>
@@ -1140,7 +1131,10 @@ function upLoadFile(path){
 	
 	<div data-role="panel" id="panel5" data-theme="g" data-position-fixed="true">
 	   <ul data-role="listview" data-divider-theme="g" data-inset="false">
-			<li data-theme="g"><img src="img/Avatar.jpg" height="100%">王小明</li>
+			<li data-theme="g" class="panelHead">
+				<img class="panelHeadImg" src="img/Avatar.jpg">
+				<p class="panelHeadName">王小明</p>
+			</li>
 			<li data-theme="g"><a href="#page0" data-transition="flip">首页</a></li>
 			<li data-theme="g"><a data-transition="filp" onclick="window.location.href='#page1';">景区地图</a></li>
 			<li data-role="list-divider" >动态</li>

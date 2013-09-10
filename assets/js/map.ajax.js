@@ -13,7 +13,7 @@ function init(){
 	myListener();
 	//queryAllId = setInterval(queryAll,1000);
 	//queryAll();
-	startSimulation();
+	//startSimulation();
 }
 function startSimulation(){
 	
@@ -113,6 +113,9 @@ function onJDNews(news){//news是一个消息的JSON的对象
 	}else{
 		$("#spot-pic-tmpl").tmpl(news).appendTo("#"+id);
 	}
+	setTimeout(function(){
+		$("#"+id).find(".bubble").empty();
+	});
 }
 //收到好友消息
 function onFriendNews(news){//news是一个消息的JSON对象
@@ -123,6 +126,10 @@ function onFriendNews(news){//news是一个消息的JSON对象
 	}else{
 		$("#status-pic-tmpl").tmpl(news).appendTo("#"+id);
 	}
+	jump_big(id);
+	setTimeout(function(){
+		$("#"+id).find(".bubble").empty();
+	},10000)
 }
 
 

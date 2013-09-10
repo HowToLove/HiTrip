@@ -23,8 +23,8 @@ function resize(){
 	$("#map-panorama-map").css("margin-top",(coverH-imgH)/2+'px');
 	//$("#map-panorama-map").css("margin-left",(coverW-imgW)/2+'px');
 	getE("minilayer").style.height=windowH-43+'px';
-	getE("user-ego-small").style.top=((-parseInt(getE("user-ego").style.top+0))*scale+(coverH-imgH)/2)+'px';
-	getE("user-ego-small").style.left=((-parseInt(getE("user-ego").style.left+0))*scale+(coverW-imgW)/2)+'px';
+	getE("user-ego-small").style.top=((parseInt(getE("user-ego").style.top+0))*scale+(coverH-imgH)/2)+'px';
+	getE("user-ego-small").style.left=((parseInt(getE("user-ego").style.left+0))*scale+(coverW-imgW)/2)+'px';
 
 	//$(".user-ego-small").css("top",(-parseInt(getE($(this).attr("id")).style.top+0))*scale+(coverH-imgH)/2);
 	getE("select-box").style.top=((-parseInt(getE("map-sketch").style.top+0)+windowH/2)*scale+(coverH-imgH)/2-30)+'px';
@@ -131,8 +131,8 @@ $(document).ready(function(){
 		}
 		getE("select-box").style.top=((-parseInt(getE("map-sketch").style.top+0)+windowH/2)*scale+(coverH-imgH)/2-30)+'px';
 		getE("select-box").style.left=((-parseInt(getE("map-sketch").style.left+0)+windowW/2)*scale+(coverW-imgW)/2-30)+'px';
-		getE("user-ego-small").style.top=((-parseInt(getE("user-ego").style.top+0))*scale+(coverH-imgH)/2)+'px';
-		getE("user-ego-small").style.left=((-parseInt(getE("user-ego").style.left+0))*scale+(coverW-imgW)/2)+'px';
+		getE("user-ego-small").style.top=((parseInt(getE("user-ego").style.top+0))*scale+(coverH-imgH)/2)+'px';
+		getE("user-ego-small").style.left=((parseInt(getE("user-ego").style.left+0))*scale+(coverW-imgW)/2)+'px';
 		$("#cover").animate({
 			right:"0"
 		},300);
