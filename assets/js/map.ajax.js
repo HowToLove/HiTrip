@@ -25,6 +25,7 @@ function startSimulation(){
 	onFriendNews(news0);
 	news0 = {"Id":"8","Content":"我是路人丙","Picture":""};
 	onFriendNews(news0);
+	/*
 	//5秒后让3号好友说一句话
 	news = {"Id":"3", "Content":"加油~","Picture":""}
 	setTimeout(function(){onFriendNews(news);},5000);
@@ -38,6 +39,7 @@ function startSimulation(){
 	setTimeout(function(){onFriendRequest(request);},3000);
 	var answer = {"Name":"路人甲","Head":"img/Badge.png"};
 	setTimeout(function (){onFriendAccept(answer);},4000);
+	*/
 	setInterval(function(){
 	moveHead(3,Math.floor(Math.random()*6+1),10);
 	moveHead(5,Math.floor(Math.random()*6+1),20);
@@ -49,6 +51,29 @@ function startSimulation(){
 	moveHead(6,Math.floor(Math.random()*6+1),5);
 	moveHead(8,Math.floor(Math.random()*6+1),35);	
 },500);
+
+	//Spot1：在张睿找男友时出现，2号小颖发布状态“亲爱的，我在这呢”，3号睿睿回复一条状态——“恩呢，我马上过去找你”（最好倒过来，2号小颖发状态“亲爱的，别着急，你就呆在原地，我马上过去找你。” 不过这样子，与视频的部分内容不是很相符）
+	var t0 = 8000;
+	var vedioNews1 = {"Id":"2","Content":"亲爱的，我在这呢","Picture":""};
+	setTimeout(function(){onFriendNews(vedioNews1);},t0);
+	var vedioNews2 = {"Id":"3","Content":"恩呢，我马上过去找你","Picture":""};
+	setTimeout(function(){onFriendNews(vedioNews2);},t0+=1000);
+	//Spot2：在接下来两对情侣行程对比的时候，在张睿那边分别显示多个景点的景区新鲜事  //2秒后，6号景点探险世界发布一条新鲜事————“想体验最最惊险的探险旅程吗？那就不要错过3：30pm在探险世界举行的疯狂探险游戏吧！”照片为txsj_i.jpg     //1秒后，4号景点幻想世界发布了一条状态————“幻想世界，邀你体验梦幻般的感觉，体验时间
+//4:00pm”，照片为hxsj_i.jpg
+	vediroNews3 = {"IdName":"lwz","Content":"想体验最最惊险的探险旅程吗？那就不要错过3：30pm在探险世界举行的疯狂探险游戏吧！","Picture":"img/txsj_i.jpg"};
+	setTimeout(function(){onJDNews(vediroNews3);},t0+=2000);  //8秒后1号灰姑娘的城堡发布一条状态————“灰姑娘灯光会将于2：00pm在灰姑娘城堡内上映，欢迎各位游客前去观赏”，照片为hgndcb_i3.jpg
+	vediroNews4 = {"IdName":"lwz","Content":"灰姑娘灯光会将于2：00pm在灰姑娘城堡内上映，欢迎各位游客前去观赏","Picture":"img/hgndcb_i3.jpg"};
+	setTimeout(function(){onJDNews(vediroNews4);},t0+=8000);  
+//然后接后一段视频，即张睿二人去魔法城堡参观，随即到了下一场景
+	//Spot3：最后一幕从城堡出来阶段遇到刘瑶二人，然后需要展示猴山的一条状态——“想观看强所未有的猴王争霸吗？5：00猴山将准时上映大型舞台剧猴王争霸，欢迎各位游客前来观赏”
+	vediroNews5 = {"IdName":"lwz","Content":"想观看强所未有的猴王争霸吗？5：00猴山将准时上映大型舞台剧猴王争霸，欢迎各位游客前来观赏","Picture":""};
+	setTimeout(function(){onJDNews(vediroNews5);},t0+=5000);  
+	//其中可穿插路人的状态：
+	//此处有疑问？？路人回复的状态是不会显示的。
+	//3秒后，9号同学路人丙回复了睿睿的状态————”好啊，到时候灰姑娘城堡门口见啦！^_^”
+	//1秒后，7号路人甲回复路人丙的状态———“—欧也想一起去耶~~，^_^”
+	//4秒后，8号路人乙，回复7号路人甲的回复————“你去屎吧！！！！”
+	//1秒后，9号同学路人丙回复7号路人甲的回复————“同意，你去屎！！！！”	
 }
 //头像移动
 function moveHead(id,direction,px){//direction是方向1，2，3，4分别代表东南西北；px是像素值的大小
