@@ -1,19 +1,384 @@
-/********************************初始化一堆参数*******************************/
-var imgH,imgW,coverH,coverW,scale,windowH,windowW;
-function init_para(){
-	imgH=$("#map-panorama-map").height();
-	imgW=$("#map-panorama-map").width();
-	coverH=$("#cover").height();
-	coverW=$("#cover").width();
-	scale=imgH/3316;
-	windowH=parseInt(document.body.clientHeight+0);
-	windowW=parseInt(document.body.clientWidth+0);
-}
+var json=[{"IdName":"hgndcb","Name":"灰姑娘的城堡","Top":"885","Left":"1125"},
+		  {"IdName":"mfqyzt","Name":"魔法奇缘之塔","Top":"462","Left":"479"},
+		  {"IdName":"zygc","Name":"自由广场","Top":"975","Left":"555"},
+		  {"IdName":"hxsj","Name":"幻想世界","Top":"375","Left":"1571"},
+		  {"IdName":"mrsj","Name":"明日世界","Top":"1102","Left":"1930"},
+		  {"IdName":"txsj","Name":"探险世界","Top":"1500","Left":"65"},
+		  {"IdName":"mgxzdj","Name":"美国小镇大街","Top":"1901","Left":"1123"},
+		  {"IdName":"yzfc","Name":"宇宙飞船","Top":"1382","Left":"2022"},
+		  {"IdName":"gwgs","Name":"怪物公司","Top":"1436","Left":"1735"},
+		  {"IdName":"fkch","Name":"疯狂茶会","Top":"675","Left":"1735"}];
+		  
+/**********************************窗口重绘**********************************/
+window.onresize=resize;
+function resize(){
+	var imgH=$("#map-panorama-map").height();
+	var imgW=$("#map-panorama-map").width();
+	var coverH=$("#cover").height();
+	var coverW=$("#cover").width();
+	var scale=imgH/2487;
+	var windowH=parseInt(document.body.clientHeight+0);
+	var windowW=parseInt(document.body.clientWidth+0);
+	//alert(coverH+"  "+imgH)
+	$("#map-panorama-map").css("margin-top",(coverH-imgH)/2+'px');
+	//$("#map-panorama-map").css("margin-left",(coverW-imgW)/2+'px');
+	getE("minilayer").style.height=windowH-43+'px';
+	getE("user-ego-small").style.top=((-parseInt(getE("user-ego").style.top+0))*scale+(coverH-imgH)/2)+'px';
+	getE("user-ego-small").style.left=((-parseInt(getE("user-ego").style.left+0))*scale+(coverW-imgW)/2)+'px';
 
-/**********************************地理定位**********************************/
+	//$(".user-ego-small").css("top",(-parseInt(getE($(this).attr("id")).style.top+0))*scale+(coverH-imgH)/2);
+	getE("select-box").style.top=((-parseInt(getE("map-sketch").style.top+0)+windowH/2)*scale+(coverH-imgH)/2-30)+'px';
+	getE("select-box").style.left=((-parseInt(getE("map-sketch").style.left+0)+windowW/2)*scale+(coverW-imgW)/2-30)+'px';
+
+}
 function getE(ele){
 	return document.getElementById(ele);
 }
+/************************************READY***********************************/
+$(document).ready(function(){
+	var resize_flag=1;
+	/************************设置地图切换按钮位置***********************/
+	//getE("switch-button").style.top=(parseInt(document.body.clientHeight+0)-103)/2+'px';
+	
+	/************************状态发布栏***********************/
+	var flag_button=0;
+	$("#photo-button").tap(function(){
+		seal("lwz");
+		if(flag_button==0){
+			button4_show();
+			flag_button=1;
+		}else{
+			button4_hide();
+			flag_button=0;
+		}
+	});
+	$("#pub-bar-status").tap(function(){
+		button4_hide();
+		flag_button=0;
+	});
+	$("#pub-bar-camera").tap(function(){
+		button4_hide();
+		flag_button=0;
+	});
+	$("#pub-bar-gallery").tap(function(){
+		button4_hide();
+		flag_button=0;
+	});
+	
+	/************************足迹**********************/
+	var flag_footprint=0;
+	$("#pub-bar-footprint").tap(function(){
+		if(!flag_footprint){
+			foot_print();
+			flag_footprint=1;
+		}else{
+			foot_print_hide();
+			flag_footprint=0;
+			button4_hide();
+			flag_button=0;
+			
+		}
+	});
+	
+	/************************景点名字***********************/
+	$(".bubble-name").hide();
+	$(".pin").tap(function(){
+		$(this).parent().find(".bubble-name").toggle();
+	});
+	
+	/************************地图切换***********************/
+	$("#simple-map").tap(function(){
+		$("#map-sketch").find(".user-friend").hide();
+		$("#map-sketch").find(".user-stranger").hide();
+		$("#popupPanel").popup("close");
+	});
+	$("#friend-map").tap(function(){
+		$("#map-sketch").find(".user-friend").show();
+		$("#map-sketch").find(".user-stranger").hide();
+		$("#popupPanel").popup("close");
+	});
+	$("#stranger-map").tap(function(){
+		$("#map-sketch").find(".user-friend").show();
+		$("#map-sketch").find(".user-stranger").show();
+		$("#popupPanel").popup("close");
+	});
+	
+	/************************定位到我***********************/
+	$("#pinpoint-button").tap(function(){
+		pinpointCenter("#user-ego");
+		jump_big("user-ego");
+		jump_small("user-ego-small");
+		msg_show();
+	});
+
+	/************************遮罩出现***********************/
+	var flag_cover=0;
+	$(document).on("vmouseover","#slide-right",function(){
+		//init_para();
+		//anti_mapping(getE("map-sketch").style.top,getE("map-sketch").style.left)
+		msg_hide();
+		var imgH=$("#map-panorama-map").height();
+		var imgW=$("#map-panorama-map").width();
+		var coverH=$("#cover").height();
+		var coverW=$("#cover").width();
+		var scale=imgH/2487;
+		var windowH=parseInt(document.body.clientHeight+0);
+		var windowW=parseInt(document.body.clientWidth+0);
+		if(resize_flag){
+			$("#map-panorama-map").css("margin-top",(coverH-imgH)/2+'px');
+			//alert("on")
+			resize_flag=0
+		}
+		getE("select-box").style.top=((-parseInt(getE("map-sketch").style.top+0)+windowH/2)*scale+(coverH-imgH)/2-30)+'px';
+		getE("select-box").style.left=((-parseInt(getE("map-sketch").style.left+0)+windowW/2)*scale+(coverW-imgW)/2-30)+'px';
+		getE("user-ego-small").style.top=((-parseInt(getE("user-ego").style.top+0))*scale+(coverH-imgH)/2)+'px';
+		getE("user-ego-small").style.left=((-parseInt(getE("user-ego").style.left+0))*scale+(coverW-imgW)/2)+'px';
+		$("#cover").animate({
+			right:"0"
+		},300);
+		$("#slide-left").css("z-index","1001");
+		flag_cover=1;
+	});
+	
+	/************************遮罩消失***********************/
+	$(document).on("vmouseover","#slide-left",function(){
+		if(flag_cover==1){
+			$("#cover").animate({
+				right:"-100%"
+			},300);
+			$("#slide-left").css("z-index","10");
+		}else{
+			//此处添加滑动出现面板的函数
+		}
+		flag_cover=0;
+	});
+	
+	/********************点击缩略图遮罩消失*******************/
+	$("#map-panorama-map").tap(function(e){
+		var box=getE("select-box");
+		var boxX=e.clientX;
+		var boxY=e.clientY;
+		
+		box.style.top=boxY-box.offsetHeight/2-43+'px';
+		box.style.left=boxX-box.offsetWidth/2+'px';
+		
+		mapping(boxY,boxX);
+		
+		$("#cover").animate({
+			right:"-100%"
+		},300);
+		$("#slide-left").animate({
+			zIndex:"10"
+		},300);
+	});
+});
+
+/********************************四个按钮出现********************************/
+function button4_show(){
+	$("#pub-bar-status").animate({
+		bottom:"140px",
+		right:"10px"
+	},300);
+	$("#pub-bar-camera").animate({
+		bottom:"120px",
+		right:"74px"
+	},300);
+	$("#pub-bar-gallery").animate({
+		bottom:"74px",
+		right:"120px"
+	},300);
+	$("#pub-bar-footprint").animate({
+		bottom:"10px",
+		right:"140px"
+	},300);
+}
+
+/********************************四个按钮消失********************************/
+function button4_hide(){
+	$("#pub-bar-status").animate({
+		bottom:"12px",
+		right:"12px"
+	},300);
+
+	$("#pub-bar-camera").animate({
+		bottom:"12px",
+		right:"12px"
+	},300);
+	$("#pub-bar-gallery").animate({
+		bottom:"12px",
+		right:"12px"
+	},300);
+	$("#pub-bar-footprint").animate({
+		bottom:"12px",
+		right:"12px"
+	},300);
+
+}
+
+/**********************************地图拖拽**********************************/
+/*var isdrag=false;
+var x,y;
+var dobj;
+
+function movemouse(e){
+	if (isdrag){
+		w=document.body.clientWidth;
+		h=document.body.clientHeight;
+		
+		dobj.style.top  = ty + e.clientY - y +'px';			
+		if(parseInt(dobj.style.top+0) > 0){//向下拖
+			dobj.style.top = '0px';
+		}
+		else if(parseInt(dobj.style.top+0) < (h-2487-43)){//向上拖
+			dobj.style.top=''+(h-2487-43)+'px';
+		}
+		
+		dobj.style.left = tx + e.clientX - x +'px';
+		if(parseInt(dobj.style.left+0)>0){//向右拖
+			dobj.style.left = '0px';
+		}
+		else if(parseInt(dobj.style.left+0)<(w-2225)){//向左拖
+			dobj.style.left=''+(w-2225)+'px';
+		}
+		init_para();
+		anti_mapping(parseInt(dobj.style.top+0),parseInt(dobj.style.left+0))
+		return false;
+	}
+}
+
+function selectmouse(e){
+	var fobj = e.target ;
+	while (fobj.tagName != "HTML"  &&  fobj.className != "map-sketch"){
+		fobj = fobj.parentNode ;
+	}
+	if (fobj.className=="map-sketch"){
+		isdrag = true;
+		dobj = fobj;
+		tx = parseInt(dobj.style.left+0);
+		ty = parseInt(dobj.style.top+0);
+		x = e.clientX ;
+		y = e.clientY ;
+		document.onmousemove=movemouse;
+		return false;
+	}
+
+}
+document.onmousedown=selectmouse;
+document.onmouseup=new Function("isdrag=false");*/
+
+$(function(){
+	var isdragbig=false;
+	var isdragsmall=false;
+	var w=document.body.clientWidth;
+	var h=document.body.clientHeight;
+	$(document).on("vmousedown",function(e){
+		var down_x = e.clientX ;
+		var down_y = e.clientY ;
+
+		var fobj = e.target ;			
+
+		while (fobj.tagName != "HTML"  &&  fobj.className != "map-sketch" && fobj.className!="select-box"){
+			fobj = fobj.parentNode ;
+		}
+		if (fobj.className=="map-sketch"){
+			isdragbig = true;
+			var dobj = fobj;
+			var tx = parseInt(dobj.style.left+0);
+			var ty = parseInt(dobj.style.top+0);
+			$("#map-sketch").on("vmousemove",function(e){
+				if (isdragbig){	
+					var top = ty + e.clientY - down_y;
+					var left = tx + e.clientX - down_x;
+					map_sketch_limit(top,left);
+					return false;
+				}
+			});
+			$("#map-sketch").on("vmouseup",function(e){
+				isdragbig=false;
+			});
+			return false;
+		}
+		/*else if(fobj.className=="select-box"){
+			*********************************框跟随鼠标*******************************
+			isdragsmall=true;
+			var box=getE("select-box");
+			//var bx=parseInt(box.style.left+0);
+			//var by=parseInt(box.style.top+0);
+			
+			$("#select-box").on("vmousemove",function(e){
+				if(isdragsmall){
+					//var mouseH = e.clientY - down_y;
+					//var mouseW = e.clientX - down_x;
+					var boxX=e.clientX;
+					var boxY=e.clientY;
+					
+					box.style.top=boxY-box.offsetHeight/2-43+'px';
+					box.style.left=boxX-box.offsetWidth/2+'px';
+					//box.style.top=e.clientY+'px';
+					//box.style.left=e.clientX+'px';
+					mapping(boxY,boxX);
+				}
+			});
+			$("#select-box").on("vmouseup",function(e){
+				isdragsmall=false;
+				
+				$("#cover").animate({
+					right:"-100%"
+				},300);
+				$("#slide-left").animate({
+					zIndex:"10"
+				},300);
+			});
+		}*/
+	});
+
+});
+/***********************************映射函数*********************************/
+function mapping(mouseH,mouseW){
+	var imgH=$("#map-panorama-map").height();
+	var imgW=$("#map-panorama-map").width();
+	var coverH=$("#cover").height();
+	var coverW=$("#cover").width();
+	var scale=imgH/2487;
+	var windowH=parseInt(document.body.clientHeight+0);
+	var windowW=parseInt(document.body.clientWidth+0);
+	var maptop=-((mouseH-38-(coverH-imgH)/2)/scale-windowH/2);
+	var mapleft=-((mouseW-(coverW-imgW)/2)/scale-windowW/2);
+	map_sketch_limit(maptop,mapleft);
+}
+/**********************************中心定位**********************************/
+function pinpointCenter(id){
+	var top=-(parseInt($(id).css("top")+0))+(parseInt(document.body.clientHeight+0))/2-50;
+	var left=-(parseInt($(id).css("left")+0))+(parseInt(document.body.clientWidth+0))/2-38;
+	map_sketch_limit(top,left);
+}
+
+/*******************************地图移动限制*********************************/
+function map_sketch_limit(top,left){
+	var map_sketch=getE("map-sketch");
+	var clientH=parseInt(document.body.clientHeight+0);
+	var clientW=parseInt(document.body.clientWidth+0);
+	
+	if(top>0)
+		map_sketch.style.top="0px";
+	else if(top<(clientH-2487-43))
+		map_sketch.style.top=clientH-2487-43+"px";
+	else 
+		map_sketch.style.top=top+"px";
+	
+	if(left>0)
+		map_sketch.style.left="0px";
+	else if(left<(clientW-2225))
+		map_sketch.style.left=clientW-2225+"px";
+	else 
+		map_sketch.style.left=left+"px";
+}
+
+
+
+
+/**********************************地理定位**********************************/
+
 
 function check(lat,lon){
 	if(lastLongitude==lon)
@@ -39,9 +404,8 @@ function sendLocation(){
 //function getPosition(position)
 function getPosition(){
 	showMyPosition(900,1600);
-	init_para();
-	getE("user-ego-small").style.top=anti_mapping_user_top(900)+'px';
-	getE("user-ego-small").style.left=anti_mapping_user_left(1600)+'px';
+	//init_para();
+
 	//var lat=31.885700300;
 }
 function showError(error){
@@ -62,7 +426,7 @@ function showError(error){
     }
   }
 
-var json=[{"IdName":"hgndcb","Top":"1180","Left":"1500"},
+var json=[{"IdName":"hgndcb","Name":"灰姑娘的城堡","Top":"1180","Left":"1500"},
 		  {"IdName":"mfqyzt","Top":"616","Left":"639"},
 		  {"IdName":"zygc","Top":"1300","Left":"740"},
 		  {"IdName":"hxsj","Top":"500","Left":"2095"},
@@ -120,7 +484,7 @@ function showAllPosition(top,left,id){
 	getE(id).style.left=left+'px';
 }
 
-/**********************************景点盖章**********************************/
+/**********************************景点盖章*********************************
 var winWidth = 0;
 var winHeight = 0;
 
@@ -136,13 +500,13 @@ function setstyle(){
 	h2=winHeight-hb2;
 	h2=h2/5;
 	h2=h2*2;
-	document.getElementById('box').style.left=h1+"px";
-	document.getElementById('box').style.top=h2+"px";
+	getE('box').style.left=h1+"px";
+	getE('box').style.top=h2+"px";
 }
 
 var x,y,n=0,ny=0,rotINT,rotYINT;
 function rotateYDIV(){
-	y=document.getElementById("badge")
+	y=getE("badge")
 	clearInterval(rotYINT)
 	rotYINT=setInterval("startYRotate()",10)
 }
@@ -178,7 +542,7 @@ function animation(){
 		});
 	});
 }
-var count=0;//景点数
+var count=0;//景点数*/
 /************************增加进度条***********************/
 function addBar(){
 	count++;
@@ -198,255 +562,7 @@ function seal(id){
 	}
 }
 
-/**********************************地图拖拽**********************************/
-var isdrag=false;
-var x,y;
-var dobj;
 
-function movemouse(e){
-	if (isdrag){
-		w=document.body.clientWidth;
-		h=document.body.clientHeight;
-		
-		dobj.style.top  = ty + e.clientY - y +'px';			
-		if(parseInt(dobj.style.top+0) > 0){//向下拖
-			dobj.style.top = '0px';
-		}
-		else if(parseInt(dobj.style.top+0) < (h-3316)){//向上拖
-			dobj.style.top=''+(h-3316)+'px';
-		}
-		
-		dobj.style.left = tx + e.clientX - x +'px';
-		if(parseInt(dobj.style.left+0)>0){//向右拖
-			dobj.style.left = '0px';
-		}
-		else if(parseInt(dobj.style.left+0)<(w-2967)){//向左拖
-			dobj.style.left=''+(w-2967)+'px';
-		}
-		init_para();
-		anti_mapping(parseInt(dobj.style.top+0),parseInt(dobj.style.left+0))
-		return false;
-	}
-}
-
-function selectmouse(e){
-	var fobj = e.target ;
-	while (fobj.tagName != "HTML"  &&  fobj.className != "map-sketch"){
-		fobj = fobj.parentNode ;
-	}
-	if (fobj.className=="map-sketch"){
-		isdrag = true;
-		dobj = fobj;
-		tx = parseInt(dobj.style.left+0);
-		ty = parseInt(dobj.style.top+0);
-		x = e.clientX ;
-		y = e.clientY ;
-		document.onmousemove=movemouse;
-		return false;
-	}
-
-}
-document.onmousedown=selectmouse;
-document.onmouseup=new Function("isdrag=false");
-
-$( function () {
-	$( document ).on( "vmousedown",function(e) {
-		var fobj = e.target ;
-		while (fobj.tagName != "HTML"  &&  fobj.className != "map-sketch"){
-			fobj = fobj.parentNode ;
-		}
-		if (fobj.className=="map-sketch"){
-			isdrag = true;
-			dobj = fobj;
-			tx = parseInt(dobj.style.left+0);
-			ty = parseInt(dobj.style.top+0);
-			x = e.clientX ;
-			y = e.clientY ;
-			$( document ).on( "vmousemove",function movemouse(e){
-				if (isdrag){
-					w=document.body.clientWidth;
-					h=document.body.clientHeight;
-					
-					dobj.style.top  = ty + e.clientY - y +'px';			
-					if(parseInt(dobj.style.top+0) > 0){//向下拖
-						dobj.style.top = '0px';
-					}
-					else if(parseInt(dobj.style.top+0) < (h-3316)){//向上拖
-						dobj.style.top=''+(h-3316)+'px';
-					}
-					
-					dobj.style.left = tx + e.clientX - x +'px';
-					if(parseInt(dobj.style.left+0)>0){//向右拖
-						dobj.style.left = '0px';
-					}
-					else if(parseInt(dobj.style.left+0)<(w-2967)){//向左拖
-						dobj.style.left=''+(w-2967)+'px';
-					}
-					return false;
-				}
-			});
-			return false;
-		}
-	});
-});
-
-/**********************************中心定位**********************************/
-function pinpointCenter(id){
-	var top=-(parseInt($(id).css("top")+0))+(parseInt(document.body.clientHeight+0))/2-50;
-	var left=-(parseInt($(id).css("left")+0))+(parseInt(document.body.clientWidth+0))/2-38;
-	map_sketch_limit(top,left);
-}
-
-/*******************************地图移动限制*********************************/
-function map_sketch_limit(top,left){
-	if(top>0)
-		$("#map-sketch").css("top","0px");
-	else if(top<(-3316+parseInt(document.body.clientHeight+0)))
-		$("#map-sketch").css("top",-3316+parseInt(document.body.clientHeight+0)+"px");
-	else $("#map-sketch").css("top",top+"px");
-	
-	if(left>0)
-		$("#map-sketch").css("left","0px");
-	else if(left<(-2967+parseInt(document.body.clientWidth+0)))
-		$("#map-sketch").css("left",-2967+parseInt(document.body.clientWidth+0)+"px");
-	else $("#map-sketch").css("left",left+"px");
-}
-
-/**********************************窗口重绘**********************************/
-function resize(){
-	//getE("minilayer").style.height=(parseInt(document.body.clientHeight+0)-43)+'px';
-	//getE("switch-button").style.top=(parseInt(document.body.clientHeight+0)-103)/2+'px';
-	setstyle();init_para();
-	$("#map-panorama-map").css("margin-top",($("#cover").height()-$("#map-panorama-map").height())/2+'px');	
-}
-
-/************************************READY***********************************/
-$(document).ready(function(){
-	/************************设置盖章***********************/
-	//getE("minilayer").style.height=(parseInt(document.body.clientHeight+0)-43)+'px';
-
-	
-	/************************设置地图切换按钮位置***********************/
-	//getE("switch-button").style.top=(parseInt(document.body.clientHeight+0)-103)/2+'px';
-	init_para()
-
-	
-	/************************状态发布栏***********************/
-	//$("#pub-bar").hide();
-	var flag_button=0;
-	$("#photo-button").tap(function(){
-		seal("lwz");
-		if(flag_button==0){
-			button4_show();
-			flag_button=1;
-		}else{
-			button4_hide();
-			flag_button=0;
-		}
-	});
-	$("#pub-bar-status").tap(function(){
-		button4_hide();
-		flag_button=0;
-	});
-	$("#pub-bar-camera").tap(function(){
-		button4_hide();
-		flag_button=0;
-	});
-	$("#pub-bar-gallery").tap(function(){
-		button4_hide();
-		flag_button=0;
-	});
-	
-	/************************足迹**********************/
-	var flag_footprint=0;
-	$("#pub-bar-footprint").tap(function(){
-		if(!flag_footprint){
-			foot_print();
-			flag_footprint=1;
-		}else{
-			foot_print_hide();
-			flag_footprint=0;
-			button4_hide();
-			flag_button=0;
-			
-		}
-	});
-	
-	/************************景点名字***********************/
-	$(".bubble-name").hide();
-	$(".pin").tap(function(){
-		$(this).parent().find(".bubble-name").toggle("fast");
-	});
-	
-	/************************地图切换***********************/
-	$("#simple-map").tap(function(){
-		$("#map-sketch").find(".user-friend").hide();
-		$("#map-sketch").find(".user-stranger").hide();
-		$("#popupPanel").popup("close");
-	});
-	$("#friend-map").tap(function(){
-		$("#map-sketch").find(".user-friend").show();
-		$("#map-sketch").find(".user-stranger").hide();
-		$("#popupPanel").popup("close");
-	});
-	$("#stranger-map").tap(function(){
-		$("#map-sketch").find(".user-friend").show();
-		$("#map-sketch").find(".user-stranger").show();
-		$("#popupPanel").popup("close");
-	});
-	
-	/************************定位到我***********************/
-	$("#pinpoint-button").tap(function(){
-		pinpointCenter("#user-ego");
-		jump("user-ego");
-		jump("user-ego-small");
-		msg_show();
-	});
-
-	/************************遮罩出现***********************/
-	var flag_cover=0;
-	$(document).on("vmouseover","#slide-right",function(){
-		$("#map-panorama-map").css("margin-top",($("#cover").height()-$("#map-panorama-map").height())/2+'px');
-		init_para();
-		anti_mapping(getE("map-sketch").style.top,getE("map-sketch").style.left)
-		msg_hide();
-		
-
-		$("#cover").animate({
-			right:"0"
-		},300);
-		$("#slide-left").animate({
-			zIndex:"1001"
-		},300);
-		flag_cover=1;
-	});
-	
-	/************************遮罩消失***********************/
-	$(document).on("vmouseover","#slide-left",function(){
-		//document.onmousemove=function(){};
-		if(flag_cover==1){
-			$("#cover").animate({
-				right:"-100%"
-			},300);
-			$("#slide-left").animate({
-				zIndex:"10"
-			},300);
-		}else{
-			//此处添加滑动出现面板的函数
-		}
-		flag_cover=0;
-	});
-	
-	/********************点击缩略图遮罩消失*******************/
-	$("#select-box").tap(function(){
-		$("#cover").animate({
-			right:"-100%"
-		},300);
-		$("#slide-left").animate({
-			zIndex:"10"
-		},300);
-	});
-});
 
 /**********************************显示足迹**********************************/
 function foot_print(){
@@ -545,106 +661,24 @@ function foot_print_hide(){
 	$(".footprint").remove();
 }
 
-/********************************四个按钮出现********************************/
-function button4_show(){
-	$("#pub-bar-status").animate({
-		bottom:"140px",
-		right:"10px"
-	},300);
-	$("#pub-bar-camera").animate({
-		bottom:"120px",
-		right:"74px"
-	},300);
-	$("#pub-bar-gallery").animate({
-		bottom:"74px",
-		right:"120px"
-	},300);
-	$("#pub-bar-footprint").animate({
-		bottom:"10px",
-		right:"140px"
-	},300);
-}
-
-/********************************四个按钮消失********************************/
-function button4_hide(){
-	$("#pub-bar-status").animate({
-		bottom:"12px",
-		right:"12px"
-	},300);
-
-	$("#pub-bar-camera").animate({
-		bottom:"12px",
-		right:"12px"
-	},300);
-	$("#pub-bar-gallery").animate({
-		bottom:"12px",
-		right:"12px"
-	},300);
-	$("#pub-bar-footprint").animate({
-		bottom:"12px",
-		right:"12px"
-	},300);
-
-}
-
-/**********************************框跟随鼠标*******************************
-document.onmousemove=select_box_move;
-function select_box_move(e){
-	var fobj = e.target ;
-	while (fobj.tagName != "HTML"  &&  fobj.className != "cover"){
-		fobj = fobj.parentNode ;
-	}
-	if (fobj.className=="cover"){
-		var box=getE("select-box");
-		var o=e||window.event;
-		var mouseH=o.clientY;
-		var mouseW=o.clientX;
-		if(cover_cal_top(mouseH)>0 && (mouseH+(coverH-imgH)/2)<windowH){
-			box.style.top=mouseH-box.offsetHeight/2-43+'px';
-		}
-		if(cover_cal_left(mouseW)>0 && (mouseW+(coverW-imgW)/2)<windowW){
-			box.style.left=mouseW-box.offsetWidth/2+'px';
-		}
-			
-		mapping(mouseH,mouseW);
-	}
-}*/
-
-/**********************************遮罩层算数********************************/
-function cover_cal_top(t){
-	return(t-(coverH-imgH)/2);
-}
-function cover_cal_left(l){
-	return(l-(coverW-imgW)/2);
-}
-
-/***********************************映射函数*********************************/
-function mapping(mouseH,mouseW){
-	var maptop=-((mouseH-38-(coverH-imgH)/2)/scale-windowH/2);
-	var mapleft=-((mouseW-(coverW-imgW)/2)/scale-windowW/2);
-	map_sketch_limit(maptop,mapleft);
-}
-/***********************************反向映射*********************************/
-function anti_mapping(mapT,mapL){
-	getE("select-box").style.top=((-mapT+windowH/2)*scale+(coverH-imgH)/2-30)+'px';
-	getE("select-box").style.left=((-mapL+windowW/2)*scale+(coverW-imgW)/2-30)+'px';
-}
-/***********************************头像映射*********************************/
-function anti_mapping_user_top(userT){
-	console.log(imgH)
-	return (userT*scale+(coverH-imgH)/2);
-}
-function anti_mapping_user_left(userL){
-	return (userL*scale+(coverW-imgW)/2);
-}
 /***********************************头像跳动*********************************/
-function jump(id){
+function jump_big(id){
 	for(var i=0;i<10;i++){
 		$('#'+id).animate({
 			top:"-=25"
 		},300);
 		$('#'+id).animate({
 			top:"+=25"
+		},300);
+	}
+}
+function jump_small(id){
+	for(var i=0;i<10;i++){
+		$('#'+id).animate({
+			top:"-=10"
+		},300);
+		$('#'+id).animate({
+			top:"+=10"
 		},300);
 	}
 }
@@ -661,17 +695,15 @@ function msg_hide(){
 	},300);
 }
 /**********************************文字状态**********************************/
-var maxLength1 = 140; 
 function MaxInput1(form) {
-	if (form.message.value.length > maxLength1) 
-		form.message.value = form.message.value.substring(0, maxLength1);
+	if (form.message.value.length > 140) 
+		form.message.value = form.message.value.substring(0, 140);
 	else getE("length1").innerText = form.message.value.length;
 }
 
 /*******************************给图片加文字状态******************************/
-var maxLength2 = 140;
 function MaxInput2(form) {
-	if (form.message.value.length > maxLength2) 
-		form.message.value = form.message.value.substring(0, maxLength2);
+	if (form.message.value.length > 140) 
+		form.message.value = form.message.value.substring(0, 140);
 	else getE("length2").innerText = form.message.value.length;
 }

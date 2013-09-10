@@ -10,6 +10,7 @@
 <link rel="stylesheet" href="themes/8new.css">
 <link rel="stylesheet" href="js/jquery.mobile-1.3.2/jquery.mobile.structure-1.3.2.min.css">
 <link href="css/Map.css" rel="stylesheet">
+<link href="css/Msg.css" rel="stylesheet">
 <link href="css/Zone.css" rel="stylesheet">
 <link href="css/bootstrap.css" rel="stylesheet">
 
@@ -22,10 +23,13 @@
 <script src="js/jingdian_introduce.js"></script>
 <script src="js/Zone.js"></script>
 <script src="js/jquery.mobile-1.3.2/jquery.mobile-1.3.2.min.js"></script>
+<script src="js/setting.js"></script>
+
+
 
 <!--******************************************与拍照上传相关的代码******************************-->
 	
-	<!--script type="text/javascript" charset="utf-8">
+<!--script type="text/javascript" charset="utf-8">
     var pictureSource;  
     var destinationType; 
     document.addEventListener("deviceready",onDeviceReady,false);
@@ -112,7 +116,7 @@ function upLoadFile(path){
 
 </script-->
 
-<!--script src="https://d10ajoocuyu32n.cloudfront.net/codiqa.ext.js"></script-->
+<script src="https://d10ajoocuyu32n.cloudfront.net/codiqa.ext.js"></script>
 
 <!----------------------------------------------------- template ------------------------------------------------------>
 
@@ -132,29 +136,14 @@ function upLoadFile(path){
 
 <!----------------------新的好友请求------------------------->
 <script id="newf-tmpl" type="text/x-jquery-tmpl">
-	<li id=${Id} data-corners="false" data-shadow="false" data-iconshadow="true" data-wrapperels="div" data-icon="arrow-r" data-iconpos="right" data-theme="g" class="ui-btn ui-btn-icon-right ui-li-has-arrow ui-li ui-li-has-thumb ui-first-child ui-btn-up-c">
-		<div class="ui-btn-inner ui-li">
-			<div class="ui-btn-text">
-				<div class="ui-li-aside">
-					<div data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="g" data-inline="true" data-disabled="false" class="ui-btn ui-shadow ui-btn-corner-all ui-btn-inline ui-btn-up-c" aria-disabled="false">
-						<span class="ui-btn-inner">
-							<span class="ui-btn-text">同意</span>
-						</span>
-						<button class="newfY ui-btn-hidden" data-inline="true" data-disabled="false">同意</button>
-					</div>
-					<div data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="g" data-inline="true" data-disabled="false" class="ui-btn ui-shadow ui-btn-corner-all ui-btn-inline ui-btn-up-c" aria-disabled="false">
-						<span class="ui-btn-inner">
-							<span class="ui-btn-text">拒绝</span>
-						</span>
-						<button class="newfN ui-btn-hidden" data-inline="true" data-disabled="false">拒绝</button>
-					</div>
-				</div>
-				<a href="#zone-others" class="ui-link-inherit">
-					<img src=${Head} class="ui-li-thumb">
-					<h3 class="ui-li-heading">${Name}</h3><p class="ui-li-desc">请求加您为好友</p>
-				</a>
-			</div>
-			<span class="ui-icon ui-icon-arrow-r ui-icon-shadow">&nbsp;</span>
+	<li id="2-newf">
+		<a href="#zone-others">
+			<img src="img/Avatar.jpg"/>
+			<h3>王小明</h3><p>请求加您为好友</p>
+		</a>
+		<div class="ui-li-aside">
+			<button class="newfY" data-inline="true">同意</button>
+			<button class="newfN" data-inline="true">拒绝</button>
 		</div>
 	</li>
 </script>
@@ -212,42 +201,94 @@ function upLoadFile(path){
 
 
 <!----------------------文字状态(无回复)----------------------->
-<script id='text_status_no_reply_button'  type='text/x-jquery-tmpl'>
+<!--script id='text_status_no_reply_button'  type='text/x-jquery-tmpl'>
 	<tr><td><img src=${Head} width="50px" height="50px"/></td><td style="text-align:left">${Name}</td></tr>
 	<tr><td></td><tdstyle="text-align:left">${Content}<br /></td></tr>
+</script-->
+<!----------------------文字状态(无回复)----------------------->
+<script id='text_status_no_reply_button'  type='text/x-jquery-tmpl'>
+	<div class="toubu">
+		<img class="touxiang" src=${Head} />
+		<p class="mingzi">${Name}</p>
+	</div>
+	<div>
+		<p class="neirong">${Content}</p>
+	</div>
+	<hr class="hr">
 </script>
-
 
 
 <!----------------------图片状态(无回复)---------------------->
-<script id='pic_status_no_reply_button'  type='text/x-jquery-tmpl'>
+<!--script id='pic_status_no_reply_button'  type='text/x-jquery-tmpl'>
 	<tr><td><img src=${Head} width="50px" height="50px"/></td><td style="text-align:left">${Name}</td></tr>
 	<tr><td></td><td style="text-align:left"><img src=${IMG} width="100%" /><br/>${Content}</br></td></tr>
+</script-->
+<!----------------------图片状态(无回复)---------------------->
+<script id='pic_status_no_reply_button'  type='text/x-jquery-tmpl'>
+	<div class="toubu">
+		<img src=${Head} class="touxiang"/>
+		<p class="mingzi">${Name}</p>
+	</div>
+	<img class="neirongtupian" src=${IMG} />
+	<div>	
+		<p class="neirong">${Content}</p>	
+	</div>
+	<hr class="hr"/>
 </script>
 
-
 <!---------------------------回复---------------------------->
-<script id='reply-tmpl' type='text/x-jquery-tmpl'>
+<!--script id='reply-tmpl' type='text/x-jquery-tmpl'>
 	<tr>
 		<td></td><td id=${Id}><div id=${Reply_id} style="text-align:left"><img src=${Head} width="30px" height="30px"/>${Name} 回复${Target_Name}: ${Content}<a class="button-reply" ><img width="20px" height="20px" src="img/reply.png" style="float:right"/></a></div></td>
 	</tr>
+</script-->
+<!---------------------------回复---------------------------->
+<script id='reply-tmpl' type='text/x-jquery-tmpl'>
+	<div style="height:30px">
+		<img src=${Head} style="float:left; width:30px; height:30px;"/>
+		<p style="position:relative; margin-left:5px; float:left">${Name}回复 ${Target_Name}: </p>
+		<a class="button-reply"><img width="20px" height="20px" src="img/reply.png" style="float:right"/></a>
+		<p style="margin-left:5px; background-color: #E0E0E0; padding: 2px; border-radius:10px;float:left">${Content}</p>
+	</div>
 </script>
-
 
 <!----------------------文字状态(有回复)----------------------->
-<script id='text_status_reply_button'  type='text/x-jquery-tmpl'>
+<!--script id='text_status_reply_button'  type='text/x-jquery-tmpl'>
 	<tr><td><img src=${Head} width="50px" height="50px"/></td><td style="text-align:left">${Name}</td></tr>
 	<tr><td></td><td id=${Id}><div id=${Entry_id} style="text-align:left">${Content}<a class="status-button-reply"><img width="20px" height="20px" src="img/reply.png" style="float:right"/></a></div></td></tr>
+</script-->
+<!----------------------文字状态(有回复)----------------------->
+<script id='text_status_reply_button'  type='text/x-jquery-tmpl'>
+	<div class="toubu">
+		<img class="touxiang" src=${Head} />
+		<p class="mingzi">${Name}</p>
+	</div>
+	<div>
+		<a class="status-button-reply"><img width="20px" height="20px" src="img/reply.png" style="float:right"/></a>
+		<p class="neirong">${Content}</p>
+	</div>
+	<hr class="hr"/>
 </script>
 
-
 <!----------------------图片状态(有回复)---------------------->
-<script id='pic_status_reply_button'  type='text/x-jquery-tmpl'>
+<!--script id='pic_status_reply_button'  type='text/x-jquery-tmpl'>
 	<tr><td><img src=${Head} width="50px" height="50px"/></td><td style="text-align:left">${Name}</td></tr>
 	<tr><td></td><td><img src=${IMG} width="100%" /></td></tr>
 	<tr><td></td><td id=${Id}><div id=${Entry_id} style="text-align:left">${Content}<a class="status-button-reply"><img width="20px" height="20px" src="img/reply.png" style="float:right"/></a></div></td></tr>
+</script-->
+<!----------------------图片状态(有回复)---------------------->
+<script id='pic_status_reply_button'  type='text/x-jquery-tmpl'>
+	<div class="toubu">
+		<img src=${Head} class="touxiang"/>
+		<p class="mingzi">${Name}</p>
+	</div>
+	<img class="neirongtupian" src=${IMG} />
+	<div>	
+		<a class="status-button-reply"><img width="20px" height="20px" src="img/reply.png" style="float:right"/></a>
+		<p class="neirong">${Content}</p>	
+	</div>
+	<hr class="hr"/>
 </script>
-
 
 
 <!----------------------------足迹----------------------------->
@@ -256,74 +297,183 @@ function upLoadFile(path){
 </script>
 
 <!--------------------------景点介绍-------------------------->
-	<script id='jingdianImg1'  type='text/x-jquery-tmpl'>
-		<tr><td><img src=${portrait} width="50px" height="50px"/></td><td>${evaluator_name}</td></tr>
-		<tr><td></td><td>${content}<br /></td><td><img src="img/1star.gif"></td></tr>
-	</script>
-	<script id='jingdianImg2'  type='text/x-jquery-tmpl'>
-		<tr><td><img src=${portrait} width="50px" height="50px"/></td><td>${evaluator_name}</td></tr>
-		<tr><td></td><td>${content}<br /></td><td><img src="img/2star.gif"></td></tr>
-	</script>
-	<script id='jingdianImg3'  type='text/x-jquery-tmpl'>
-		<tr><td><img src=${portrait} width="50px" height="50px"/></td><td>${evaluator_name}</td></tr>
-		<tr><td></td><td>${content}<br /></td><td><img src="img/3star.gif"></td></tr>
-	</script>
-	<script id='jingdianImg4'  type='text/x-jquery-tmpl'>
-		<tr><td><img src=${portrait} width="50px" height="50px"/></td><td>${evaluator_name}</td></tr>
-		<tr><td></td><td>${content}<br /></td><td><img src="img/4star.gif"></td></tr>
-	</script>
-	<script id='jingdianImg5'  type='text/x-jquery-tmpl'>
-		<tr><td><img src=${portrait} width="50px" height="50px"/></td><td>${evaluator_name}</td></tr>
-		<tr><td></td><td>${content}<br /></td><td><img src="img/5star.gif"></td></tr>
-	</script>
-	<script id='newThing' type='text/x-jquery-tmpl'>
-		<tr><td>${Content}</td></tr>
-	</script>
-	<script id='newThingImg'  type='text/x-jquery-tmpl'>
-		<tr><td><img src=${IMG} width="300px" height="300px"/></td></tr>
-		<tr><td>${Content}</td></tr>
-	</script>
+<!--script id='jingdianImg1'  type='text/x-jquery-tmpl'>
+	<tr><td><img src=${portrait} width="50px" height="50px"/></td><td>${evaluator_name}</td></tr>
+	<tr><td></td><td>${content}<br /></td><td><img src="img/1star.gif"></td></tr>
+</script>
+<script id='jingdianImg2'  type='text/x-jquery-tmpl'>
+	<tr><td><img src=${portrait} width="50px" height="50px"/></td><td>${evaluator_name}</td></tr>
+	<tr><td></td><td>${content}<br /></td><td><img src="img/2star.gif"></td></tr>
+</script>
+<script id='jingdianImg3'  type='text/x-jquery-tmpl'>
+	<tr><td><img src=${portrait} width="50px" height="50px"/></td><td>${evaluator_name}</td></tr>
+	<tr><td></td><td>${content}<br /></td><td><img src="img/3star.gif"></td></tr>
+</script>
+<script id='jingdianImg4'  type='text/x-jquery-tmpl'>
+	<tr><td><img src=${portrait} width="50px" height="50px"/></td><td>${evaluator_name}</td></tr>
+	<tr><td></td><td>${content}<br /></td><td><img src="img/4star.gif"></td></tr>
+</script>
+<script id='jingdianImg5'  type='text/x-jquery-tmpl'>
+	<tr><td><img src=${portrait} width="50px" height="50px"/></td><td>${evaluator_name}</td></tr>
+	<tr><td></td><td>${content}<br /></td><td><img src="img/5star.gif"></td></tr>
+</script-->
+<script id='jingdianImg1' type='text/x-jquery-tmpl'>
+	<div class="toubu">
+		<img class="touxiang" src=${potrait} />
+		<p class="mingzi">${evaluator_name}</p>
+	</div>
+	<div>
+		<img src="img/1star.gif" style="float:right"/>
+		<p style="margin-left:65px;">${content}</p>
+	</div>
+	<hr class="hr">
+</script>
+<script id='jingdianImg2' type='text/x-jquery-tmpl'>
+	<div class="toubu">
+		<img class="touxiang" src=${potrait} />
+		<p class="mingzi">${evaluator_name}</p>
+	</div>
+	<div>
+		<img src="img/2star.gif" style="float:right"/>
+		<p style="margin-left:65px;">${content}</p>
+	</div>
+	<hr class="hr">
+</script>
+<script id='jingdianImg3' type='text/x-jquery-tmpl'>
+	<div class="toubu">
+		<img class="touxiang" src=${potrait} />
+		<p class="mingzi">${evaluator_name}</p>
+	</div>
+	<div>
+		<img src="img/3star.gif" style="float:right"/>
+		<p style="margin-left:65px;">${content}</p>
+	</div>
+	<hr class="hr">
+</script>
+<script id='jingdianImg4' type='text/x-jquery-tmpl'>
+	<div class="toubu">
+		<img class="touxiang" src=${potrait} />
+		<p class="mingzi">${evaluator_name}</p>
+	</div>
+	<div>
+		<img src="img/4star.gif" style="float:right"/>
+		<p style="margin-left:65px;">${content}</p>
+	</div>
+	<hr class="hr">
+</script>
+<script id='jingdianImg5' type='text/x-jquery-tmpl'>
+	<div class="toubu">
+		<img class="touxiang" src=${potrait} />
+		<p class="mingzi">${evaluator_name}</p>
+	</div>
+	<div>
+		<img src="img/5star.gif" style="float:right"/>
+		<p style="margin-left:65px;">${content}</p>
+	</div>
+	<hr class="hr">
+</script>
+<script id='newThing' type='text/x-jquery-tmpl'>
+	<tr><td>${Content}</td></tr>
+</script>
+<script id='newThingImg'  type='text/x-jquery-tmpl'>
+	<tr><td><img src=${IMG} width="300px" height="300px"/></td></tr>
+	<tr><td>${Content}</td></tr>
+</script>
 
 </head>
 
-<body style="font-family:微软雅黑;padding:0;" onload="init()" onresize="resize();">
-
-<div data-role="page" id="page0" data-theme="g" >
-    <div data-role="header" data-theme="g">
-      <img src="img/hitrip_logo_mini.png">
-      <a href="#panel0" data-icon="bars" data-iconpos="notext" data-shadow="false" data-iconshadow="false">Menu</a>
-    </div>
-    <div data-role="content" style="padding: 0%">
-		<div>
-			<div id="googlemapsjs3" class="google-map" style="width: 480px; height: 400px;">
+<body style="font-family:微软雅黑;padding:0;">
+<div data-role="page" id="page0" data-theme="g">
+	<div  data-role="header" data-theme="g" data-tap-toggle="false" data-position="fixed">
+		<h1>首页</h1>
+		<a href="#panel0" data-icon="bars" data-iconpos="notext" data-shadow="false" data-iconshadow="false"></a>
+	</div>
+	<div data-role="content" style="padding:0;height:100%;width:100%">
+		<!--div style="width:100%;height:100%">
+			<div id="googlemapsjs3" class="google-map" style="width: 90%; height: 200px;margin-top:1%; margin-left: 5%; margin-right: 5%; position: relative; ">
 			</div>
 			<script type="text/javascript">
-			window.CodiqaControls && window.CodiqaControls.register('googlemaps', 'googlemapsjs3', {
-				ready: function(control) {
-					control.options = {
-						zoom: 14,
-						mapTypeId: google.maps.MapTypeId.ROADMAP
-					};
+				window.CodiqaControls && window.CodiqaControls.register('googlemaps', 'googlemapsjs3', {
+					ready: function(control) {
 
-					control.el = document.getElementById(control._id);
-					control.map = new google.maps.Map(control.el, control.options);
+						control.options = {
+							zoom: 14,
+							mapTypeId: google.maps.MapTypeId.ROADMAP
+						};
 
-					var geocoder = new google.maps.Geocoder();
-					geocoder.geocode({'address': 'Nanjing，China'}, function(results, status) {
-						if (status == google.maps.GeocoderStatus.OK) {
-							var marker = new google.maps.Marker({
-								map: control.map,
-								position: results[0].geometry.location
-							});
-							control.center = results[0].geometry.location;
-							control.map.setCenter(control.center);
-						}
-					});
-				}
-			});
-			</script>
-        </div>
-    </div>
+						control.el = document.getElementById(control._id);
+						control.map = new google.maps.Map(control.el, control.options);
+
+						var geocoder = new google.maps.Geocoder();
+						geocoder.geocode({'address': 'Cinderella Castle, Bay Lake, FL, United States'}, function(results, status) {
+							if (status == google.maps.GeocoderStatus.OK) {
+								var marker = new google.maps.Marker({
+									map: control.map,
+									position: results[0].geometry.location
+								});
+								control.center = results[0].geometry.location;
+								control.map.setCenter(control.center);
+							}
+						});
+
+					}
+				});
+              </script>
+        </div-->
+		<div id="mapholder"></div>
+		<p id="hottest">热门推荐</p>
+		
+		<div style="height:500px">
+			<div class="img-left"><img src="img/gugong1.jpg"/></div>
+			<div class="img-right"><img src="img/gugong1.jpg"/></div>
+			<div class="img-left"><img src="img/gugong1.jpg"/></div>
+			<div class="img-right"><img src="img/gugong1.jpg"/></div>
+		</div>
+		<script src="http://maps.google.com/maps/api/js?sensor=false"></script>
+		<script>
+		$(document).ready(function(){getLocation();});
+		var x=document.getElementById("demo");
+		function getLocation(){
+			if (navigator.geolocation){
+				navigator.geolocation.getCurrentPosition(showPosition,showError);
+			}
+			else{x.innerHTML="Geolocation is not supported by this browser.";}
+		}
+
+		function showPosition(position){
+			lat=position.coords.latitude;
+			lon=position.coords.longitude;
+			latlon=new google.maps.LatLng(lat, lon)
+			mapholder=document.getElementById('mapholder')
+
+			var myOptions={
+				center:latlon,zoom:14,
+				mapTypeId:google.maps.MapTypeId.ROADMAP,
+				mapTypeControl:false,
+				navigationControlOptions:{style:google.maps.NavigationControlStyle.SMALL}
+			};
+			var map=new google.maps.Map(document.getElementById("mapholder"),myOptions);
+			var marker=new google.maps.Marker({position:latlon,map:map,title:"You are here!"});
+		}
+
+		/*function showError(error){
+			switch(error.code){
+				case error.PERMISSION_DENIED:
+					x.innerHTML="User denied the request for Geolocation."
+					break;
+				case error.POSITION_UNAVAILABLE:
+					x.innerHTML="Location information is unavailable."
+					break;
+				case error.TIMEOUT:
+					x.innerHTML="The request to get user location timed out."
+					break;
+				case error.UNKNOWN_ERROR:
+					x.innerHTML="An unknown error occurred."
+					break;
+			}
+		}*/
+		</script>
+	</div>
     <div data-role="panel" id="panel0" data-theme="g" data-position-fixed="true">
 		<ul data-role="listview" data-divider-theme="g" data-inset="false">
 			<li data-theme="g" id="panelHead"><img id="panelHeadImg" src="img/Avatar.jpg" height="100%">王小明</li>
@@ -345,17 +495,17 @@ function upLoadFile(path){
 <div data-role="page" id="page1" data-theme="g">
     <div data-role="header" data-theme="g" data-tap-toggle="false" data-position="fixed">
       <h1>景区地图</h1>
-      <a href="#panel1" data-icon="bars" data-iconpos="notext" data-shadow="false" data-iconshadow="false">Menu</a>
+      <a href="#panel1" data-icon="bars" data-iconpos="notext" data-shadow="false" data-iconshadow="false"><img src="img/red.png" width="10px"/></a>
     </div>
 	<div data-role="content" style="padding:0%;" id="minilayer" class="minilayer" >
 		<div class="map-sketch" id="map-sketch">
 						
 			<!-------------------景点标注------------------->
-			<div class="marker" id="jtbg">
-				<a class="pin"><img src="img/Marker-BB.png"/></a>
+			<div class="marker" id="hgndcb">
+				<a class="pin"><img src="img/Marker-WG.png"/></a>
 				<a class="bubble-name" href="#introduce"><div class="tooltip fade top in">
 					<div class="tooltip-arrow"></div>
-					<div class="tooltip-inner">焦廷标馆</div>
+					<div class="tooltip-inner">灰姑娘的城堡</div>
 				</div></a>
 				<!--a class="bubble"><div class="tooltip fade right in mb-img">
 					<div class="tooltip-arrow"></div>
@@ -365,34 +515,70 @@ function upLoadFile(path){
 					</div>
 				</div></a-->
 			</div>
-			<div class="marker" id="lwz">
-				<a class="pin"><img src="img/Marker-GB.png"/><a>
+			<div class="marker" id="mfqyzt">
+				<a class="pin"><img src="img/Marker-WG.png"/><a>
 				<a class="bubble-name" href="#introduce"><div class="tooltip fade top in">
 					<div class="tooltip-arrow"></div>
-					<div class="tooltip-inner">李文正图书馆</div>
+					<div class="tooltip-inner">魔法奇缘之塔</div>
 				</div></a>
-				<!--a class="bubble"><div class="tooltip fade right in mb-word">
-					<div class="tooltip-arrow"></div>
-					<div class="tooltip-inner">
-						啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊
-					</div>
-				</div></a-->
 			</div>
-			<div class="marker" id="jsjl">
+			<div class="marker" id="zygc">
 				<a class="pin"><img src="img/Marker-WG.png"/></a>
 				<a class="bubble-name" href="#introduce"><div class="tooltip fade top in">
 					<div class="tooltip-arrow"></div>
-					<div class="tooltip-inner">计算机 / 软件楼</div>
+					<div class="tooltip-inner">自由广场</div>
 				</div></a>
 			</div>
-			<div class="marker" id="jzl">
-				<a class="pin"><img src="img/Marker-WP.png"/></a>
+			<div class="marker" id="hxsj">
+				<a class="pin"><img src="img/Marker-WG.png"/></a>
 				<a class="bubble-name" href="#introduce"><div class="tooltip fade top in">
 					<div class="tooltip-arrow"></div>
-					<div class="tooltip-inner">金智楼</div>
+					<div class="tooltip-inner">幻想世界</div>
 				</div></a>
 			</div>
-			
+			<div class="marker" id="mrsj">
+				<a class="pin"><img src="img/Marker-WG.png"/></a>
+				<a class="bubble-name" href="#introduce"><div class="tooltip fade top in">
+					<div class="tooltip-arrow"></div>
+					<div class="tooltip-inner">明日世界</div>
+				</div></a>
+			</div>
+			<div class="marker" id="txsj">
+				<a class="pin"><img src="img/Marker-WG.png"/></a>
+				<a class="bubble-name" href="#introduce"><div class="tooltip fade top in">
+					<div class="tooltip-arrow"></div>
+					<div class="tooltip-inner">探险世界</div>
+				</div></a>
+			</div>
+			<div class="marker" id="mgxzdj">
+				<a class="pin"><img src="img/Marker-WG.png"/></a>
+				<a class="bubble-name" href="#introduce"><div class="tooltip fade top in">
+					<div class="tooltip-arrow"></div>
+					<div class="tooltip-inner">美国小镇大街</div>
+				</div></a>
+			</div>
+			<div class="marker" id="yzfc">
+				<a class="pin"><img src="img/Marker-WG.png"/></a>
+				<a class="bubble-name" href="#introduce"><div class="tooltip fade top in">
+					<div class="tooltip-arrow"></div>
+					<div class="tooltip-inner">宇宙飞船</div>
+				</div></a>
+			</div>
+			<div class="marker" id="gwgs">
+				<a class="pin"><img src="img/Marker-WG.png"/></a>
+				<a class="bubble-name" href="#introduce"><div class="tooltip fade top in">
+					<div class="tooltip-arrow"></div>
+					<div class="tooltip-inner">怪物公司</div>
+				</div></a>
+			</div>
+			<div class="marker" id="fkch">
+				<a class="pin"><img src="img/Marker-WG.png"/></a>
+				<a class="bubble-name" href="#introduce"><div class="tooltip fade top in">
+					<div class="tooltip-arrow"></div>
+					<div class="tooltip-inner">疯狂茶会</div>
+				</div></a>
+			</div>
+
 			<!-------------------用户头像和状态显示--------------------->
 			<div class="user-ego" id="user-ego">
 				<a class="avatar"><img src="img/Avatar.jpg"></img></a>
@@ -485,7 +671,7 @@ function upLoadFile(path){
 		<div id="cover" class="cover">
 			<div id="map-panorama">
 				<img id="map-panorama-map" src="img/Disney.jpg" />
-				<div id="select-box"></div>
+				<div id="select-box" class="select-box"></div>
 				<div class="user-ego-small" id="user-ego-small">
 					<img src="img/red.png"/>
 				</div>
@@ -923,13 +1109,29 @@ function upLoadFile(path){
 
 <!------------------------------------------------------设置---------------------------------------------------------->
 <div data-role="page" id="page5" data-theme="g" >
-	<div data-role="header" data-theme="g">
-	  <h1>设置</h1>
-	  <a href="#panel5" data-icon="bars" data-iconpos="notext" data-shadow="false" data-iconshadow="false">Menu</a>
+	<div data-role="header">
+		<h1>设置</h1>
+		<a href="#panel5" data-icon="bars" data-iconpos="notext" data-shadow="false" data-iconshadow="false">Menu</a>
 	</div>
 	<div data-role="content" style="padding: 0%">
-	   
+		<form name = "form" action="" method="POST">
+		
+			更改昵称<input type="text" id="username" name="username" onblur="isNameUnique()"/>
+			<p id="usernameTip" bgcolor="#FFFFFF"></p>
+			旧密码<input type="password" id="oldPassword" name="oldPassword" onblur="isPasswordRight()"/>
+			新密码<input type="password" id="password" name="password" onblur="isPasswordLegal()"/>
+			<p id="passwordTip" bgcolor="#FFFFFF"></p> <!--判断密码是否合法-->
+			确认密码<input type="password" id="password2" name="password2" onblur="isPasswordSame()"/>
+			<p id="userpasswordTip" bgcolor="#FFFFFF"></p><!-- 判断前后密码是否一致-->
+			更改头像
+			<button onclick="capturePhotoEdit();">拍照</button><br>
+			<button onclick="getPhoto(pictureSource.PHOTOLIBRARY);">图库</button><br>
+			<img id="largeImage" src=""/>
+			<input id="login" type="submit" data-theme="b" value="确认" onClick="infoChange()"/>
+			<br><br>
+		</form>
 	</div>
+	
 	<div data-role="panel" id="panel5" data-theme="g" data-position-fixed="true">
 	   <ul data-role="listview" data-divider-theme="g" data-inset="false">
 			<li data-theme="g"><img src="img/Avatar.jpg" height="100%">王小明</li>
@@ -1032,7 +1234,6 @@ function upLoadFile(path){
 	
 
 	</div>
-<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1373077207876240" charset="utf-8"></script>
 <script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/buttonLite.js#uuid=<>&style=-1"></script>
 <script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/addons/bshareAp.js"></script>
 </body>

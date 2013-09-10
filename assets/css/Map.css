@@ -31,8 +31,8 @@ body {
 }
 #map-sketch {
 	background: url(../img/Disney.jpg) no-repeat;
-	width: 2967px;
-	height:3316px;
+	width: 2225px;
+	height:2487px;
 	margin: 0;
 	padding: 0px 0 0 0;
 	position: relative;
@@ -157,23 +157,46 @@ a.spot{
 	float:left;
 	width:50px;
 }
-#jtbg{
-	top:916px;
-	left:1600px;
+#hgndcb{
+	top:885px;
+	left:1125px;
 }
-#jsjl{
-	top:820px;
-	left:710px;
+#mfqyzt{
+	top:462px;
+	left:479px
 }
-#lwz{
-	top:628px;
-	left:1064px;
+#zygc{
+	top:975px;
+	left:555px;
 }
-#jzl{
-	top:916px;
-	left:865px;
+#hxsj{
+	top:375px;
+	left:1571px;
 }
-
+#mrsj{
+	top:1102px;
+	left:1930px;
+}
+#txsj{
+	top:1500px;
+	left:65px;
+}
+#mgxzdj{
+	top:1901px;
+	left:1123px;
+}
+#yzfc{
+	top:1382px;
+	left:2022px;
+}
+#gwgs{
+	top:1436px;
+	left:1735px;
+}
+#fkch{
+	top:675px;
+	left:1735px;
+}
 
 /************************½ø¶ÈÌõ************************/
 #progress{
@@ -400,7 +423,7 @@ a.spot{
 	width:100%;
 	top:0;
 	right:-100%;
-	background-color:rgba(0, 0, 0, 0.8);
+	background-color:rgba(0, 0, 0, 0.6);
 	z-index:1000;
 }
 

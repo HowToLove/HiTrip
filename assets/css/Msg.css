@@ -1,0 +1,60 @@
+.toubu{
+height:50px;
+}
+.touxiang{
+float:left;
+width:50px;
+height:50px;
+}
+.mingzi{
+position:relative;
+margin-left:65px;
+}
+.neirong{
+margin-left:60px;
+background-color: #E0E0E0;
+padding: 5px;
+border-radius:10px;
+}
+.hr{
+border:0;
+background-color:#E0E0E0;
+height:1px;
+}
+.neirongtupian{
+max-width:300px;
+max-height:300px;
+margin-left:60px;
+}
+#hottest{
+	margin-top:10px;
+	font-size:20px;
+	font-family:微软雅黑;
+}
+#mapholder{
+	width:90%;
+	height:300px;
+	margin-left:5%;
+	margin-right:5%;
+	margin-top:15px;
+}
+.img-left{
+	margin-left:5%;
+	margin-right:3%;
+	float:left;
+}
+.img-right{
+	margin-left:3%;
+	margin-right:5%;
+	float:right;
+}
+.img-left,.img-right{
+	width:40%;
+	border-radius:15px;
+	border:5px solid white;
+	box-shadow: 10px 10px 5px #888888;
+	margin-top:20px;
+}
+.img-left img,.img-right img{
+	border-radius:15px;
+}
