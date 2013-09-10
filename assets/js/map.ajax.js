@@ -7,6 +7,7 @@ var queryMessageId;
 var queryJingdianNewsId;
 var queryAllId;
 /*************************************初始调用*************************************/
+window.onload=init;
 function init(){
 	//getSelfInfo(); 
 	myListener();
