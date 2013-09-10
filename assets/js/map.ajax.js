@@ -13,7 +13,7 @@ function init(){
 	myListener();
 	//queryAllId = setInterval(queryAll,1000);
 	//queryAll();
-	startSimulation();
+	//startSimulation();
 }
 function startSimulation(){
 	
@@ -161,7 +161,7 @@ function eyeOn(idName){
 	}
     var param ="idName="+idName+"&t="+Math.random();
 		//console.log(param);
-	var url = "http://localhost/server/eyeOn.php";
+	var url = "http://192.168.1.101/server/eyeOn.php";
 	xmlHttp.onreadystatechange = function(){
 		if(xmlHttp.readyState==4){
 		if(xmlHttp.status == 200){
@@ -187,7 +187,7 @@ function sendMessage(){
 	}
     var param ="content="+content+"&t="+Math.random();
 		//console.log(param);
-	var url = "http://localhost/server/sendMessage.php";
+	var url = "http://192.168.1.101/server/sendMessage.php";
 	xmlHttp.onreadystatechange = function(){
 		if(xmlHttp.readyState == 4){
 		if(xmlHttp.status == 200){
@@ -218,7 +218,7 @@ function sendMessage2(){
 	}
     var param ="content="+content+"&t="+Math.random();
 		//console.log(param);
-	var url = "http://localhost/server/sendMessage.php";
+	var url = "http://192.168.1.101/server/sendMessage.php";
 	xmlHttp.onreadystatechange = function(){
 		if(xmlHttp.readyState == 4){
 		if(xmlHttp.status == 200){
@@ -247,7 +247,7 @@ function getSelfInfo(){
 	}
     var param ="t="+Math.random();
 		//console.log(param);
-	var url = "http://localhost/server/getSelfInfo.php";
+	var url = "http://192.168.1.101/server/getSelfInfo.php";
 	xmlHttp.onreadystatechange = function(){
 		if(xmlHttp.readyState==4){
 		if(xmlHttp.status == 200){
@@ -282,7 +282,7 @@ function requestFriends(targetId){
 	}
     var param ="targetId="+targetId+"&t="+Math.random();
 		//console.log(param);
-	var url = "http://localhost/server/requestFriends.php";
+	var url = "http://192.168.1.101/server/requestFriends.php";
 	xmlHttp.onreadystatechange = function(){
 		if(xmlHttp.readyState==4){
 		if(xmlHttp.status == 200){
@@ -309,7 +309,7 @@ function answerFriends(answer,answerUserId){
 	}
     var param ="answer="+answer+"&answerUserId="+answerUserId+"&t="+Math.random();
 		//console.log(param);
-	var url = "http://localhost/server/answerFriends.php";
+	var url = "http://192.168.1.101/server/answerFriends.php";
 	xmlHttp.onreadystatechange = function(){
 		if(xmlHttp.readyState == 4){
 		if(xmlHttp.status == 200){
@@ -334,7 +334,7 @@ function queryAnswer(){
 	}
     var param ="t="+Math.random();
 		//console.log(param);
-	var url = "http://localhost/server/queryAnswer.php";
+	var url = "http://192.168.1.101/server/queryAnswer.php";
 	xmlHttp.onreadystatechange = function(){
 		if(xmlHttp.readyState == 4){
 		if(xmlHttp.status == 200){
@@ -408,12 +408,12 @@ function myListener(){
 
 /************************测试函数，用以添加新的好友请求信息************************/
 function aaa(){
-	var json1=[{"Longitude":"118.8136401","Latitude":"31.885700300000003","Head":"http:\/\/localhost\/register8.24\/files\/A.jpg","Id":"1","Name":"A"}];
+	var json1=[{"Longitude":"118.8136401","Latitude":"31.885700300000003","Head":"http:\/\/192.168.1.101\/register8.24\/files\/A.jpg","Id":"1","Name":"A"}];
 	for(var i=0;i<json1.length;i++){
 		$("#newf-tmpl").tmpl(json1[i]).prependTo("#newf-list");
 	}
 	myListener();
-	var json2=[{"Longitude":"0","Latitude":"0","Head":"http:\/\/localhost\/register8.24\/files\/D.jpg","Id":"4","Name":"D","Picture":"","Content":"\u7537\u4eba\u5c31\u662f\u7d2f\uff01"},{"Longitude":"0","Latitude":"0","Head":"http:\/\/localhost\/register8.24\/files\/D.jpg","Id":"4","Name":"D","Picture":"","Content":"\u7537\u4eba\u5c31\u662f\u7d2f\uff01"},{"Longitude":"0","Latitude":"0","Head":"http:\/\/localhost\/register8.24\/files\/D.jpg","Id":"4","Name":"D","Picture":"","Content":"\u7537\u4eba\u5c31\u662f\u7d2f\uff01"},{"Longitude":"0","Latitude":"0","Head":"http:\/\/localhost\/register8.24\/files\/C.jpg","Id":"3","Name":"C","Picture":"","Content":"\u7537\u4eba\u5c31\u662f\u7d2f\uff01"},{"Longitude":"0","Latitude":"0","Head":"http:\/\/localhost\/register8.24\/files\/D.jpg","Id":"4","Name":"D","Picture":"","Content":"\u7537\u4eba\u5c31\u662f\u7d2f\uff01"},{"Longitude":"0","Latitude":"0","Head":"http:\/\/localhost\/register8.24\/files\/D.jpg","Id":"4","Name":"D","Picture":"","Content":"\u7537\u4eba\u5c31\u662f\u7d2f\uff01"},{"Longitude":"0","Latitude":"0","Head":"http:\/\/localhost\/register8.24\/files\/D.jpg","Id":"4","Name":"D","Picture":"","Content":"\u7537\u4eba\u5c31\u662f\u7d2f\uff01"}]
+	var json2=[{"Longitude":"0","Latitude":"0","Head":"http:\/\/192.168.1.101\/register8.24\/files\/D.jpg","Id":"4","Name":"D","Picture":"","Content":"\u7537\u4eba\u5c31\u662f\u7d2f\uff01"},{"Longitude":"0","Latitude":"0","Head":"http:\/\/192.168.1.101\/register8.24\/files\/D.jpg","Id":"4","Name":"D","Picture":"","Content":"\u7537\u4eba\u5c31\u662f\u7d2f\uff01"},{"Longitude":"0","Latitude":"0","Head":"http:\/\/192.168.1.101\/register8.24\/files\/D.jpg","Id":"4","Name":"D","Picture":"","Content":"\u7537\u4eba\u5c31\u662f\u7d2f\uff01"},{"Longitude":"0","Latitude":"0","Head":"http:\/\/192.168.1.101\/register8.24\/files\/C.jpg","Id":"3","Name":"C","Picture":"","Content":"\u7537\u4eba\u5c31\u662f\u7d2f\uff01"},{"Longitude":"0","Latitude":"0","Head":"http:\/\/192.168.1.101\/register8.24\/files\/D.jpg","Id":"4","Name":"D","Picture":"","Content":"\u7537\u4eba\u5c31\u662f\u7d2f\uff01"},{"Longitude":"0","Latitude":"0","Head":"http:\/\/192.168.1.101\/register8.24\/files\/D.jpg","Id":"4","Name":"D","Picture":"","Content":"\u7537\u4eba\u5c31\u662f\u7d2f\uff01"},{"Longitude":"0","Latitude":"0","Head":"http:\/\/192.168.1.101\/register8.24\/files\/D.jpg","Id":"4","Name":"D","Picture":"","Content":"\u7537\u4eba\u5c31\u662f\u7d2f\uff01"}]
 	for(var i=0;i<json2.length;i++){
 		var id=json2[i].Id;
 		var pic=json2[i].Picture;
@@ -440,7 +440,7 @@ function queryAll(){//查询所有的景点消息
 		"&t="+Math.random();
 		*/
 	var param ="t="+Math.random();
-	var url = "http://localhost/server/totalHiTripMapServer.php";
+	var url = "http://192.168.1.101/server/totalHiTripMapServer.php";
 	xmlHttp.onreadystatechange = function(){
 		if(xmlHttp.readyState == 4){
 		if(xmlHttp.status == 200){
