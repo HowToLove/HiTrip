@@ -1,14 +1,3 @@
-/*var json=[{"IdName":"hgndcb","Name":"灰姑娘的城堡","Top":"885","Left":"1125"},
-		  {"IdName":"mfqyzt","Name":"魔法奇缘之塔","Top":"462","Left":"479"},
-		  {"IdName":"zygc","Name":"自由广场","Top":"975","Left":"555"},
-		  {"IdName":"hxsj","Name":"幻想世界","Top":"375","Left":"1571"},
-		  {"IdName":"mrsj","Name":"明日世界","Top":"1102","Left":"1930"},
-		  {"IdName":"txsj","Name":"探险世界","Top":"1500","Left":"65"},
-		  {"IdName":"mgxzdj","Name":"美国小镇大街","Top":"1901","Left":"1123"},
-		  {"IdName":"yzfc","Name":"宇宙飞船","Top":"1382","Left":"2022"},
-		  {"IdName":"gwgs","Name":"怪物公司","Top":"1436","Left":"1735"},
-		  {"IdName":"fkch","Name":"疯狂茶会","Top":"675","Left":"1735"}];*/
-		  
 /**********************************窗口重绘**********************************/
 window.onresize=resize;
 function resize(){
@@ -166,8 +155,6 @@ $(document).ready(function(){
 		flag_cover=1;
 	});
 	$(document).on("vmouseover","#slide-right",function(){
-		//init_para();
-		//anti_mapping(getE("map-sketch").style.top,getE("map-sketch").style.left)
 		msg_hide();
 		var imgH=$("#map-panorama-map").height();
 		var imgW=$("#map-panorama-map").width();
@@ -178,7 +165,6 @@ $(document).ready(function(){
 		var windowW=parseInt(document.body.clientWidth+0);
 		if(resize_flag){
 			$("#map-panorama-map").css("margin-top",(coverH-imgH)/2+'px');
-			//alert("on")
 			resize_flag=0
 		}
 		getE("select-box").style.top=((-parseInt(getE("map-sketch").style.top+0)+windowH/2)*scale+(coverH-imgH)/2-30)+'px';
@@ -200,8 +186,7 @@ $(document).ready(function(){
 			},300);
 			$("#slide-left").css("z-index","10");
 		}else{
-			//此处添加滑动出现面板的函数
-
+			$( "#panel1" ).panel( "open" );
 		}
 		flag_cover=0;
 	});
@@ -278,56 +263,6 @@ function button_right_hide(){
 }
 
 /**********************************地图拖拽**********************************/
-/*var isdrag=false;
-var x,y;
-var dobj;
-
-function movemouse(e){
-	if (isdrag){
-		w=document.body.clientWidth;
-		h=document.body.clientHeight;
-		
-		dobj.style.top  = ty + e.clientY - y +'px';			
-		if(parseInt(dobj.style.top+0) > 0){//向下拖
-			dobj.style.top = '0px';
-		}
-		else if(parseInt(dobj.style.top+0) < (h-2487-43)){//向上拖
-			dobj.style.top=''+(h-2487-43)+'px';
-		}
-		
-		dobj.style.left = tx + e.clientX - x +'px';
-		if(parseInt(dobj.style.left+0)>0){//向右拖
-			dobj.style.left = '0px';
-		}
-		else if(parseInt(dobj.style.left+0)<(w-2225)){//向左拖
-			dobj.style.left=''+(w-2225)+'px';
-		}
-		init_para();
-		anti_mapping(parseInt(dobj.style.top+0),parseInt(dobj.style.left+0))
-		return false;
-	}
-}
-
-function selectmouse(e){
-	var fobj = e.target ;
-	while (fobj.tagName != "HTML"  &&  fobj.className != "map-sketch"){
-		fobj = fobj.parentNode ;
-	}
-	if (fobj.className=="map-sketch"){
-		isdrag = true;
-		dobj = fobj;
-		tx = parseInt(dobj.style.left+0);
-		ty = parseInt(dobj.style.top+0);
-		x = e.clientX ;
-		y = e.clientY ;
-		document.onmousemove=movemouse;
-		return false;
-	}
-
-}
-document.onmousedown=selectmouse;
-document.onmouseup=new Function("isdrag=false");*/
-
 $(function(){
 	var isdragbig=false;
 	var isdragsmall=false;
@@ -360,38 +295,6 @@ $(function(){
 			});
 			return false;
 		}
-		/*else if(fobj.className=="select-box"){
-			*********************************框跟随鼠标*******************************
-			isdragsmall=true;
-			var box=getE("select-box");
-			//var bx=parseInt(box.style.left+0);
-			//var by=parseInt(box.style.top+0);
-			
-			$("#select-box").on("vmousemove",function(e){
-				if(isdragsmall){
-					//var mouseH = e.clientY - down_y;
-					//var mouseW = e.clientX - down_x;
-					var boxX=e.clientX;
-					var boxY=e.clientY;
-					
-					box.style.top=boxY-box.offsetHeight/2-43+'px';
-					box.style.left=boxX-box.offsetWidth/2+'px';
-					//box.style.top=e.clientY+'px';
-					//box.style.left=e.clientX+'px';
-					mapping(boxY,boxX);
-				}
-			});
-			$("#select-box").on("vmouseup",function(e){
-				isdragsmall=false;
-				
-				$("#cover").animate({
-					right:"-100%"
-				},300);
-				$("#slide-left").animate({
-					zIndex:"10"
-				},300);
-			});
-		}*/
 	});
 
 });
@@ -440,8 +343,6 @@ function map_sketch_limit(top,left){
 
 
 /**********************************地理定位**********************************/
-
-
 function check(lat,lon){
 	if(lastLongitude==lon)
 	{
@@ -622,83 +523,83 @@ function seal(id){
 
 /**********************************显示足迹**********************************/
 function foot_print(){
-	var json_footprint=[{"Id":"footprint1","top":"2994","left":"1514"},
-						{"Id":"footprint2","top":"2915","left":"1614"},
-						{"Id":"footprint3","top":"2742","left":"1497"},
-						{"Id":"footprint4","top":"1860","left":"1497"},
-						{"Id":"footprint5","top":"1738","left":"1643"},
-						{"Id":"footprint6","top":"1771","left":"1926"},
-						{"Id":"footprint7","top":"1812","left":"2241"},
-						{"Id":"footprint8","top":"1996","left":"2500"},
-						{"Id":"footprint9","top":"2063","left":"2702"},
-						{"Id":"footprint10","top":"1875","left":"2910"},
-						{"Id":"footprint11","top":"1640","left":"2872"},
-						{"Id":"footprint12","top":"1488","left":"2557"},
-						{"Id":"footprint13","top":"1247","left":"2400"},
-						{"Id":"footprint14","top":"962","left":"2326"},
-						{"Id":"footprint15","top":"791","left":"2207"},
-						{"Id":"footprint16","top":"732","left":"2053"},
-						{"Id":"footprint17","top":"700","left":"1897"},
-						{"Id":"footprint18","top":"627","left":"1970"},
-						{"Id":"footprint19","top":"585","left":"1644"},
-						{"Id":"footprint20","top":"659","left":"1244"},
-						{"Id":"footprint21","top":"636","left":"1117"},
-						{"Id":"footprint22","top":"664","left":"931"},
-						{"Id":"footprint23","top":"711","left":"699"},
-						{"Id":"footprint24","top":"735","left":"666"},
-						{"Id":"footprint25","top":"804","left":"633"},
-						{"Id":"footprint26","top":"895","left":"705"},
-						{"Id":"footprint27","top":"982","left":"724"},
-						{"Id":"footprint28","top":"1122","left":"687"},
-						{"Id":"footprint29","top":"1299","left":"684"},
-						{"Id":"footprint30","top":"1408","left":"639"},
-						{"Id":"footprint31","top":"1482","left":"550"},
-						{"Id":"footprint32","top":"1564","left":"315"},
-						{"Id":"footprint33","top":"1650","left":"160"},
-						{"Id":"footprint34","top":"1800","left":"149"},
-						{"Id":"footprint35","top":"1917","left":"141"},
-						{"Id":"footprint36","top":"1900","left":"205"},
-						{"Id":"footprint37","top":"2055","left":"228"},
-						{"Id":"footprint38","top":"2162","left":"248"},
-						{"Id":"footprint39","top":"2226","left":"192"},
-						{"Id":"footprint40","top":"2357","left":"220"},
-						{"Id":"footprint41","top":"2382","left":"110"},
-						{"Id":"footprint42","top":"2487","left":"75"},
-						{"Id":"footprint43","top":"2575","left":"174"},
-						{"Id":"footprint44","top":"2565","left":"285"},
-						{"Id":"footprint45","top":"2571","left":"101"},
-						{"Id":"footprint46","top":"2429","left":"77"},
-						{"Id":"footprint47","top":"2358","left":"210"},
-						{"Id":"footprint48","top":"2262","left":"344"},
-						{"Id":"footprint49","top":"2171","left":"398"},
-						{"Id":"footprint50","top":"2101","left":"384"},
-						{"Id":"footprint51","top":"2027","left":"459"},
-						{"Id":"footprint52","top":"1899","left":"554"},
-						{"Id":"footprint53","top":"1862","left":"598"},
-						{"Id":"footprint54","top":"1873","left":"673"},
-						{"Id":"footprint55","top":"1896","left":"715"},
-						{"Id":"footprint56","top":"1914","left":"762"},
-						{"Id":"footprint57","top":"1920","left":"859"},
-						{"Id":"footprint58","top":"1901","left":"924"},
-						{"Id":"footprint59","top":"1872","left":"982"},
-						{"Id":"footprint60","top":"1846","left":"1044"},
-						{"Id":"footprint61","top":"1820","left":"1111"},
-						{"Id":"footprint62","top":"1794","left":"1156"},
-						{"Id":"footprint63","top":"1772","left":"1213"},
-						{"Id":"footprint64","top":"1756","left":"1281"},
-						{"Id":"footprint65","top":"1758","left":"1335"},
-						{"Id":"footprint66","top":"1686","left":"1351"},
-						{"Id":"footprint67","top":"1629","left":"1369"},
-						{"Id":"footprint68","top":"1580","left":"1411"},
-						{"Id":"footprint69","top":"1564","left":"1441"},
-						{"Id":"footprint70","top":"1540","left":"1490"},
-						{"Id":"footprint71","top":"1446","left":"1490"},
-						{"Id":"footprint72","top":"1338","left":"1490"},
-						{"Id":"footprint73","top":"1650","left":"1490"},
-						{"Id":"footprint74","top":"1669","left":"1463"},
-						{"Id":"footprint75","top":"1695","left":"1452"},
-						{"Id":"footprint76","top":"1746","left":"1483"},
-						{"Id":"footprint77","top":"1778","left":"1495"}];
+	var json_footprint=[{"Id":"footprint1","top":"2246","left":"1136"},
+						{"Id":"footprint2","top":"2186","left":"1211"},
+						{"Id":"footprint3","top":"2057","left":"1123"},
+						{"Id":"footprint4","top":"1395","left":"1123"},
+						{"Id":"footprint5","top":"1304","left":"1232"},
+						{"Id":"footprint6","top":"1328","left":"1445"},
+						{"Id":"footprint7","top":"1359","left":"1681"},
+						{"Id":"footprint8","top":"1497","left":"1875"},
+						{"Id":"footprint9","top":"1547","left":"2027"},
+						{"Id":"footprint10","top":"1406","left":"2183"},
+						{"Id":"footprint11","top":"1230","left":"2154"},
+						{"Id":"footprint12","top":"1116","left":"1918"},
+						{"Id":"footprint13","top":"935","left":"1800"},
+						{"Id":"footprint14","top":"722","left":"1745"},
+						{"Id":"footprint15","top":"593","left":"1655"},
+						{"Id":"footprint16","top":"549","left":"1540"},
+						{"Id":"footprint17","top":"525","left":"1423"},
+						{"Id":"footprint18","top":"470","left":"1478"},
+						{"Id":"footprint19","top":"439","left":"1233"},
+						{"Id":"footprint20","top":"494","left":"933"},
+						{"Id":"footprint21","top":"477","left":"838"},
+						{"Id":"footprint22","top":"498","left":"698"},
+						{"Id":"footprint23","top":"533","left":"524"},
+						{"Id":"footprint24","top":"551","left":"500"},
+						{"Id":"footprint25","top":"603","left":"475"},
+						{"Id":"footprint26","top":"671","left":"529"},
+						{"Id":"footprint27","top":"737","left":"543"},
+						{"Id":"footprint28","top":"842","left":"515"},
+						{"Id":"footprint29","top":"974","left":"513"},
+						{"Id":"footprint30","top":"1056","left":"479"},
+						{"Id":"footprint31","top":"1112","left":"413"},
+						{"Id":"footprint32","top":"1173","left":"236"},
+						{"Id":"footprint33","top":"1238","left":"120"},
+						{"Id":"footprint34","top":"1350","left":"112"},
+						{"Id":"footprint35","top":"1438","left":"106"},
+						{"Id":"footprint36","top":"1425","left":"154"},
+						{"Id":"footprint37","top":"1541","left":"171"},
+						{"Id":"footprint38","top":"1622","left":"186"},
+						{"Id":"footprint39","top":"1670","left":"144"},
+						{"Id":"footprint40","top":"1768","left":"165"},
+						{"Id":"footprint41","top":"1787","left":"83"},
+						{"Id":"footprint42","top":"1865","left":"56"},
+						{"Id":"footprint43","top":"1931","left":"131"},
+						{"Id":"footprint44","top":"1924","left":"214"},
+						{"Id":"footprint45","top":"1928","left":"76"},
+						{"Id":"footprint46","top":"1822","left":"58"},
+						{"Id":"footprint47","top":"1769","left":"158"},
+						{"Id":"footprint48","top":"1697","left":"258"},
+						{"Id":"footprint49","top":"1628","left":"299"},
+						{"Id":"footprint50","top":"1576","left":"288"},
+						{"Id":"footprint51","top":"1520","left":"344"},
+						{"Id":"footprint52","top":"1424","left":"416"},
+						{"Id":"footprint53","top":"1397","left":"449"},
+						{"Id":"footprint54","top":"1405","left":"505"},
+						{"Id":"footprint55","top":"1422","left":"536"},
+						{"Id":"footprint56","top":"1436","left":"572"},
+						{"Id":"footprint57","top":"1440","left":"644"},
+						{"Id":"footprint58","top":"1426","left":"693"},
+						{"Id":"footprint59","top":"1404","left":"737"},
+						{"Id":"footprint60","top":"1385","left":"783"},
+						{"Id":"footprint61","top":"1365","left":"833"},
+						{"Id":"footprint62","top":"1346","left":"867"},
+						{"Id":"footprint63","top":"1329","left":"910"},
+						{"Id":"footprint64","top":"1317","left":"961"},
+						{"Id":"footprint65","top":"1319","left":"1001"},
+						{"Id":"footprint66","top":"1265","left":"1013"},
+						{"Id":"footprint67","top":"1222","left":"1027"},
+						{"Id":"footprint68","top":"1185","left":"1058"},
+						{"Id":"footprint69","top":"1173","left":"1081"},
+						{"Id":"footprint70","top":"1155","left":"1118"},
+						{"Id":"footprint71","top":"1085","left":"1118"},
+						{"Id":"footprint72","top":"1004","left":"1118"},
+						{"Id":"footprint73","top":"1238","left":"1118"},
+						{"Id":"footprint74","top":"1252","left":"1097"},
+						{"Id":"footprint75","top":"1271","left":"1089"},
+						{"Id":"footprint76","top":"1310","left":"1112"},
+						{"Id":"footprint77","top":"1334","left":"1121"}];
 	var footIntervalId = setInterval(foot,300);
 	var i=0;
 	function foot(){

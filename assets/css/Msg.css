@@ -1,5 +1,6 @@
 .toubu{
 height:50px;
+padding:10px;
 }
 .touxiang{
 float:left;
@@ -8,7 +9,18 @@ height:50px;
 }
 .mingzi{
 position:relative;
-margin-left:65px;
+margin-left:50px;
+text-align: left;
+text-indent: 2em;
+}
+.pinglun{
+margin-left: 50px;
+text-align: left;
+text-indent: 2em;
+line-height: 27px;
+}
+.xingxing{
+float:right;
 }
 .neirong{
 margin-left:60px;
@@ -32,36 +44,11 @@ margin-left:60px;
 	font-family:微软雅黑;
 }
 #mapholder{
-	width:90%;
-	height:300px;
-	margin-left:5%;
-	margin-right:5%;
-	margin-top:15px;
+	width:100%;
+	height:500px;
 }
-/*.img-left{
-	margin-left:5%;
-	margin-right:3%;
-	float:left;
-}
-.img-right{
-	margin-left:3%;
-	margin-right:5%;
-	float:right;
-}*/
-.img-left,.img-right{
-	margin-left:5%;
-	margin-right:5%;
-	
-	width:90%;
-	border-radius:15px;
-	-webkit-border-radius:15px;
-	border:5px solid white;
-	box-shadow: 10px 10px 5px #888888;
-	margin-top:20px;
-}
-
 .panelHeadImg{
-	border-radius:50px;
+	/*border-radius:50px;*/
 }
 .panelHeadName{
 	font-family: 微软雅黑;
@@ -70,4 +57,65 @@ margin-left:60px;
 }
 .new-icon{
 	color:red;
+}
+figure{
+	margin-left: 5%;
+	margin-right: 5%;
+	width: 90%;
+	box-shadow: 0px 8px 30px rgba(0, 0, 0, 0.8);
+	background: #F3F3F3;
+	font-family: 微软雅黑;
+	margin-top: 20px;
+	text-align:left;
+}
+figure img{
+	width:100%;
+}
+figcaption{
+	padding:10px;
+}
+.personalIcon{ 
+	width:100px; 
+	height:100px; 
+	border-radius:150px;
+	border-style:solid;
+	border-width:medium;
+	border-color:white;
+	box-shadow: 5px 5px 5px #888888;
+} 
+	
+.personalBg {
+	background:url(img/b.jpg) no-repeat fixed;
+}
+.fig-header{
+	width: 50px;
+	padding-right: 10px;
+}
+.fig-date{
+	float:right;
+	font-size: 12px;
+	padding-top: 10px;
+	padding-bottom:10px;
+}
+.fig-place{
+	font-size: 12px;
+	padding-top: 10px;
+	padding-bottom:10px;
+}
+.status-reply-button{
+	width: 30px;
+	float: right;
+}
+.fig-reply-header{
+	width: 30px;
+	float: left;
+	padding-left: 5px;
+	padding-right: 10px;
+}
+.fig-comment{
+	line-height:30px;
+	padding-bottom: 15px;
+}
+.look-status-reply{
+	padding-top: 15px;
 }

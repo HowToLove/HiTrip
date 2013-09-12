@@ -20,7 +20,7 @@ body {
 }
 
 
-/************************µØÍ¼************************/
+/************************åœ°å›¾************************/
 #minilayer { 
 	overflow:hidden;
 	position: absolute;
@@ -62,7 +62,7 @@ a.spot{
 }
 
 
-/************************ÓÃ»§Í·Ïñ¡¢×´Ì¬************************/
+/************************ç”¨æˆ·å¤´åƒã€çŠ¶æ€************************/
 .user-friend{
 	background:url(../img/bg-friend.png) no-repeat;
 	position:absolute;
@@ -114,7 +114,7 @@ a.spot{
 	white-space: nowrap;
 }
 
-/************************¾°µã±ê×¢************************/
+/************************æ™¯ç‚¹æ ‡æ³¨************************/
 .marker{
 	position:absolute;
 }
@@ -198,7 +198,7 @@ a.spot{
 	left:1735px;
 }
 
-/************************½ø¶ÈÌõ************************/
+/************************è¿›åº¦æ¡************************/
 #progress{
 	position:absolute;
 	top:10px;
@@ -215,40 +215,58 @@ a.spot{
 	padding-top:2px;
 }
 
-/************************ÕÕÏà°´Å¥************************/
-#photo-button{
+/************************å·¦å³æŒ‰é’®************************/
+#button-left{
 	position:absolute;
-	bottom:10px;
-	right:10px;
+	bottom:15px;
+	left:15px;
 	z-index:100;
 }
-#pub-bar-status{
+#left-pinpoint{
 	position:absolute;
-	bottom:12px;
-	right:12px;
+	bottom:18px;
+	left:18px;
 	z-index:99;
 }
-#pub-bar-camera{
+#left-footprint{
 	position:absolute;
-	bottom:12px;
-	right:12px;
+	bottom:18px;
+	left:18px;
 	z-index:99;
 }
-#pub-bar-gallery{
+#left-map{
 	position:absolute;
-	bottom:12px;
-	right:12px;
-	z-index:99;
-}
-#pub-bar-footprint{
-	position:absolute;
-	bottom:12px;
-	right:12px;
+	bottom:18px;
+	left:18px;
 	z-index:99;
 }
 
+#button-right{
+	position:absolute;
+	bottom:15px;
+	right:15px;
+	z-index:100;
+}
+#right-status{
+	position:absolute;
+	bottom:18px;
+	right:18px;
+	z-index:99;
+}
+#right-camera{
+	position:absolute;
+	bottom:18px;
+	right:18px;
+	z-index:99;
+}
+#right-gallery{
+	position:absolute;
+	bottom:18px;
+	right:18px;
+	z-index:99;
+}
 
-/************************×´Ì¬·¢²¼Ò³**************************
+/************************çŠ¶æ€å‘å¸ƒé¡µ**************************
 #pub-bar{
 	font-size:19px;
 	position:absolute;
@@ -293,7 +311,7 @@ a.spot{
 	max-height:100px;*/
 	margin:0 auto;
 }
-/*********************·ÖÏí¹¦ÄÜ*********************/
+/*********************åˆ†äº«åŠŸèƒ½*********************/
 #jiathis{
 	width:100%;
 	position:absolute;
@@ -313,7 +331,7 @@ a.spot{
 }
 
 
-/*********************¸ÇÕÂĞ§¹û*********************/
+/*********************ç›–ç« æ•ˆæœ*********************/
 #badge{
 	position: absolute;
 	left: 59px;
@@ -357,27 +375,14 @@ a.spot{
 	display:none;
 }
 
-/************************µØÍ¼ÇĞ»»***********************/
-#switch-button{
-	position:absolute;
-	bottom:10px;
-	left:48.5%;
-	z-index:100;
-}
-#switch-list{
-	position:absolute;
-	top:90px;
-	right:63px;
-}
-
-/**************************×ã¼£************************/
+/**************************è¶³è¿¹************************/
 .footprint{
 	position:absolute;
 	max-width:50px;
 	max-height:50px;
 }
 
-/************************¶¨Î»µ½ÎÒ***********************/
+/************************å®šä½åˆ°æˆ‘***********************/
 #pinpoint-button{
 	position:absolute;
 	bottom:10px;
@@ -394,19 +399,19 @@ a.spot{
 #popupPanel .ui-btn {
 	margin: 2em 15px
 }
-/***********************ĞÂÏûÏ¢ÌáĞÑ**********************/
+/***********************æ–°æ¶ˆæ¯æé†’**********************/
 #msg-img{
 	position:absolute;
-	top:0;
-	right:-100px;
+	top:5px;
+	right:-60px;
 }
-/************************»¬¶¯ÇøÓò***********************/
+/************************æ»‘åŠ¨åŒºåŸŸ***********************/
 .slide{
 	position:absolute;
 	height:100%;
 	width:10px;
 	top:0;
-	border:1px solid;
+	
 	z-index:10;
 }
 #slide-left{
@@ -416,7 +421,7 @@ a.spot{
 	right:0;
 }
 
-/************************ÕÚÕÖÇøÓò***********************/
+/************************é®ç½©åŒºåŸŸ***********************/
 #cover{
 	position:absolute;
 	height:100%;
@@ -427,7 +432,7 @@ a.spot{
 	z-index:1000;
 }
 
-/************************È«¾°µØÍ¼***********************/
+/************************å…¨æ™¯åœ°å›¾***********************/
 #map-panorama{
 }
 #map-panorama-map{

@@ -95,7 +95,14 @@ function capturePhotoEdit(){
 	//navigator.camera.getPicture(onPhotoURISuccess,onFail,{quality:20,allowEdit:true});
 	navigator.camera.getPicture(onPhotoURISuccess,onFail,{quality:50,destinationType:destinationType.FILE_URI});
 }
-
+$(function(){
+	$("#right-camera").tap(function(){
+		capturePhotoEdit();
+	})
+	$("#right-gallery").tap(function(){
+		getPhoto(pictureSource.PHOTOLIBRARY);
+	})
+});
 function getPhoto(source){
 window.location.href = "#photo";
 		navigator.camera.getPicture(onPhotoURISuccess,onFail,{quality:50,destinationType:destinationType.FILE_URI,sourceType:source});
@@ -247,93 +254,66 @@ function upLoadFile(path){
 
 
 <!----------------------文字状态(无回复)----------------------->
-<!--script id='text_status_no_reply_button'  type='text/x-jquery-tmpl'>
-	<tr><td><img src=${Head} width="50px" height="50px"/></td><td style="text-align:left">${Name}</td></tr>
-	<tr><td></td><tdstyle="text-align:left">${Content}<br /></td></tr>
-</script-->
-<!----------------------文字状态(无回复)----------------------->
 <script id='text_status_no_reply_button'  type='text/x-jquery-tmpl'>
-	<div class="toubu">
-		<img class="touxiang" src=${Head} />
-		<p class="mingzi">${Name}</p>
-	</div>
-	<div>
-		<p class="neirong">${Content}</p>
-	</div>
-	<hr class="hr">
+	<figure>
+		<figcaption>${Content}<br>
+		<p class="fig-date">${Date}</p>
+		<p class="fig-place">${Place}</p>
+		</figcaption>
+	</figure>
 </script>
 
 
-<!----------------------图片状态(无回复)---------------------->
-<!--script id='pic_status_no_reply_button'  type='text/x-jquery-tmpl'>
-	<tr><td><img src=${Head} width="50px" height="50px"/></td><td style="text-align:left">${Name}</td></tr>
-	<tr><td></td><td style="text-align:left"><img src=${IMG} width="100%" /><br/>${Content}</br></td></tr>
-</script-->
 <!----------------------图片状态(无回复)---------------------->
 <script id='pic_status_no_reply_button'  type='text/x-jquery-tmpl'>
-	<div class="toubu">
-		<img src=${Head} class="touxiang"/>
-		<p class="mingzi">${Name}</p>
-	</div>
-	<img class="neirongtupian" src=${IMG} />
-	<div>	
-		<p class="neirong">${Content}</p>	
-	</div>
-	<hr class="hr"/>
+	<figure>
+		<img src=${Head}/>
+		<figcaption>${Content}<br>
+		<p class="fig-date">${Date}</p>
+		<p class="fig-place">${Place}</p>
+		</figcaption>
+	</figure>
 </script>
 
-<!---------------------------回复---------------------------->
-<!--script id='reply-tmpl' type='text/x-jquery-tmpl'>
-	<tr>
-		<td></td><td id=${Id}><div id=${Reply_id} style="text-align:left"><img src=${Head} width="30px" height="30px"/>${Name} 回复${Target_Name}: ${Content}<a class="button-reply" ><img width="20px" height="20px" src="img/reply.png" style="float:right"/></a></div></td>
-	</tr>
-</script-->
 <!---------------------------回复---------------------------->
 <script id='reply-tmpl' type='text/x-jquery-tmpl'>
-	<div style="height:30px">
-		<img src=${Head} style="float:left; width:30px; height:30px;"/>
-		<p style="position:relative; margin-left:5px; float:left">${Name}回复 ${Target_Name}: </p>
-		<a class="button-reply"><img width="20px" height="20px" src="img/reply.png" style="float:right"/></a>
-		<p style="margin-left:5px; background-color: #E0E0E0; padding: 2px; border-radius:10px;float:left">${Content}</p>
+	<div id=${Id}>
+		<img class="fig-reply-header"src=${Head} style="">
+		<p class="fig-comment">${Name}:${Content}</p>
 	</div>
 </script>
 
-<!----------------------文字状态(有回复)----------------------->
-<!--script id='text_status_reply_button'  type='text/x-jquery-tmpl'>
-	<tr><td><img src=${Head} width="50px" height="50px"/></td><td style="text-align:left">${Name}</td></tr>
-	<tr><td></td><td id=${Id}><div id=${Entry_id} style="text-align:left">${Content}<a class="status-button-reply"><img width="20px" height="20px" src="img/reply.png" style="float:right"/></a></div></td></tr>
-</script-->
 <!----------------------文字状态(有回复)----------------------->
 <script id='text_status_reply_button'  type='text/x-jquery-tmpl'>
-	<div class="toubu">
-		<img class="touxiang" src=${Head} />
-		<p class="mingzi">${Name}</p>
-	</div>
-	<div>
-		<a class="status-button-reply"><img width="20px" height="20px" src="img/reply.png" style="float:right"/></a>
-		<p class="neirong">${Content}</p>
-	</div>
-	<hr class="hr"/>
+	<figure>
+		<figcaption>
+			<img class="fig-header" src="img/header/header2.jpg">${Name}
+			<img class="status-reply-button" src="img/reply.png">
+		</figcaption>
+		<figcaption>${Content}<br>
+			<p class="fig-date">${Date}</p>
+			<p class="fig-place">${Place}</p><hr>
+		</figcaption>
+		<figcaption>
+		</figcaption>
+	</figure>
 </script>
 
 <!----------------------图片状态(有回复)---------------------->
-<!--script id='pic_status_reply_button'  type='text/x-jquery-tmpl'>
-	<tr><td><img src=${Head} width="50px" height="50px"/></td><td style="text-align:left">${Name}</td></tr>
-	<tr><td></td><td><img src=${IMG} width="100%" /></td></tr>
-	<tr><td></td><td id=${Id}><div id=${Entry_id} style="text-align:left">${Content}<a class="status-button-reply"><img width="20px" height="20px" src="img/reply.png" style="float:right"/></a></div></td></tr>
-</script-->
-<!----------------------图片状态(有回复)---------------------->
 <script id='pic_status_reply_button'  type='text/x-jquery-tmpl'>
-	<div class="toubu">
-		<img src=${Head} class="touxiang"/>
-		<p class="mingzi">${Name}</p>
-	</div>
-	<img class="neirongtupian" src=${IMG} />
-	<div>	
-		<a class="status-button-reply"><img width="20px" height="20px" src="img/reply.png" style="float:right"/></a>
-		<p class="neirong">${Content}</p>	
-	</div>
-	<hr class="hr"/>
+	<figure>
+		<figcaption>
+			<img class="fig-header" src="img/header/header2.jpg">${Name}
+			<img class="status-reply-button" src="img/reply.png">
+		</figcaption>
+		<img src=${Img}/>
+		<figcaption>${Content}<br>
+			<p class="fig-date">${Date}</p>
+			<p class="fig-place">${Place}</p><hr>
+		</figcaption>
+		<figcaption>
+		</figcaption>
+	</figure>
 </script>
 
 
@@ -342,27 +322,37 @@ function upLoadFile(path){
 	<img class="footprint" id=${Id} src="img/footprint.png" style="top:${top}px;left:${left}px";/>
 </script>
 
+
+<!---------------------景点新鲜事(无图片)---------------------->
+<script id="jdxxs-word-tmpl" type="text/x-jquery-tmpl">
+	<figure>
+		<figcaption>
+			<img class="fig-header" src=${Head}>${Name}
+		</figcaption>
+		<figcaption>${Content}<br>
+		<p class="fig-date">${Date}</p>
+		<p class="fig-place">${Place}</p>
+		</figcaption>
+	</figure>
+</script>
+
+
+<!---------------------景点新鲜事(有图片)---------------------->
+<script id="jdxxs-img-tmpl" type="text/x-jquery-tmpl">
+	<figure>
+		<figcaption>
+			<img class="fig-header" src=${Head}>${Name}
+		</figcaption>
+		<img src=${Img}/>
+		<figcaption>${Content}<br>
+		<p class="fig-date">${Date}</p>
+		<p class="fig-place">${Place}</p>
+		</figcaption>
+	</figure>
+</script>
+
+
 <!--------------------------景点介绍-------------------------->
-<!--script id='jingdianImg1'  type='text/x-jquery-tmpl'>
-	<tr><td><img src=${portrait} width="50px" height="50px"/></td><td>${evaluator_name}</td></tr>
-	<tr><td></td><td>${content}<br /></td><td><img src="img/1star.gif"></td></tr>
-</script>
-<script id='jingdianImg2'  type='text/x-jquery-tmpl'>
-	<tr><td><img src=${portrait} width="50px" height="50px"/></td><td>${evaluator_name}</td></tr>
-	<tr><td></td><td>${content}<br /></td><td><img src="img/2star.gif"></td></tr>
-</script>
-<script id='jingdianImg3'  type='text/x-jquery-tmpl'>
-	<tr><td><img src=${portrait} width="50px" height="50px"/></td><td>${evaluator_name}</td></tr>
-	<tr><td></td><td>${content}<br /></td><td><img src="img/3star.gif"></td></tr>
-</script>
-<script id='jingdianImg4'  type='text/x-jquery-tmpl'>
-	<tr><td><img src=${portrait} width="50px" height="50px"/></td><td>${evaluator_name}</td></tr>
-	<tr><td></td><td>${content}<br /></td><td><img src="img/4star.gif"></td></tr>
-</script>
-<script id='jingdianImg5'  type='text/x-jquery-tmpl'>
-	<tr><td><img src=${portrait} width="50px" height="50px"/></td><td>${evaluator_name}</td></tr>
-	<tr><td></td><td>${content}<br /></td><td><img src="img/5star.gif"></td></tr>
-</script-->
 <script id='jingdianImg1' type='text/x-jquery-tmpl'>
 	<div class="toubu">
 		<img class="touxiang" src=${potrait} />
@@ -408,13 +398,13 @@ function upLoadFile(path){
 	</div>
 	<hr class="hr">
 </script>
-<script id='newThing' type='text/x-jquery-tmpl'>
+<!--script id='newThing' type='text/x-jquery-tmpl'>
 	<tr><td>${Content}</td></tr>
 </script>
 <script id='newThingImg'  type='text/x-jquery-tmpl'>
 	<tr><td><img src=${IMG} width="300px" height="300px"/></td></tr>
 	<tr><td>${Content}</td></tr>
-</script>
+</script-->
 <script>
 	$(document).ready(function(){
 	var news = [
@@ -868,7 +858,7 @@ function upLoadFile(path){
 				<!--iv style="margin-left:8px;float:left;">景点盖章</div-->
 				<p style="margin-right:8px;float:right;"><span id="length2">0</span>/140</p>
 			</div>
-			<img id="immediatePhoto" width="200px" height="200px" src=""/>
+			<img id="immediatePhoto" width="600px" height="600px" src=""/>
 		</div>	
 	</div>
 
@@ -1004,14 +994,14 @@ function upLoadFile(path){
 		<ul data-role="listview" id="reply-list">
 			<li id="">
 				<a href="#status">
-					<img src="img/header/header.jpg"/>
-					<h3>王小明</h3><p>回复了您的状态</p>
+					<img src="img/header/header5.jpg"/>
+					<h3>王小小</h3><p>回复了您的状态</p>
 				</a>
 			</li>
 			<li>
 				<a href="#status">
-					<img src="img/header/header.jpg"/>
-					<h3>王小明</h3><p>回复了您的状态</p>
+					<img src="img/header/header6.jpg"/>
+					<h3>张瑶</h3><p>回复了您的状态</p>
 				</a>
 			</li>
 		</ul>
@@ -1071,7 +1061,7 @@ function upLoadFile(path){
 			<li>
 				<a href="#zone-others">
 					<img src="img/header/header4.jpg"/>
-					<h3>王小明</h3><p>请求加您为好友</p>
+					<h3>欧晓琪</h3><p>请求加您为好友</p>
 				</a>
 				<div class="ui-li-aside">
 					<button data-inline="true">已添加</button>
@@ -1080,7 +1070,7 @@ function upLoadFile(path){
 			<li>
 				<a href="#zone-others">
 					<img src="img/header/header5.jpg"/>
-					<h3>王小明</h3><p>请求加您为好友</p>
+					<h3>韩北北</h3><p>请求加您为好友</p>
 				</a>
 				<div class="ui-li-aside">
 					<button data-inline="true" onclick="aaa();">已拒绝</button>
@@ -1089,7 +1079,7 @@ function upLoadFile(path){
 			<li>
 				<a href="#zone-others">
 					<img src="img/header/header6.jpg"/>
-					<h3>王小明</h3><p>已添加您为好友</p>
+					<h3>夏蕊</h3><p>已添加您为好友</p>
 				</a>
 			</li>
 		</ul>

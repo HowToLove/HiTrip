@@ -23,21 +23,19 @@ $(function(){
 	});
 });
 function startSimulation(){
-	
 	initialAll();
 	setTimeout(function(){
 		$("#popupTip").popup("open");
-		//window.location='#page1';
-	},60000);//四秒中跳转到景区地图
+	},30000);//三十秒中跳转到景区地图
 	
 	//让路人说几句话
-	/*news0 = {"Id":"6","Content":"我是路人甲","Picture":""};
+	news0 = {"Id":"6","Content":"我是路人甲","Picture":""};
 	onFriendNews(news0);
 	news0 = {"Id":"7","Content":"我是路人乙","Picture":""};
 	onFriendNews(news0);
 	news0 = {"Id":"8","Content":"我是路人丙","Picture":""};
 	onFriendNews(news0);
-	/*
+	
 	//5秒后让3号好友说一句话
 	news = {"Id":"3", "Content":"加油~","Picture":""}
 	setTimeout(function(){onFriendNews(news);},5000);
@@ -45,24 +43,25 @@ function startSimulation(){
 	news2 = {"Id":"2","Content":"这是一张照片","Picture":"img/1.jpg"};
 	setTimeout(function(){onFriendNews(news2);},7000);
 	//6秒后让李文正图书馆发布一张图片
-	news3 = {"IdName":"lwz","Content":"这是一张照片","Picture":"img/2.jpg"};
-	setTimeout(function(){onJDNews(news3);},6000);*/
-	/*var request = {"Id":"6","Name":"路人甲","Head":"img/Badge.png"};
+	news3 = {"IdName":"hgndcb","Content":"这是一张照片","Picture":"img/2.jpg"};
+	setTimeout(function(){onJDNews(news3);},6000);
+	
+	var request = {"Id":"6","Name":"路人甲","Head":"img/header/header4.jpg"};
 	setTimeout(function(){onFriendRequest(request);},3000);
-	var answer = {"Name":"路人甲","Head":"img/Badge.png"};
-	setTimeout(function (){onFriendAccept(answer);},4000);*/
+	var answer = {"Name":"路人甲","Head":"img/header/header5.jpg"};
+	setTimeout(function (){onFriendAccept(answer);},4000);
 	
 	setInterval(function(){
-	moveHead(3,Math.floor(Math.random()*6+1),10);
-	moveHead(5,Math.floor(Math.random()*6+1),20);
-	moveHead(7,Math.floor(Math.random()*6+1),30);
-},1000);
+		moveHead(3,Math.floor(Math.random()*6+1),10);
+		moveHead(5,Math.floor(Math.random()*6+1),20);
+		moveHead(7,Math.floor(Math.random()*6+1),30);
+	},1000);
 	setInterval(function(){
-	moveHead(2,Math.floor(Math.random()*6+1),25);//1-6多两秒给它休息下
-	moveHead(4,Math.floor(Math.random()*6+1),15);
-	moveHead(6,Math.floor(Math.random()*6+1),5);
-	moveHead(8,Math.floor(Math.random()*6+1),35);	
-},500);
+		moveHead(2,Math.floor(Math.random()*6+1),25);//1-6多两秒给它休息下
+		moveHead(4,Math.floor(Math.random()*6+1),15);
+		moveHead(6,Math.floor(Math.random()*6+1),5);
+		moveHead(8,Math.floor(Math.random()*6+1),35);	
+	},500);
 
 	//Spot1：在张睿找男友时出现，2号小颖发布状态“亲爱的，我在这呢”，3号睿睿回复一条状态——“恩呢，我马上过去找你”（最好倒过来，2号小颖发状态“亲爱的，别着急，你就呆在原地，我马上过去找你。” 不过这样子，与视频的部分内容不是很相符）
 	var t0 = 8000;
@@ -72,13 +71,13 @@ function startSimulation(){
 	setTimeout(function(){onFriendNews(vedioNews2);},t0+=1000);
 	//Spot2：在接下来两对情侣行程对比的时候，在张睿那边分别显示多个景点的景区新鲜事  //2秒后，6号景点探险世界发布一条新鲜事————“想体验最最惊险的探险旅程吗？那就不要错过3：30pm在探险世界举行的疯狂探险游戏吧！”照片为txsj_i.jpg     //1秒后，4号景点幻想世界发布了一条状态————“幻想世界，邀你体验梦幻般的感觉，体验时间
 //4:00pm”，照片为hxsj_i.jpg
-	vediroNews3 = {"IdName":"lwz","Content":"想体验最最惊险的探险旅程吗？那就不要错过3：30pm在探险世界举行的疯狂探险游戏吧！","Picture":"img/txsj_i.jpg"};
-	setTimeout(function(){onJDNews(vediroNews3);},t0+=2000);  //8秒后1号灰姑娘的城堡发布一条状态————“灰姑娘灯光会将于2：00pm在灰姑娘城堡内上映，欢迎各位游客前去观赏”，照片为hgndcb_i3.jpg
-	vediroNews4 = {"IdName":"lwz","Content":"灰姑娘灯光会将于2：00pm在灰姑娘城堡内上映，欢迎各位游客前去观赏","Picture":"img/hgndcb_i3.jpg"};
+	vediroNews3 = {"IdName":"txsj","Content":"想体验最最惊险的探险旅程吗？那就不要错过3：30pm在探险世界举行的疯狂探险游戏吧！","Picture":"img/bysj.jpg"};
+	setTimeout(function(){onJDNews(vediroNews3);},2000);  //8秒后1号灰姑娘的城堡发布一条状态————“灰姑娘灯光会将于2：00pm在灰姑娘城堡内上映，欢迎各位游客前去观赏”，照片为hgndcb_i3.jpg
+	vediroNews4 = {"IdName":"hgndcb","Content":"灰姑娘灯光会将于2：00pm在灰姑娘城堡内上映，欢迎各位游客前去观赏","Picture":"img/hgndcb.jpg"};
 	setTimeout(function(){onJDNews(vediroNews4);},t0+=8000);  
 //然后接后一段视频，即张睿二人去魔法城堡参观，随即到了下一场景
 	//Spot3：最后一幕从城堡出来阶段遇到刘瑶二人，然后需要展示猴山的一条状态——“想观看强所未有的猴王争霸吗？5：00猴山将准时上映大型舞台剧猴王争霸，欢迎各位游客前来观赏”
-	vediroNews5 = {"IdName":"lwz","Content":"想观看强所未有的猴王争霸吗？5：00猴山将准时上映大型舞台剧猴王争霸，欢迎各位游客前来观赏","Picture":""};
+	vediroNews5 = {"IdName":"gwgs","Content":"想观看强所未有的猴王争霸吗？5：00猴山将准时上映大型舞台剧猴王争霸，欢迎各位游客前来观赏","Picture":""};
 	setTimeout(function(){onJDNews(vediroNews5);},t0+=5000);  
 	//其中可穿插路人的状态：
 	//此处有疑问？？路人回复的状态是不会显示的。
@@ -158,7 +157,7 @@ function onJDNews(news){//news是一个消息的JSON的对象
 	}
 	setTimeout(function(){
 		$("#"+id).find(".bubble").empty();
-	});
+	},10000);
 }
 //收到好友消息
 function onFriendNews(news){//news是一个消息的JSON对象
@@ -181,10 +180,10 @@ function onFriendNews(news){//news是一个消息的JSON对象
 	jump_big(id);
 	jump_small(id+"-small");
 	setTimeout(function(){
-		$("#"+id).find(".bubble").empty();
+		$("#"+id).find(".bubble").remove();
 	},10000)
 	setTimeout(function(){
-		$("#"+id+"-small").empty();
+		$("#"+id+"-small").remove();
 	},10000)
 }
 
