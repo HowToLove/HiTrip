@@ -13,12 +13,21 @@ function init(){
 	myListener();
 	//queryAllId = setInterval(queryAll,1000);
 	//queryAll();
-	//startSimulation();
+	startSimulation();
 }
+$(function(){
+	$("#entry").tap(function(){
+		window.location='#page1';
+	});
+});
 function startSimulation(){
 	
 	initialAll();
-	setTimeout("window.location='#page1'",4000);//四秒中跳转到景区地图
+	setTimeout(function(){
+		$("#popupTip").popup("open");
+		//window.location='#page1';
+	},1000);//四秒中跳转到景区地图
+	
 	//让路人说几句话
 	news0 = {"Id":"6","Content":"我是路人甲","Picture":""};
 	onFriendNews(news0);
@@ -35,12 +44,12 @@ function startSimulation(){
 	setTimeout(function(){onFriendNews(news2);},7000);
 	//6秒后让李文正图书馆发布一张图片
 	news3 = {"IdName":"lwz","Content":"这是一张照片","Picture":"img/2.jpg"};
-	setTimeout(function(){onJDNews(news3);},6000);
+	setTimeout(function(){onJDNews(news3);},6000);*/
 	var request = {"Id":"6","Name":"路人甲","Head":"img/Badge.png"};
 	setTimeout(function(){onFriendRequest(request);},3000);
 	var answer = {"Name":"路人甲","Head":"img/Badge.png"};
 	setTimeout(function (){onFriendAccept(answer);},4000);
-	*/
+	
 	setInterval(function(){
 	moveHead(3,Math.floor(Math.random()*6+1),10);
 	moveHead(5,Math.floor(Math.random()*6+1),20);
@@ -97,11 +106,43 @@ function moveHead(id,direction,px){//direction是方向1，2，3，4分别代表
 }
 //当好友请求被对方接受时
 function onFriendAccept(answer){
-	$("#newf-accept-tmpl").tmpl(answer).prependTo("#newf-list");
+	if($.mobile.activePage.attr("id")=="msg-newf"){
+		$("#newf-accept-tmpl").tmpl(answer).prependTo("#newf-list");
+	}else{
+		$("#op-newf-accept-tmpl").tmpl(request).prependTo("#newf-list");
+	}
 }
+var tiaoCnt=200;
+function tiao(){
+	tiaoCnt--;
+	if(tiaoCnt==0){
+	$(".panelbar").css("background-image","linear-gradient( #FFFFFF /*{g-bup-background-start}*/, #fcfcfc /*{g-bup-background-end}*/)")
+		tiaoCnt = 10;
+	}	
+	else{
+		if(tiaoCnt%2==1)
+		$(".panelbar").css("background-image","linear-gradient( #FF0000 /*{g-bup-background-start}*/, #FF0000 /*{g-bup-background-end}*/)");
+		else
+		$(".panelbar").css("background-image","linear-gradient( #FFFFFF /*{g-bup-background-start}*/, #fcfcfc /*{g-bup-background-end}*/)")
+		setTimeout(tiao,500);
+	}
+}
+$(function(){
+	$(".msg-center").tap(function(){
+		$(".new-icon").remove();
+		tiaoCnt=0;
+	});
+});
 //收到好友请求
 function onFriendRequest(request){//request是好友请求的JSON对象
-	$("#newf-tmpl").tmpl(request).prependTo("#newf-list");
+	tiao();
+	$(".msg-center").append('<span class="new-icon ui-li-count ui-btn-up-c ui-btn-corner-all">new</span>');
+	$(".msg-center").parent().parent().parent().attr("class","ui-btn ui-btn-icon-right ui-li-has-arrow ui-li ui-li-has-count ui-btn-up-g")
+	if($.mobile.activePage.attr("id")=="msg-newf"){
+		$("#newf-tmpl").tmpl(request).prependTo("#newf-list");
+	}else{
+		$("#op-newf-tmpl").tmpl(request).prependTo("#newf-list");
+	}
 	myListener();
 }
 //收到景点消息
@@ -121,14 +162,27 @@ function onJDNews(news){//news是一个消息的JSON的对象
 function onFriendNews(news){//news是一个消息的JSON对象
 	var id=news.Id;
 	var pic=news.Picture;
+	var imgH=$("#map-panorama-map").height();
+	var imgW=$("#map-panorama-map").width();
+	var coverH=$("#cover").height();
+	var coverW=$("#cover").width();
+	var scale=imgH/2487;
 	if(pic==""){
 		$("#status-word-tmpl").tmpl(news).appendTo("#"+id);
 	}else{
 		$("#status-pic-tmpl").tmpl(news).appendTo("#"+id);
 	}
+	$("#map-panorama").append('<div class="user-friend-small" id='+id+'-small><img src="img/orange.png"/></div>')
+	msg_show();
+	$("#"+id+"-small").css("top",((parseInt(getE(id).style.top+0))*scale+(coverH-imgH)/2)+'px');
+	$("#"+id+"-small").css("left",((parseInt(getE(id).style.left+0))*scale+(coverW-imgW)/2)+'px');
 	jump_big(id);
+	jump_small(id+"-small");
 	setTimeout(function(){
 		$("#"+id).find(".bubble").empty();
+	},10000)
+	setTimeout(function(){
+		$("#"+id+"-small").empty();
 	},10000)
 }
 
@@ -372,8 +426,9 @@ var flag_zone_eyeon=0;
 var flag_spot_eyeon=0;
 function myListener(){
 	$(document).ready(function(){
-	   $(".newfY").tap(function(){
+		$(".newfY").tap(function(){
 			var id=$(this).parent().parent().parent().parent().parent().attr("id");
+			//alert(id);
 			$("#"+id).find(".ui-li-aside").empty();
 			$("#"+id).find(".ui-li-aside").append("<div data-corners='true' data-shadow='true' data-iconshadow='true' data-wrapperels='span' data-theme='c' data-inline='true' data-disabled='false' class='ui-btn ui-shadow ui-btn-corner-all ui-btn-inline ui-btn-up-c' aria-disabled='false'><span class='ui-btn-inner'><span class='ui-btn-text'>已添加</span></span><button data-inline='true' class='ui-btn-hidden' data-disabled='false'>已添加</button></div>");
 			answerFriends(1,id);

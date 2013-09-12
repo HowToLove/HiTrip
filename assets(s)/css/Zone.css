@@ -1,0 +1,37 @@
+.zone-header{
+	width:100%;
+	background-color:orange;
+	height:140px;
+	padding-left:15%;
+}
+.zone-avatar{
+	width:100px;
+	height:100px;
+	float:left;
+	margin-top:20px;
+}
+.zone-avatar img{
+	max-width:100px;
+	max-height:100px;
+	border-radius:5px;
+
+}
+.zone-userinfo{
+	float:left;
+	margin-top:40px;
+	margin-left:40px;
+}
+.zone-username{
+	float:left;
+}
+.zone-gender{
+	margin-left:5px;
+	float:left;
+}
+.zone-gender img{
+	width:15px;
+	vertical-align:middle;
+}	
+.clear{
+	clear:both;
+}

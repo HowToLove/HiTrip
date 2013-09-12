@@ -1,4 +1,4 @@
-var json=[{"IdName":"hgndcb","Name":"灰姑娘的城堡","Top":"885","Left":"1125"},
+/*var json=[{"IdName":"hgndcb","Name":"灰姑娘的城堡","Top":"885","Left":"1125"},
 		  {"IdName":"mfqyzt","Name":"魔法奇缘之塔","Top":"462","Left":"479"},
 		  {"IdName":"zygc","Name":"自由广场","Top":"975","Left":"555"},
 		  {"IdName":"hxsj","Name":"幻想世界","Top":"375","Left":"1571"},
@@ -7,11 +7,12 @@ var json=[{"IdName":"hgndcb","Name":"灰姑娘的城堡","Top":"885","Left":"112
 		  {"IdName":"mgxzdj","Name":"美国小镇大街","Top":"1901","Left":"1123"},
 		  {"IdName":"yzfc","Name":"宇宙飞船","Top":"1382","Left":"2022"},
 		  {"IdName":"gwgs","Name":"怪物公司","Top":"1436","Left":"1735"},
-		  {"IdName":"fkch","Name":"疯狂茶会","Top":"675","Left":"1735"}];
+		  {"IdName":"fkch","Name":"疯狂茶会","Top":"675","Left":"1735"}];*/
 		  
 /**********************************窗口重绘**********************************/
 window.onresize=resize;
 function resize(){
+	setstyle();
 	var imgH=$("#map-panorama-map").height();
 	var imgW=$("#map-panorama-map").width();
 	var coverH=$("#cover").height();
@@ -37,9 +38,10 @@ function getE(ele){
 /************************************READY***********************************/
 $(document).ready(function(){
 	var resize_flag=1;
+	setstyle();
 	/************************设置地图切换按钮位置***********************/
 	//getE("switch-button").style.top=(parseInt(document.body.clientHeight+0)-103)/2+'px';
-	
+
 	/************************状态发布栏***********************/
 	var flag_button=0;
 	$("#photo-button").tap(function(){
@@ -113,6 +115,30 @@ $(document).ready(function(){
 
 	/************************遮罩出现***********************/
 	var flag_cover=0;
+	$("#msg-img").tap(function(){
+		msg_hide();
+		var imgH=$("#map-panorama-map").height();
+		var imgW=$("#map-panorama-map").width();
+		var coverH=$("#cover").height();
+		var coverW=$("#cover").width();
+		var scale=imgH/2487;
+		var windowH=parseInt(document.body.clientHeight+0);
+		var windowW=parseInt(document.body.clientWidth+0);
+		if(resize_flag){
+			$("#map-panorama-map").css("margin-top",(coverH-imgH)/2+'px');
+			//alert("on")
+			resize_flag=0
+		}
+		getE("select-box").style.top=((-parseInt(getE("map-sketch").style.top+0)+windowH/2)*scale+(coverH-imgH)/2-30)+'px';
+		getE("select-box").style.left=((-parseInt(getE("map-sketch").style.left+0)+windowW/2)*scale+(coverW-imgW)/2-30)+'px';
+		getE("user-ego-small").style.top=((parseInt(getE("user-ego").style.top+0))*scale+(coverH-imgH)/2)+'px';
+		getE("user-ego-small").style.left=((parseInt(getE("user-ego").style.left+0))*scale+(coverW-imgW)/2)+'px';
+		$("#cover").animate({
+			right:"0"
+		},300);
+		$("#slide-left").css("z-index","1001");
+		flag_cover=1;
+	});
 	$(document).on("vmouseover","#slide-right",function(){
 		//init_para();
 		//anti_mapping(getE("map-sketch").style.top,getE("map-sketch").style.left)
@@ -149,6 +175,7 @@ $(document).ready(function(){
 			$("#slide-left").css("z-index","10");
 		}else{
 			//此处添加滑动出现面板的函数
+
 		}
 		flag_cover=0;
 	});
@@ -426,7 +453,7 @@ function showError(error){
     }
   }
 
-var json=[{"IdName":"hgndcb","Name":"灰姑娘的城堡","Top":"1180","Left":"1500"},
+/*var json=[{"IdName":"hgndcb","Name":"灰姑娘的城堡","Top":"1180","Left":"1500"},
 		  {"IdName":"mfqyzt","Top":"616","Left":"639"},
 		  {"IdName":"zygc","Top":"1300","Left":"740"},
 		  {"IdName":"hxsj","Top":"500","Left":"2095"},
@@ -436,7 +463,7 @@ var json=[{"IdName":"hgndcb","Name":"灰姑娘的城堡","Top":"1180","Left":"15
 		  {"IdName":"smjs","Top":"2535","Left":"297"},
 		  {"IdName":"yzfc","Top":"1843","Left":"2696"},
 		  {"IdName":"gwgs","Top":"1914","Left":"2313"},
-		  {"IdName":"fkch","Top":"900","Left":"2313"},];
+		  {"IdName":"fkch","Top":"900","Left":"2313"},];*/
 function Distance(latA,lonA,latB,lonB){
 	return (25960.23679735*(Math.acos(Math.sin(latA)*Math.sin(latB)+Math.cos(latA)*Math.cos(latB)*Math.cos(lonA-lonB))));
 }
@@ -484,17 +511,14 @@ function showAllPosition(top,left,id){
 	getE(id).style.left=left+'px';
 }
 
-/**********************************景点盖章*********************************
-var winWidth = 0;
-var winHeight = 0;
-
+/**********************************景点盖章**********************************/
 function setstyle(){
 	var hb1,hb2,h1,h2;
 	hb1=$("#box").width();
 	hb2=$("#box").height();
 
-	winWidth=document.body.clientWidth;
-	winHeight=document.body.clientHeight;
+	var winWidth=document.body.clientWidth;
+	var winHeight=document.body.clientHeight;
 	h1=winWidth-hb1;
 	h1=h1/2;
 	h2=winHeight-hb2;
@@ -504,23 +528,21 @@ function setstyle(){
 	getE('box').style.top=h2+"px";
 }
 
-var x,y,n=0,ny=0,rotINT,rotYINT;
 function rotateYDIV(){
-	y=getE("badge")
+	var ny=0,rotYINT;
+	var y=getE("badge")
 	clearInterval(rotYINT)
-	rotYINT=setInterval("startYRotate()",10)
-}
-
-function startYRotate(){
-	ny=ny+8
-	y.style.transform="rotateY(" + ny + "deg)"
-	y.style.webkitTransform="rotateY(" + ny + "deg)"
-	y.style.OTransform="rotateY(" + ny + "deg)"
-	y.style.MozTransform="rotateY(" + ny + "deg)"
-	if (ny>=360){
-		clearInterval(rotYINT)
-		if (ny>=360){ny=0}
-	}
+	rotYINT=setInterval(function(){
+		ny=ny+8
+		y.style.transform="rotateY(" + ny + "deg)"
+		y.style.webkitTransform="rotateY(" + ny + "deg)"
+		y.style.OTransform="rotateY(" + ny + "deg)"
+		y.style.MozTransform="rotateY(" + ny + "deg)"
+		if (ny>=360){
+			clearInterval(rotYINT)
+			if (ny>=360){ny=0}
+		}
+	},10)
 }
 
 function animation(){
@@ -542,7 +564,7 @@ function animation(){
 		});
 	});
 }
-var count=0;//景点数*/
+var count=0;//景点数
 /************************增加进度条***********************/
 function addBar(){
 	count++;

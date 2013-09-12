@@ -38,7 +38,7 @@ margin-left:60px;
 	margin-right:5%;
 	margin-top:15px;
 }
-.img-left{
+/*.img-left{
 	margin-left:5%;
 	margin-right:3%;
 	float:left;
@@ -47,18 +47,19 @@ margin-left:60px;
 	margin-left:3%;
 	margin-right:5%;
 	float:right;
-}
+}*/
 .img-left,.img-right{
-	width:40%;
+	margin-left:5%;
+	margin-right:5%;
+	
+	width:90%;
 	border-radius:15px;
 	-webkit-border-radius:15px;
 	border:5px solid white;
 	box-shadow: 10px 10px 5px #888888;
 	margin-top:20px;
 }
-.img-left img,.img-right img{
-	border-radius:15px;
-}
+
 .panelHeadImg{
 	border-radius:50px;
 }
@@ -66,4 +67,7 @@ margin-left:60px;
 	font-family: 微软雅黑;
 	font-size: 25px;
 	margin: 12px;
+}
+.new-icon{
+	color:red;
 }

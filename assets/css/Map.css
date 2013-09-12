@@ -404,7 +404,7 @@ a.spot{
 .slide{
 	position:absolute;
 	height:100%;
-	width:5px;
+	width:10px;
 	top:0;
 	border:1px solid;
 	z-index:10;
@@ -447,11 +447,11 @@ a.spot{
 .user-friend-small{
 	position:absolute;
 }
-.user-friend-small{
+.user-stranger-small{
 	position:absolute;
 
 }
-.user-ego-small img,.user-friend-small img,.user-friend-small img{
+.user-ego-small img,.user-friend-small img,.user-stranger-small img{
 	max-width:10px;
 	max-height:10px;
 }

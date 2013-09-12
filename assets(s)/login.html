@@ -1,0 +1,423 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1">
+	<!--link rel="stylesheet" href="themes/orange.css"-->
+	<link rel="stylesheet" href="jquery.mobile-1.3.2/jquery.mobile-1.3.2.min.css">
+	<!--script type="text/javascript" src="js/cordova.js"></script-->
+	<script src="js/jquery-1.10.2.min.js"></script>
+	<script src="jquery.mobile-1.3.2/jquery.mobile-1.3.2.min.js"></script>
+	<style>
+	.ui-page{
+		backface-visibility:hidden;
+		-webkit-backface-visibility:hidden;
+		-moz-backface-visibility:hidden;
+	}
+	</style>
+	<!--******************************************与拍照上传相关的代码******************************-->
+	
+	<script type="text/javascript" charset="utf-8">
+    var pictureSource;  
+    var destinationType; 
+    document.addEventListener("deviceready",onDeviceReady,false);
+    function onDeviceReady() {
+	pictureSource=navigator.camera.PictureSourceType;
+	destinationType=navigator.camera.DestinationType;
+    }
+function onPhotoURISuccess(imageURI){
+	//alert("k.o!");
+	var largeImage = document.getElementById('largeImage');
+	largeImage.style.display = 'block';
+	largeImage.src = imageURI;
+	upLoadFile(imageURI);
+}
+
+function capturePhotoEdit(){
+//alert('ok!');
+	window.location.href = "#regist";
+	//navigator.camera.getPicture(onPhotoURISuccess,onFail,{quality:20,allowEdit:true});
+	navigator.camera.getPicture(onPhotoURISuccess,onFail,{quality:50,destinationType:destinationType.FILE_URI});
+}
+
+function getPhoto(source){
+	window.location.href = "#regist";
+		navigator.camera.getPicture(onPhotoURISuccess,onFail,{quality:50,destinationType:destinationType.FILE_URI,sourceType:source});
+}
+
+function onFail(message){
+	alert('Failed because:'+message);
+}
+
+function upLoadFile(path){
+	var ft= new FileTransfer();
+	ft.upload(path,"http://localhost/server/uploadPortrait.php",
+	function (result){
+		//alert('Upload success: '+result.responseCode);
+	},
+	function (error){
+		alert('Error uploading file '+path+': '+error.code);
+	},
+	{fileName:'file.jpg',chunkedMode:false},true);
+}
+
+</script>
+<!--使用localStorage存储用户的信息-->
+<script>
+window.onload = function(){
+var userName = localStorage.getItem("userName");
+var pwd = localStorage.getItem("pwd");
+
+if(userName != null){
+	document.getElementById("l_username").value = userName;
+	if(pwd != null)
+	document.getElementById("l_password").value = pwd;
+}
+}
+</script>
+</head>
+<body>
+
+	<div data-role="page" id="start">
+
+		<div data-role="content">
+		<center>
+		<img src="img/icon.gif"/>
+		</center>
+				<form name = "form2" action="" method="POST">
+					用户名<input id="l_username" type="text" name="l_username" onblur="l_isName()">
+					<p id="l_usernameTip" bgcolor="#FFFFFF"></p>
+					密码<input id="l_password" type="password" name="l_password" onblur="l_isPassword()">
+					<p id="l_passwordTip" bgcolor="#FFFFFF"></p>
+					<br>
+					<!--input id="login" type="submit" data-theme="b" value="登陆" onClick="Login()"-->
+					<input id="login" type="submit" data-theme="b" value="登陆" onClick="offLine()">
+					<br>
+					<center>
+						<a href="#regist" data-inline="true" data-role="button" data-theme="e" id="toregister">注册</a>
+					</center>
+				</form>
+		</div>
+	</div>
+	<div data-role="page" id="regist" data-theme="c">
+		<div data-role="header" data-position="fixed"data-theme="c">
+			<h1>用户注册</h1>
+			<a data-icon="arrow-l" data-iconpos="notext" data-shadow="false" data-iconshadow="false" data-rel="back"></a>
+		</div>
+		<div data-role="content">
+			<center>
+				<img src="img/icon.gif" width="120px" height="100px"/>
+			</center>
+			用户名<input type="text" id="username" name="username" onblur="isNameUnique()"/>
+			<p id="usernameTip" bgcolor="#FFFFFF"></p>
+			
+			<fieldset data-role="controlgroup" data-type="horizontal">
+			<legend>性别</legend>
+			<input type="radio" name="gender" value="male" id="male" checked="true"/>
+			<label for="male">男</label>
+			<input type="radio" name="gender" value="female" id="female"/>
+			<label for="female">女</label>
+			<p id="sexTip" bgcolor="#FFFFFF"></p><!--判断性别是否已经选入-->
+			</fieldset>
+			年龄<input type="text" id="age" name="age"/ onblur="isAgeLegal()">
+			<p id="ageTip" bgcolor="#FFFFFF"></p><!-- 判断年龄是否合法-->
+			密码<input type="password" id="password" name="password"/ onblur="isPasswordLegal()">
+			<p id="passwordTip" bgcolor="#FFFFFF"></p> <!--判断密码是否合法-->
+			确认密码<input type="password" id="password2" name="password2"/ onblur="isPasswordSame()">
+			<p id="userpasswordTip" bgcolor="#FFFFFF"></p><!-- 判断前后密码是否一致-->
+			<div class="btn">
+            <span>上传头像</span>
+			
+            <button onclick="capturePhotoEdit();">编辑图片</button><br>
+			<button onclick="getPhoto(pictureSource.PHOTOLIBRARY);">图库</button><br>
+			<img id="largeImage" src=""/>
+			</div>
+   
+			<center>
+			<a data-role="button" data-inline="true" id="register" data-theme="e" onclick = "Register();">立即注册</a>
+			</center>
+			
+		</div>
+	</div>
+	<!--************************************与登录注册相关的代码****************************-->
+<script>
+	function offLine(){
+		localStorage.setItem("userName",name);//登录成功后使用localStorage存贮用户名和密码。
+						localStorage.setItem("pwd",password);
+						//alert("恭喜！您已经成功登陆点击确定返回到主界面");
+						window.location='map.html';//登陆成功返回到主界面
+	}
+	function l_isName(){
+		var name=document.form2.l_username.value;
+		
+		if(name==""){
+			document.getElementById("l_usernameTip").innerHTML="<font color=red>请输入用户名后再登陆</font>";
+			document.form2.l_username.focus();
+			return false;
+		}
+		else{
+			document.getElementById("l_usernameTip").innerHTML="";
+		}
+	}
+	function l_isPassword(){
+		var password=document.form2.l_password.value;
+		if(password==""){
+			document.getElementById("l_passwordTip").innerHTML="<font color=red>请输入密码后再登陆</font>";
+			document.form2.l_password.focus();
+			return false;
+		}
+		else{
+			document.getElementById("l_passwordTip").innerHTML="";
+		}
+	}
+	function Login(){
+
+		var name=document.form2.l_username.value;
+		var password=document.form2.l_password.value;
+		if(name==""||password==""){
+			alert("请输入完整信息后登陆");
+			return;
+		}
+
+		var xmlHttp=null;
+		if (window.XMLHttpRequest)
+		{
+		  xmlHttp=new XMLHttpRequest();
+		}
+		else if (window.ActiveXObject)
+		 {
+		  xmlHttp=new ActiveXObject("Microsoft.XMLHTTP")
+		 }
+		var gender=document.getElementsByName("gender");
+		var url="http://localhost/server/login.php";
+		var str = "username="+name+
+		"&password="+password;
+
+		console.log(str);
+		xmlHttp.open("POST",url,true);
+		xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+		xmlHttp.onreadystatechange=function stateChanged(){
+		
+			if(xmlHttp.readyState==4){
+				if(xmlHttp.status == 200){
+					console.log(xmlHttp.responseText);
+					if(xmlHttp.responseText=="0"){
+						localStorage.setItem("userName",name);//登录成功后使用localStorage存贮用户名和密码。
+						localStorage.setItem("pwd",password);
+						alert("恭喜！您已经成功登陆点击确定返回到主界面");
+						window.location='map.html';//登陆成功返回到主界面
+					}
+					else if(xmlHttp.responseText=="-1"){
+						alert("输入的用户名不存在，请重新输入");
+						
+					}
+					else if(xmlHttp.responseText=="1"){
+						//document.getElementById("l_passwordTip").innerHTML="<font color=red>请输入密码后再登陆</font>";
+						//document.form2.l_password.focus();
+							alert("密码错误，请重新输入");
+						}
+					
+				}	
+			}
+		}
+		;
+		xmlHttp.send(str);		
+	}
+	
+	
+	
+	
+	function Register()
+	{
+		if($("#username").val()==""||$("#password").val()==""||$("#age").val()=="")
+		{
+			alert("请将信息填写完整后在提交，谢谢！");
+			return;
+		}
+		if(validate_form()){
+		var xmlHttp=null
+		if (window.XMLHttpRequest)
+		{
+		  xmlHttp=new XMLHttpRequest()
+		}
+		else if (window.ActiveXObject)
+		 {
+		  xmlHttp=new ActiveXObject("Microsoft.XMLHTTP")
+		 }
+		var gender=document.getElementsByName("gender");
+		var sex="";
+		var flag=0;
+		for(var i=0;i<gender.length;i++){
+			if(gender[i].checked){
+				sex=gender[i].value;
+				flag=1;
+				//alert("lal "+sex);
+			}
+			
+		}
+		if(flag==0){
+				document.getElementById("sexTip").innerHTML="<font color=red>性别尚未选择 </font>";
+				$("#gender").focus();
+				return;
+		}
+	
+		var url="http://localhost/server/register.php";
+		var str = "username="+$("#username").val()+
+		"&password="+$("#password").val()+
+		"&gender="+sex+
+		"&age="+$("#age").val()+
+		"&t="+Math.random();
+		console.log(str);
+		xmlHttp.open("POST",url,true);
+		xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+		xmlHttp.onreadystatechange=function stateChanged(){
+			if(xmlHttp.readyState==4){
+				if(xmlHttp.status == 200){
+					console.log(xmlHttp.responseText);
+					if(xmlHttp.responseText!="-1"){		
+					alert("恭喜！您已经成功注册点击确定返回到登陆界面");
+					window.location='login.html';
+					}
+				else {
+					alert("出错啦！");
+					return ;
+				}
+				
+				}	
+			}
+		}
+		;
+		xmlHttp.send(str);	
+	}
+	}
+	function isAgeLegal(){//判断年龄的输入是否正确
+		var ok= "1234567890";
+		var a=$("#age").val();
+		for(var i=0;i<a.length;i++)
+		{
+			if(ok.indexOf(a.charAt(i))<0||i>1)
+			{
+				document.getElementById("ageTip").innerHTML="<font color=red>年龄输入不合法 </font>";
+				$("#age").focus();
+				return false;
+			}
+		}
+		document.getElementById("ageTip").innerHTML="";
+	}
+	function isPasswordLegal(){
+		if(checkPassword($("#password").val())==false)
+		{
+			document.getElementById("passwordTip").innerHTML="<font color=red>您输入的密码不合法</font>";
+			$("#password").focus();
+			return false;
+		}
+		else{
+			document.getElementById("passwordTip").innerHTML="";
+		}
+	}
+	function isPasswordSame(){
+		if($("#password").val()!=$("#password2").val()){
+			document.getElementById("userpasswordTip").innerHTML="<font color=red>前后密码不一致</font>";
+			$("#password2").focus();
+			return false;
+		}else{
+			document.getElementById("userpasswordTip").innerHTML="";
+		}
+	}
+	function isNameUnique()
+	{
+		if($("#username").val()=="")
+		{
+			//alert("昵称不能为空！");
+			document.getElementById("usernameTip").innerHTML="<font color=red>请输入用户名</font>";
+			$("#username").focus();
+			return false;
+		}
+		else{
+			document.getElementById("usernameTip").innerHTML="";
+		}
+		var xmlHttp=null
+		if (window.XMLHttpRequest)
+		{
+		  xmlHttp=new XMLHttpRequest()
+		}
+		else if (window.ActiveXObject)
+		 {
+		  xmlHttp=new ActiveXObject("Microsoft.XMLHTTP")
+		 }
+		var url="http://localhost/server/isNameUnique.php";
+		url=url+"?username="+$("#username").val();
+		url=url+"&sid="+Math.random();
+		xmlHttp.onreadystatechange=function stateChanged(){
+		if(xmlHttp.readyState==4){
+	if(xmlHttp.status == 200){
+	//console.log(xmlHttp.responseText);
+			if(xmlHttp.responseText=="1"){			
+				document.getElementById("usernameTip").innerHTML="<font color=red>该用户名已经被使用</font>";
+				$("#username").focus();
+			}
+			else return true;
+		}
+		}
+		}
+		; 
+		xmlHttp.open("GET",url,true);
+		xmlHttp.send(null);
+	}
+	function trim(str)
+{
+	return str.replace(/(^\s*)|(\s*$)/g,"");
+}
+
+function bytelength(szString)
+{
+	return szString.replace(/[^\x00-\xff]/g,"  ").length;	
+}
+
+function checkPassword(e)
+{
+	var ok= "1234567890qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM_.-";
+	for(var i=0;i<e.length;i++)
+	{
+		if(ok.indexOf(e.charAt(i))<0)
+		{
+			return false;
+		}
+	}
+	return true;
+}
+
+function validate_form(){
+	if($("#username").val()=="")
+	{
+		//alert("昵称不能为空！");
+		document.getElementById("usernameTip").innerHTML="<font color=red>请输入用户名</font>";
+		$("#username").focus();
+		return false;
+	}
+	if(bytelength($("#username").val())<1||bytelength($("#username").val())>20)
+	{
+		alert("您输入的昵称不合法！");
+		return false;
+	}
+	if($("#password").val() == "")
+	{
+		alert("您输入的密码不能为空！");
+		return false;
+	}
+	if(checkPassword($("#password").val())==false)
+	{
+		alert("您输入的密码不合法！");
+		return false;
+	}
+	if($("#password").val()!=$("#password2").val())
+	{
+		alert("输入密码和确认密码不一致！");
+		return false;
+	}
+	return true;
+}
+
+</script>
+</body>
+</html>

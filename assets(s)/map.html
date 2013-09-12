@@ -1,0 +1,1601 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta lang="zh" />
+<meta name="viewport" content="width=device-width,user-scalable=yes,initial-scale=1.0,maximum-scale=3.0" />
+
+<title>HiTrip</title>
+
+<link rel="stylesheet" href="themes/orange.css">
+<link rel="stylesheet" href="jquery.mobile-1.3.2/jquery.mobile.structure-1.3.2.min.css">
+<link rel="stylesheet" href="css/Map.css">
+<link rel="stylesheet" href="css/Msg.css">
+<link rel="stylesheet" href="css/Zone.css">
+<link rel="stylesheet" href="css/bootstrap.css">
+
+<!--script type="text/javascript" src="js/cordova.js"></script-->
+<script src="js/jquery-1.10.2.min.js"></script>
+<script src="js/jquery.tmpl.min.js"></script>
+<script src="js/Map.js"></script>
+<script src="js/map.ajax.js"></script>
+<script src="js/newThings.js"></script>
+<script src="js/jingdian_introduce.js"></script>
+<script src="js/Zone.js"></script>
+<script src="jquery.mobile-1.3.2/jquery.mobile-1.3.2.min.js"></script>
+<script src="js/setting.js"></script>
+
+
+
+<!--******************************************与拍照上传相关的代码******************************-->
+	
+<!--script type="text/javascript" charset="utf-8">
+    var pictureSource;  
+    var destinationType; 
+    document.addEventListener("deviceready",onDeviceReady,false);
+    function onDeviceReady() {
+	document.addEventListener("backbutton",onBackKeyDown,false);
+	pictureSource=navigator.camera.PictureSourceType;
+	destinationType=navigator.camera.DestinationType;
+    }
+
+	function openPanel(){
+	 var currentPage = $.mobile.activePage.attr("id");
+	 alert(currentPage);
+		switch(currentPage){
+	case "page0":
+		$( "#panel0" ).panel( "open" );
+		break;
+	case "page-google":
+		$( "#panel-google" ).panel( "open" );
+		break;
+	case "page1":
+		$( "#panel1" ).panel( "open" );
+		break;
+	case "page2":
+		$( "#panel2" ).panel( "open" );
+		break;
+	case "page3":
+		$( "#panel3" ).panel( "open" );
+		break;
+	case "page4":
+		$( "#panel4" ).panel( "open" );
+		break;
+	case "msg-reply":
+		$( "#msg-reply-panel" ).panel( "open" );
+		break;
+	case "page5":
+		$( "#panel5" ).panel( "open" );
+		break;
+	case "msg-newf":
+		$("#msg-newf-panel").panel("open");
+		break;	
+	default:
+		navigator.app.backHistory();
+		break;
+	}
+	}
+	function onBackKeyDown(){
+	//alert("onbackkeydown!");
+		openPanel();		
+	}
+function onPhotoURISuccess(imageURI){
+	//alert("k.o!");
+	var immediatePhoto = document.getElementById('immediatePhoto');
+	immediatePhoto.style.display = 'block';
+	immediatePhoto.src = imageURI;
+	upLoadFile(imageURI);
+	upLoadFile(imageURI);
+	//$("#user-ego").append("<a class='bubble'><div class='tooltip fade right in bubble-img'><div class='tooltip-arrow'></div>	<div class='tooltip-inner'><img src="+imageURI"></div></div></a>");
+}
+
+function capturePhotoEdit(){
+	window.location.href = "#photo";
+//alert('ok!');
+	//navigator.camera.getPicture(onPhotoURISuccess,onFail,{quality:20,allowEdit:true});
+	navigator.camera.getPicture(onPhotoURISuccess,onFail,{quality:50,destinationType:destinationType.FILE_URI});
+}
+
+function getPhoto(source){
+window.location.href = "#photo";
+		navigator.camera.getPicture(onPhotoURISuccess,onFail,{quality:50,destinationType:destinationType.FILE_URI,sourceType:source});
+}
+
+function onFail(message){
+	alert('Failed because:'+message);
+}
+
+function upLoadFile(path){
+	var ft= new FileTransfer();
+	ft.upload(path,"http://192.168.1.101/server/sendPhoto.php",
+	function (result){
+		alert('Upload success: '+result.responseCode);
+	},
+	function (error){
+		alert('Error uploading file '+path+': '+error.code);
+	},
+	{fileName:'file.jpg',chunkedMode:false},true);
+}
+
+</script-->
+
+<!----------------------------------------------------- template ------------------------------------------------------>
+
+<!----------------------添加自己到地图------------------------->
+<script id='user-ego-tmpl' type='text/x-jquery-tmpl'>
+	<a class="avatar"><img src=${Head}></img></a>
+</script>
+
+
+<!----------------------添加好友到地图------------------------->
+<script id='user-friend-tmpl' type='text/x-jquery-tmpl'>
+	<div class="user-friend" id=${Id}>
+		<a class="avatar" href="#zone-others"><img src=${Head}></img></a>
+	</div>
+</script>
+
+<!----------------------添加驴友到地图------------------------->
+<script id='user-stranger-tmpl' type='text/x-jquery-tmpl'>
+	<div class="user-stranger" id=${Id}>
+		<a class="avatar" href="#zone-others"><img src=${Head}></img></a>
+	</div>
+</script>
+
+<!----------------------新的好友请求------------------------->
+<script id="op-newf-tmpl" type="text/x-jquery-tmpl">
+	<li id="${Id}-newf">
+		<a href="#zone-others">
+			<img src=${Head}/>
+			<h3>${Name}</h3><p>请求加您为好友</p>
+		</a>
+		<div class="ui-li-aside">
+			<button class="newfY" data-inline="true">同意</button>
+			<button class="newfN" data-inline="true">拒绝</button>
+		</div>
+	</li>
+</script>
+<script id="newf-tmpl" type="text/x-jquery-tmpl">
+<li id="${Id}-newf" data-corners="false" data-shadow="false" data-iconshadow="true" data-wrapperels="div" data-icon="arrow-r" data-iconpos="right" data-theme="a" class="ui-btn ui-btn-icon-right ui-li-has-arrow ui-li ui-li-has-thumb ui-first-child ui-btn-up-g"><div class="ui-btn-inner ui-li"><div class="ui-btn-text"><div class="ui-li-aside">
+					<div data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="a" data-inline="true" data-disabled="false" class="ui-btn ui-btn-up-g ui-shadow ui-btn-corner-all ui-btn-inline" aria-disabled="false"><span class="ui-btn-inner"><span class="ui-btn-text">同意</span></span><button class="newfY ui-btn-hidden" data-inline="true" data-disabled="false">同意</button></div>
+					<div data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="a" data-inline="true" data-disabled="false" class="ui-btn ui-btn-up-g ui-shadow ui-btn-corner-all ui-btn-inline" aria-disabled="false"><span class="ui-btn-inner"><span class="ui-btn-text">拒绝</span></span><button class="newfN ui-btn-hidden" data-inline="true" data-disabled="false">拒绝</button></div>
+				</div>
+				<a href="#zone-others" class="ui-link-inherit">
+					<img src=${Head} class="ui-li-thumb">
+					<h3 class="ui-li-heading">${Name}</h3><p class="ui-li-desc">请求加您为好友</p>
+				</a>
+				
+			</div><span class="ui-icon ui-icon-arrow-r ui-icon-shadow">&nbsp;</span></div></li>
+</script>
+
+
+<!----------------------好友请求被接受------------------------->
+<script id="op-newf-accept-tmpl" type="text/x-jquery-tmpl">
+	<li>
+		<a href="#zone-others">
+			<img src=${Head}/>
+			<h3>${Name}</h3><p>已添加您为好友</p>
+		</a>
+	</li>
+</script>
+<script id="newf-accept-tmpl" type="text/x-jquery-tmpl">
+<li data-corners="false" data-shadow="false" data-iconshadow="true" data-wrapperels="div" data-icon="arrow-r" data-iconpos="right" data-theme="a" class="ui-btn ui-btn-icon-right ui-li-has-arrow ui-li ui-li-has-thumb ui-last-child ui-btn-hover-g"><div class="ui-btn-inner ui-li"><div class="ui-btn-text">
+				<a href="#zone-others" class="ui-link-inherit">
+					<img src=${Head} class="ui-li-thumb">
+					<h3 class="ui-li-heading">${Name}</h3><p class="ui-li-desc">已添加您为好友</p>
+				</a>
+			</div><span class="ui-icon ui-icon-arrow-r ui-icon-shadow">&nbsp;</span></div></li>
+</script>
+
+
+<!-----------------------新的评论提醒--------------------------->
+<script id="op-reply-tmpl" type="text/x-jquery-tmpl">
+	<li>
+		<a href="#zone-others">
+			<img src=${Head}/>
+			<h3>${Name}</h3><p>回复了您的状态</p>
+		</a>
+	</li>
+</script>
+<script id="reply-tmpl" type="text/x-jquery-tmpl">
+<li data-corners="false" data-shadow="false" data-iconshadow="true" data-wrapperels="div" data-icon="arrow-r" data-iconpos="right" data-theme="a" class="ui-btn ui-btn-icon-right ui-li-has-arrow ui-li ui-li-has-thumb ui-last-child ui-btn-hover-g ui-btn-up-g"><div class="ui-btn-inner ui-li"><div class="ui-btn-text">
+				<a href="#zone-others" class="ui-link-inherit">
+					<img src=${Head} class="ui-li-thumb">
+					<h3 class="ui-li-heading">${Name}</h3><p class="ui-li-desc">回复了您的状态</p>
+				</a>
+			</div><span class="ui-icon ui-icon-arrow-r ui-icon-shadow">&nbsp;</span></div></li>
+</script>
+
+
+<!----------------------添加好友文字状态到地图----------------------->
+<script id="status-word-tmpl" type="text/x-jquery-tmpl">
+	<a class="bubble" ><div class="tooltip fade right in bubble-word"onclick="window.location.href='#status';">
+		<div class="tooltip-arrow"></div>
+		<div class="tooltip-inner">${Content}</div>
+	</div></a>
+</script>
+
+
+<!----------------------添加好友图片状态到地图----------------------->
+<script id="status-pic-tmpl" type="text/x-jquery-tmpl">
+	<a class="bubble" href="#status"><div class="tooltip fade right in bubble-img">
+		<div class="tooltip-arrow"></div>
+		<div class="tooltip-inner"><img src=${Picture}></div>
+	</div></a>
+</script>
+
+
+<!----------------------添加景点文字状态到地图----------------------->
+<script id="spot-word-tmpl" type="text/x-jquery-tmpl">
+	<a class="bubble"><div class="tooltip fade right in mb-word">
+		<div class="tooltip-arrow"></div>
+		<div class="tooltip-inner">${Content}</div>
+	</div></a>
+</script>
+
+
+<!----------------------添加景点图片状态到地图----------------------->
+<script id="spot-pic-tmpl" type="text/x-jquery-tmpl">
+	<a class="bubble"><div class="tooltip fade right in mb-img">
+		<div class="tooltip-arrow"></div>
+		<div class="tooltip-inner">
+			<img src=${Picture}>
+			${Content}
+		</div>
+	</div></a>
+</script>
+
+
+
+<!----------------------文字状态(无回复)----------------------->
+<!--script id='text_status_no_reply_button'  type='text/x-jquery-tmpl'>
+	<tr><td><img src=${Head} width="50px" height="50px"/></td><td style="text-align:left">${Name}</td></tr>
+	<tr><td></td><tdstyle="text-align:left">${Content}<br /></td></tr>
+</script-->
+<!----------------------文字状态(无回复)----------------------->
+<script id='text_status_no_reply_button'  type='text/x-jquery-tmpl'>
+	<div class="toubu">
+		<img class="touxiang" src=${Head} />
+		<p class="mingzi">${Name}</p>
+	</div>
+	<div>
+		<p class="neirong">${Content}</p>
+	</div>
+	<hr class="hr">
+</script>
+
+
+<!----------------------图片状态(无回复)---------------------->
+<!--script id='pic_status_no_reply_button'  type='text/x-jquery-tmpl'>
+	<tr><td><img src=${Head} width="50px" height="50px"/></td><td style="text-align:left">${Name}</td></tr>
+	<tr><td></td><td style="text-align:left"><img src=${IMG} width="100%" /><br/>${Content}</br></td></tr>
+</script-->
+<!----------------------图片状态(无回复)---------------------->
+<script id='pic_status_no_reply_button'  type='text/x-jquery-tmpl'>
+	<div class="toubu">
+		<img src=${Head} class="touxiang"/>
+		<p class="mingzi">${Name}</p>
+	</div>
+	<img class="neirongtupian" src=${IMG} />
+	<div>	
+		<p class="neirong">${Content}</p>	
+	</div>
+	<hr class="hr"/>
+</script>
+
+<!---------------------------回复---------------------------->
+<!--script id='reply-tmpl' type='text/x-jquery-tmpl'>
+	<tr>
+		<td></td><td id=${Id}><div id=${Reply_id} style="text-align:left"><img src=${Head} width="30px" height="30px"/>${Name} 回复${Target_Name}: ${Content}<a class="button-reply" ><img width="20px" height="20px" src="img/reply.png" style="float:right"/></a></div></td>
+	</tr>
+</script-->
+<!---------------------------回复---------------------------->
+<script id='reply-tmpl' type='text/x-jquery-tmpl'>
+	<div style="height:30px">
+		<img src=${Head} style="float:left; width:30px; height:30px;"/>
+		<p style="position:relative; margin-left:5px; float:left">${Name}回复 ${Target_Name}: </p>
+		<a class="button-reply"><img width="20px" height="20px" src="img/reply.png" style="float:right"/></a>
+		<p style="margin-left:5px; background-color: #E0E0E0; padding: 2px; border-radius:10px;float:left">${Content}</p>
+	</div>
+</script>
+
+<!----------------------文字状态(有回复)----------------------->
+<!--script id='text_status_reply_button'  type='text/x-jquery-tmpl'>
+	<tr><td><img src=${Head} width="50px" height="50px"/></td><td style="text-align:left">${Name}</td></tr>
+	<tr><td></td><td id=${Id}><div id=${Entry_id} style="text-align:left">${Content}<a class="status-button-reply"><img width="20px" height="20px" src="img/reply.png" style="float:right"/></a></div></td></tr>
+</script-->
+<!----------------------文字状态(有回复)----------------------->
+<script id='text_status_reply_button'  type='text/x-jquery-tmpl'>
+	<div class="toubu">
+		<img class="touxiang" src=${Head} />
+		<p class="mingzi">${Name}</p>
+	</div>
+	<div>
+		<a class="status-button-reply"><img width="20px" height="20px" src="img/reply.png" style="float:right"/></a>
+		<p class="neirong">${Content}</p>
+	</div>
+	<hr class="hr"/>
+</script>
+
+<!----------------------图片状态(有回复)---------------------->
+<!--script id='pic_status_reply_button'  type='text/x-jquery-tmpl'>
+	<tr><td><img src=${Head} width="50px" height="50px"/></td><td style="text-align:left">${Name}</td></tr>
+	<tr><td></td><td><img src=${IMG} width="100%" /></td></tr>
+	<tr><td></td><td id=${Id}><div id=${Entry_id} style="text-align:left">${Content}<a class="status-button-reply"><img width="20px" height="20px" src="img/reply.png" style="float:right"/></a></div></td></tr>
+</script-->
+<!----------------------图片状态(有回复)---------------------->
+<script id='pic_status_reply_button'  type='text/x-jquery-tmpl'>
+	<div class="toubu">
+		<img src=${Head} class="touxiang"/>
+		<p class="mingzi">${Name}</p>
+	</div>
+	<img class="neirongtupian" src=${IMG} />
+	<div>	
+		<a class="status-button-reply"><img width="20px" height="20px" src="img/reply.png" style="float:right"/></a>
+		<p class="neirong">${Content}</p>	
+	</div>
+	<hr class="hr"/>
+</script>
+
+
+<!----------------------------足迹----------------------------->
+<script id="footprint-tmpl" type="text/x-jquery-tmpl">
+	<img class="footprint" id=${Id} src="img/footprint.png" style="top:${top}px;left:${left}px";/>
+</script>
+
+<!--------------------------景点介绍-------------------------->
+<!--script id='jingdianImg1'  type='text/x-jquery-tmpl'>
+	<tr><td><img src=${portrait} width="50px" height="50px"/></td><td>${evaluator_name}</td></tr>
+	<tr><td></td><td>${content}<br /></td><td><img src="img/1star.gif"></td></tr>
+</script>
+<script id='jingdianImg2'  type='text/x-jquery-tmpl'>
+	<tr><td><img src=${portrait} width="50px" height="50px"/></td><td>${evaluator_name}</td></tr>
+	<tr><td></td><td>${content}<br /></td><td><img src="img/2star.gif"></td></tr>
+</script>
+<script id='jingdianImg3'  type='text/x-jquery-tmpl'>
+	<tr><td><img src=${portrait} width="50px" height="50px"/></td><td>${evaluator_name}</td></tr>
+	<tr><td></td><td>${content}<br /></td><td><img src="img/3star.gif"></td></tr>
+</script>
+<script id='jingdianImg4'  type='text/x-jquery-tmpl'>
+	<tr><td><img src=${portrait} width="50px" height="50px"/></td><td>${evaluator_name}</td></tr>
+	<tr><td></td><td>${content}<br /></td><td><img src="img/4star.gif"></td></tr>
+</script>
+<script id='jingdianImg5'  type='text/x-jquery-tmpl'>
+	<tr><td><img src=${portrait} width="50px" height="50px"/></td><td>${evaluator_name}</td></tr>
+	<tr><td></td><td>${content}<br /></td><td><img src="img/5star.gif"></td></tr>
+</script-->
+<script id='jingdianImg1' type='text/x-jquery-tmpl'>
+	<div class="toubu">
+		<img class="touxiang" src=${potrait} />
+		<p class="mingzi">${evaluator_name}</p>
+		<img src="img/1star.gif" class="xingxing"style="float:right"/>
+		<p class="pinglun">${content}</p>
+	</div>
+	<hr class="hr">
+</script>
+<script id='jingdianImg2' type='text/x-jquery-tmpl'>
+	<div class="toubu">
+		<img class="touxiang" src=${potrait} />
+		<p class="mingzi">${evaluator_name}</p>
+		<img src="img/2star.gif" class="xingxing"style="float:right"/>
+		<p class="pinglun">${content}</p>
+	</div>
+	<hr class="hr">
+</script>
+<script id='jingdianImg3' type='text/x-jquery-tmpl'>
+	<div class="toubu">
+		<img class="touxiang" src=${potrait} />
+		<p class="mingzi">${evaluator_name}</p>
+		<img src="img/3star.gif" class="xingxing"style="float:right"/>
+		<p class="pinglun">${content}</p>
+	</div>
+	<hr class="hr">
+</script>
+<script id='jingdianImg4' type='text/x-jquery-tmpl'>
+	<div class="toubu">
+		<img class="touxiang" src=${potrait} />
+		<p class="mingzi">${evaluator_name}</p>
+		<img src="img/4star.gif" class="xingxing"style="float:right"/>
+		<p class="pinglun">${content}</p>
+	</div>
+	<hr class="hr">
+</script>
+<script id='jingdianImg5' type='text/x-jquery-tmpl'>
+	<div class="toubu">
+		<img class="touxiang" src=${potrait} />
+		<p class="mingzi">${evaluator_name}</p>
+		<img src="img/5star.gif" class="xingxing"style="float:right"/>
+		<p class="pinglun">${content}</p>
+	</div>
+	<hr class="hr">
+</script>
+<script id='newThing' type='text/x-jquery-tmpl'>
+	<tr><td>${Content}</td></tr>
+</script>
+<script id='newThingImg'  type='text/x-jquery-tmpl'>
+	<tr><td><img src=${IMG} width="300px" height="300px"/></td></tr>
+	<tr><td>${Content}</td></tr>
+</script>
+<script>
+	$(document).ready(function(){
+	var news = [
+		{"HeadPicture":"img/jd1tx.jpg","introPic":"img/jd1js1.jpg","spotName":"灰姑娘的城堡","intro":"灰姑娘城堡的表面用白色和灰色的石头制作，而塔顶则为皇家蓝色，几个塔的顶端和最高的两个塔顶为真金和金箔制造。 灰姑娘城堡的内部为钢筋混凝土结构，消耗钢材达六百吨。 "},
+		{"potrait":"img/header/header1.jpg","evaluator_name":"王小明","content":"很好玩~","star":"5"},
+		{"potrait":"img/header/header2.jpg","evaluator_name":"王大明","content":"梦一般的感觉，太幸福了！","star":"5"},
+		{"potrait":"img/header/header3.jpg","evaluator_name":"李颖","content":"不错的景点,舞蹈很好看","star":"4"}];
+
+		$("#spot_head").attr("src",news[0].HeadPicture);
+		$("#spot_name").html(news[0].spotName);
+		$("#spot_pic").attr("src",news[0].introPic);
+		$("#spot_intro").html(news[0].intro);
+		for(var i=1;i<news.length;i++){
+					
+					switch(news[i].star){
+						case '1':
+						$("#jingdianImg1").tmpl(news[i]).appendTo("#comments");
+						break;
+						case '2':
+						$("#jingdianImg2").tmpl(news[i]).appendTo("#comments");
+						break;
+						case '3':
+						$("#jingdianImg3").tmpl(news[i]).appendTo("#comments");
+						break;
+						case '4':
+						$("#jingdianImg4").tmpl(news[i]).appendTo("#comments");
+						break;
+						case '5':
+						$("#jingdianImg5").tmpl(news[i]).appendTo("#comments");
+						break;
+					}
+				
+		}
+	});
+	</script>
+</head>
+
+<body style="font-family:微软雅黑;padding:0;">
+<div data-role="page" id="page0" data-theme="a">
+	<div  data-role="header" data-theme="a" data-tap-toggle="false" >
+      <img src="img/hitrip_logo_mini.png">
+		<a href="#panel0" class="panelbar" data-icon="bars" data-iconpos="notext" data-shadow="false" data-iconshadow="false"></a>
+	</div>
+	<div data-role="content" data-theme="a" style="padding:0;height:100%;width:100%">
+		<p id="hottest"></p>
+		<img src="img/flower2.png">
+		<figure>
+			<img src="img/view2.jpg"/>
+			<figcaption>广岛海滨，日落美得让人心醉……</figcaption>
+		</figure>
+		<figure>
+			<img src="img/view3.jpg"/>
+			<figcaption>走在清迈的净土上，心灵也变得沉静</figcaption>
+		</figure>
+		
+		<figure>
+			<img src="img/view4.jpg"/>
+			<figcaption>广岛宫岛之旅，感受和谐之美</figcaption>
+		</figure>
+		<figure>
+			<img src="img/view5.jpg"/>
+			<figcaption>穿越云南全纪录</figcaption>
+		</figure>
+		<figure>
+			<img src="img/view6.jpg"/>
+			<figcaption>泰国的建筑如同一块灵动的宝石</figcaption>
+		</figure>
+		<figure>
+			<img src="img/view7.jpg"/>
+			<figcaption>夕阳无限好，只是近黄昏</figcaption>
+		</figure>
+		<figure>
+			<img src="img/view1.jpg"/>
+			<figcaption>游曳在冰川旁，仿佛能听到远古神祇的低语。</figcaption>
+		</figure>
+		
+		
+	</div>
+    <div data-role="panel" id="panel0" data-theme="a" data-position-fixed="true">
+		<ul data-role="listview" data-divider-theme="a" data-inset="false">
+			<li data-theme="a" class="panelHead">
+				<img class="panelHeadImg" src="img/header/header.jpg" >
+				<p class="panelHeadName">韩笑笑</p>
+			</li>
+			<li data-theme="a"><a href="#panel0" data-transition="pop">首页</a></li>
+			<li data-theme="a"><a href="#page-google" data-transition="pop">普通地图</a></li>
+			<li data-theme="a"><a data-transition="pop" onclick="window.location.href='#page1';">景区地图</a></li>
+			<li data-role="list-divider">动态</li>
+			<li data-theme="a"><a href="#page2" data-transition="pop" >好友动态</a></li>
+			<li data-theme="a"><a href="#page3" data-transition="pop">景区新鲜事</a></li>
+			<li data-role="list-divider">关于我</li>
+			<li data-theme="a"><a href="#page4" data-transition="pop">个人主页</a></li>
+			<li data-theme="a"><a class="msg-center" href="#msg-reply" data-transition="pop">消息中心</a></li>
+			<li data-role="list-divider">操作</li>
+			<li data-theme="a"><a href="#page5" data-transition="pop">设置</a></li>
+			<li data-theme="a"><a>退出</a></li>
+		</ul>
+    </div>
+</div> 
+<div data-role="page" id="page-google" data-theme="a">
+	<div  data-role="header" data-theme="a" data-tap-toggle="false" >
+      <img src="img/hitrip_logo_mini.png">
+		<a href="#panel-google" class="panelbar" data-icon="bars" data-iconpos="notext" data-shadow="false" data-iconshadow="false"></a>
+	</div>
+	<div data-role="content" data-theme="a" style="padding:0;height:100%;width:100%">
+		<div id="mapholder"></div>
+		<script src="http://maps.google.com/maps/api/js?sensor=false"></script>
+		<script>
+		$(document).ready(function(){getLocation();});
+		var x=document.getElementById("demo");
+		function getLocation(){
+			if (navigator.geolocation){
+				navigator.geolocation.getCurrentPosition(showPosition,showError);
+			}
+			else{x.innerHTML="Geolocation is not supported by this browser.";}
+		}
+
+		function showPosition(position){
+			lat=position.coords.latitude;
+			lon=position.coords.longitude;
+			latlon=new google.maps.LatLng(lat, lon)
+			mapholder=document.getElementById('mapholder')
+
+			var myOptions={
+				center:latlon,zoom:14,
+				mapTypeId:google.maps.MapTypeId.ROADMAP,
+				mapTypeControl:false,
+				navigationControlOptions:{style:google.maps.NavigationControlStyle.SMALL}
+			};
+			var map=new google.maps.Map(document.getElementById("mapholder"),myOptions);
+			var marker=new google.maps.Marker({position:latlon,map:map,title:"You are here!"});
+		}
+
+		function showError(error){
+			switch(error.code){
+				case error.PERMISSION_DENIED:
+					x.innerHTML="User denied the request for Geolocation."
+					break;
+				case error.POSITION_UNAVAILABLE:
+					x.innerHTML="Location information is unavailable."
+					break;
+				case error.TIMEOUT:
+					x.innerHTML="The request to get user location timed out."
+					break;
+				case error.UNKNOWN_ERROR:
+					x.innerHTML="An unknown error occurred."
+					break;
+			}
+		}
+		</script>
+		<div data-role="popup" id="popupTip" data-overlay-theme="a" data-theme="a" style="max-width:300px;" class="ui-corner-all">
+			<div data-role="header" data-theme="a" class="ui-corner-top">
+    		  <img src="img/hitrip_logo_mini.png">
+			</div>
+			<div data-role="content" data-theme="a" class="ui-corner-bottom ui-content">
+				<h3 class="ui-title">欢迎来到迪士尼乐园</h3>
+				<p>点击确定进入景区地图</p>
+				<a href="#" data-role="button" data-theme="a" id="entry">确定</a>    
+			</div>
+		</div>
+	</div>
+    <div data-role="panel" id="panel-google" data-theme="a" data-position-fixed="true">
+		<ul data-role="listview" data-divider-theme="a" data-inset="false">
+			<li data-theme="a" class="panelHead">
+				<img class="panelHeadImg" src="img/header/header.jpg" >
+				<p class="panelHeadName">韩笑笑</p>
+			</li>
+			<li data-theme="a"><a href="#page0" data-transition="pop">首页</a></li>
+			<li data-theme="a"><a href="#panel-google" data-transition="pop">普通地图</a></li>
+			<li data-theme="a"><a data-transition="pop" onclick="window.location.href='#page1';">景区地图</a></li>
+			<li data-role="list-divider">动态</li>
+			<li data-theme="a"><a href="#page2" data-transition="pop" >好友动态</a></li>
+			<li data-theme="a"><a href="#page3" data-transition="pop">景区新鲜事</a></li>
+			<li data-role="list-divider">关于我</li>
+			<li data-theme="a"><a href="#page4" data-transition="pop">个人主页</a></li>
+			<li data-theme="a"><a class="msg-center" href="#msg-reply" data-transition="pop">消息中心</a></li>
+			<li data-role="list-divider">操作</li>
+			<li data-theme="a"><a href="#page5" data-transition="pop">设置</a></li>
+			<li data-theme="a"><a>退出</a></li>
+		</ul>
+    </div>
+</div> 
+<!-------------------------------------------------------景区地图--------------------------------------------------------->
+<div data-role="page" id="page1" data-theme="a">
+    <div data-role="header" data-theme="a" data-tap-toggle="false" >
+      <img src="img/text/text_jqdt.png">
+      <a href="#panel1"class="panelbar"  data-icon="bars" data-iconpos="notext" data-shadow="false" data-iconshadow="false"></a>
+    </div>
+	<div data-role="content" style="padding:0%;" id="minilayer" class="minilayer" >
+		<div class="map-sketch" id="map-sketch">
+						
+			<!-------------------景点标注------------------->
+			<div class="marker" id="hgndcb">
+				<a class="pin"><img src="img/Marker-WG.png"/></a>
+				<a class="bubble-name" href="#introduce"><div class="tooltip fade top in">
+					<div class="tooltip-arrow"></div>
+					<div class="tooltip-inner">灰姑娘的城堡</div>
+				</div></a>
+				<!--a class="bubble"><div class="tooltip fade right in mb-img">
+					<div class="tooltip-arrow"></div>
+					<div class="tooltip-inner">
+						<img src="img/female.png">
+						啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊
+					</div>
+				</div></a-->
+			</div>
+			<div class="marker" id="mfqyzt">
+				<a class="pin"><img src="img/Marker-WG.png"/><a>
+				<a class="bubble-name" href="#introduce"><div class="tooltip fade top in">
+					<div class="tooltip-arrow"></div>
+					<div class="tooltip-inner">魔法奇缘之塔</div>
+				</div></a>
+			</div>
+			<div class="marker" id="zygc">
+				<a class="pin"><img src="img/Marker-WG.png"/></a>
+				<a class="bubble-name" href="#introduce"><div class="tooltip fade top in">
+					<div class="tooltip-arrow"></div>
+					<div class="tooltip-inner">自由广场</div>
+				</div></a>
+			</div>
+			<div class="marker" id="hxsj">
+				<a class="pin"><img src="img/Marker-WG.png"/></a>
+				<a class="bubble-name" href="#introduce"><div class="tooltip fade top in">
+					<div class="tooltip-arrow"></div>
+					<div class="tooltip-inner">幻想世界</div>
+				</div></a>
+			</div>
+			<div class="marker" id="mrsj">
+				<a class="pin"><img src="img/Marker-WG.png"/></a>
+				<a class="bubble-name" href="#introduce"><div class="tooltip fade top in">
+					<div class="tooltip-arrow"></div>
+					<div class="tooltip-inner">明日世界</div>
+				</div></a>
+			</div>
+			<div class="marker" id="txsj">
+				<a class="pin"><img src="img/Marker-WG.png"/></a>
+				<a class="bubble-name" href="#introduce"><div class="tooltip fade top in">
+					<div class="tooltip-arrow"></div>
+					<div class="tooltip-inner">探险世界</div>
+				</div></a>
+			</div>
+			<div class="marker" id="mgxzdj">
+				<a class="pin"><img src="img/Marker-WG.png"/></a>
+				<a class="bubble-name" href="#introduce"><div class="tooltip fade top in">
+					<div class="tooltip-arrow"></div>
+					<div class="tooltip-inner">美国小镇大街</div>
+				</div></a>
+			</div>
+			<div class="marker" id="yzfc">
+				<a class="pin"><img src="img/Marker-WG.png"/></a>
+				<a class="bubble-name" href="#introduce"><div class="tooltip fade top in">
+					<div class="tooltip-arrow"></div>
+					<div class="tooltip-inner">宇宙飞船</div>
+				</div></a>
+			</div>
+			<div class="marker" id="gwgs">
+				<a class="pin"><img src="img/Marker-WG.png"/></a>
+				<a class="bubble-name" href="#introduce"><div class="tooltip fade top in">
+					<div class="tooltip-arrow"></div>
+					<div class="tooltip-inner">怪物公司</div>
+				</div></a>
+			</div>
+			<div class="marker" id="fkch">
+				<a class="pin"><img src="img/Marker-WG.png"/></a>
+				<a class="bubble-name" href="#introduce"><div class="tooltip fade top in">
+					<div class="tooltip-arrow"></div>
+					<div class="tooltip-inner">疯狂茶会</div>
+				</div></a>
+			</div>
+
+			<!-------------------用户头像和状态显示--------------------->
+			<div class="user-ego" id="user-ego">
+				<!--a class="avatar"><img src="img/header/header.jpg"></img></a-->
+			</div>
+			<!--div class="user-friend" id="3" style="top:1000px;left:1000px;">
+				<a class="avatar"><img src="img/header/header.jpg"></img></a>
+				<a class="bubble" href="#status"><div class="tooltip fade right in bubble-img">
+					<div class="tooltip-arrow"></div>
+					<div class="tooltip-inner"><img src="img/header/header.jpg"></div>
+				</div></a>
+			</div>
+			<div class="user-friend" style="top:100px;left:500px;">
+				<a class="avatar"><img src="img/header/header.jpg"></img></a>
+				<a class="bubble"><div class="tooltip fade right in bubble-word">
+					<div class="tooltip-arrow"></div>
+					<div class="tooltip-inner">啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊</div>
+				</div></a>
+			</div-->
+		</div>
+				
+		<!----------------------进度条------------------------>
+		<div class="progress progress-warning active progress-striped" id="progress">
+			<div class="bar" id="bar" style="width: 0;border-radius:20px;"></div>
+			<p><span id="count">0</span>/10</p>
+		</div>
+		
+		<!---------------------地图切换--------------------->
+		<!--a id="switch-button" href="#popupPanel" data-rel="popup" data-transition="pop" data-position-to="window">
+			<img src="img/switch-button.png"/>
+		</a--> 
+		<div data-role="popup" id="popupPanel" data-corners="false" data-theme="none" data-shadow="false" data-tolerance="0,0">
+			<button data-theme="a" data-mini="true" id="simple-map">我的地图</button>
+			<button data-theme="a" data-mini="true" id="friend-map">好友地图</button>
+			<button data-theme="a" data-mini="true" id="stranger-map">驴友地图</button>
+		</div>
+		
+		<!---------------------右按钮--------------------->
+		<div id="button-right">
+			<img src="img/right.png"/>
+		</div>
+		<div id="right-status">
+			<a href="#pub" data-transition="slide" style="display:inline-block;height:50px;"><img src="img/zt.png"></a>
+		</div>
+		<div id="right-camera" onclick="capturePhotoEdit();">
+			<img src="img/pz.png">
+		</div>
+		<div id="right-gallery" onclick="getPhoto(pictureSource.PHOTOLIBRARY);">
+			<img src="img/tk.png">
+		</div>
+	
+		
+		<!----------------------左按钮---------------------->
+		<div id="button-left">
+			<img src="img/left.png"/>
+		</div>
+		<div id="left-pinpoint">
+			<img src="img/pinpoint.png"/>
+		</div>		
+		<div id="left-footprint">
+			<img src="img/zj.png">
+		</div>
+		<a id="left-map" href="#popupPanel" data-rel="popup" data-transition="pop" data-position-to="window">
+			<img src="img/map.png"/>
+		</a> 	
+		
+		<!---------------------景点盖章--------------------->
+		<div id="box">
+			<img class="seal" src="img/bind.png" id="bind"/>
+			<img class="seal" src="img/Badge.png" id="badge"/>
+			<img class="seal" src="img/star-fill.png" id="star-fill"/>
+			<img class="seal" src="img/star-twinkle.png" id="star-twinkle"/>
+		</div>
+		<!--------------------新消息提醒-------------------->
+		<div id="msg-img">
+			<img src="img/msg.png"/>
+		</div>
+		<!----------------------滑动层---------------------->
+		<div class="slide" id="slide-left" draggable="false"></div>
+		<div class="slide" id="slide-right" draggable="false"></div>
+		
+		<!----------------------遮罩层---------------------->
+		<div id="cover" class="cover">
+			<div id="map-panorama">
+				<img id="map-panorama-map" src="img/Disney.jpg" />
+				<div id="select-box" class="select-box"></div>
+				<div class="user-ego-small" id="user-ego-small">
+					<img src="img/red.png"/>
+				</div>
+				<!--div class="user-friend-small" id="1-small">
+					<img src="img/orange.png"/>
+				</div>
+				<div class="user-friend-small" id="2-small">
+					<img src="img/orange.png"/>
+				</div>
+				<div class="user-stranger-small" id="3-small">
+					<img src="img/grey.png"/>
+				</div-->
+			</div>
+		</div>
+	</div>
+	
+	<!---------------------景区地图panel--------------------->
+	<div data-role="panel" id="panel1" data-theme="a" data-position-fixed="true">
+		<ul data-role="listview" data-divider-theme="a" data-inset="false">
+			<li data-theme="a" class="panelHead">
+				<img class="panelHeadImg" src="img/header/header.jpg" >
+				<p class="panelHeadName">韩笑笑</p>
+			</li>
+			<li data-theme="a"><a href="#page0" data-transition="pop">首页</a></li>
+			<li data-theme="a"><a href="#page-google" data-transition="pop">普通地图</a></li>
+			<li data-theme="a"><a href="#panel1">景区地图</a></li>
+			<li data-role="list-divider" >动态</li>
+			<li data-theme="a"><a href="#page2" data-transition="pop" onclick="initialFriendStatus();">好友动态</a></li>
+			<li data-theme="a"><a href="#page3" data-transition="pop" onclick="initialQueryJDNews();">景区新鲜事</a></li>
+			<li data-role="list-divider">关于我</li>
+			<li data-theme="a"><a href="#page4" data-transition="pop" onclick="initialQueryPersonNews();">个人主页</a></li>
+			<li data-theme="a"><a class="msg-center" href="#msg-reply" data-transition="pop">消息中心</a></li>
+			<li data-role="list-divider">操作</li>
+			<li data-theme="a"><a href="#page5" data-transition="pop">设置</a></li>
+			<li data-theme="a"><a>退出</a></li>
+		</ul>
+	</div>
+</div>
+
+
+
+<!------------------------------------------------------状态发布---------------------------------------------------------->
+<div data-role="page" id="pub" data-theme="a" data-add-back-btn="true">
+	<div data-role="header" data-theme="a">
+		<img src="img/text/text_fbzt.png">
+		<a data-icon="arrow-l" class="panelbar" data-iconpos="notext" data-shadow="false" data-iconshadow="false" data-rel="back">Menu</a>
+		<a data-role="button" data-rel="back" class="ui-btn-right" id="button-pub" onclick="sendMessage()">发布</a>
+    </div>
+	<div data-role="content" data-theme="a" style="padding:0">
+		<!--------------分享功能-------------->
+		<div class="jiathis_style_32x32" id="jiathis">
+		<div class="count-word">
+				<div style="margin-left:8px;float:left;">
+					<p style="white-space:pre;color:gray" >2013年9月7日      星期六      小雨</p>
+				</div>
+				<p style="margin-right:8px;float:right;"><span id="length1">0</span>/140</p>
+			</div>
+
+			<div id="jiathis2">
+				<div style="margin:0 auto;width:180px;height:32px;">
+					<p style="padding-top:12px;padding-bottom:10px;">分享到...</p>
+					
+				</div>
+				<a class="bshareDiv" href="http://www.bshare.cn/share">分享</a>
+			</div>
+		</div>
+		
+		
+		<!----------------输入栏------------------>
+		<div class="input" style="background-image:url(img/ztbg.jpg);">
+			<form name="myform" id="myform1" style="height:100%;">
+				<textarea  style="" autofocus="true" id="message" placeholder="想说点什么？" onKeyDown="MaxInput1(this.form)" onKeyUp="MaxInput1(this.form)"></textarea>
+			</form>
+		</div>
+
+	</div>
+</div>
+
+
+
+<!------------------------------------------------------照片发布---------------------------------------------------------->
+<div data-role="page" id="photo" data-theme="a" data-add-back-btn="true">
+	<div data-role="header" data-theme="a">
+		<img src="img/text/text_fbzp.png">
+		<a data-icon="arrow-l" class="panelbar" data-iconpos="notext" data-shadow="false" data-iconshadow="false" data-rel="back">Menu</a>
+		<a data-role="button" data-rel="back" class="ui-btn-right" id="button-pub" onclick="sendMessage2()">发布</a>
+    </div>
+	<div data-role="content" data-theme="a" style="padding:0;">
+		<!----------------输入栏------------------>
+		<div class="input" style="background-image:url(imgbg.jpg);">
+			<form name="myform" id="myform2" style="height:100%">
+				<textarea style="margin-top:20px;border-radius:10px;" autofocus="true" id="message2" placeholder="想说点什么？" onKeyDown="MaxInput2(this.form)" onKeyUp="MaxInput2(this.form)"></textarea>
+				
+			</form>
+			<div class="count-word">
+				<!--iv style="margin-left:8px;float:left;">景点盖章</div-->
+				<p style="margin-right:8px;float:right;"><span id="length2">0</span>/140</p>
+			</div>
+			<img id="immediatePhoto" width="200px" height="200px" src=""/>
+		</div>	
+	</div>
+
+</div>
+
+
+
+<!----------------------------------------------------好友/驴友主页------------------------------------------------------->
+<div data-role="page" id="zone-others" data-theme="a">
+	<div data-role="header" data-theme="a">
+	  <img src="img/text/text_grzy.png">
+		<a data-icon="arrow-l" class="panelbar" data-iconpos="notext" data-shadow="false" data-iconshadow="false" data-rel="back">Menu</a>
+    </div>
+	<div data-role="content" data-theme="a" style="padding:0">
+		<!--div class="zone-header" id="2">
+			<!---------------------用户头像---------------------
+			<div class="zone-avatar">
+				<img src="img/header/header.jpg"/>
+			</div-->
+			
+			<!---------------------用户信息---------------------
+			<div class="zone-userinfo">
+				<div class="zone-username"><p>王大明</p></div>
+				<div class="zone-gender"><img src="img/male-symbol.png"/></div>
+				<div class="zone-eyeon">
+					<a class="eyeon" href="#" data-role="button" data-theme="a" data-icon="plus" data-inline="true" data-mini="true">加关注</a>
+				</div>
+			</div>-->
+		<!--/div-->
+		<div class="zone-container" id="">
+			<div class="personalBg">
+				<center>
+					<img class="personalIcon" src="img/header/header8.jpg" style="margin-top:30px;"/>
+					<br><br>
+					<h3 >王小明
+						<img style="width: 16px;vertical-align: baseline;"src="img/male-symbol.png"/>
+					</h3>
+					<div class="zone-eyeon">
+						<a class="eyeon" href="#" data-role="button" data-theme="a" data-icon="plus" data-inline="true" data-mini="true">加关注</a>
+					</div>
+				</center>
+				<br>
+			</div>
+			<figure>
+				<img src="img/grzt1.jpg"/>
+				<figcaption>表演真不错~还有可爱的米奇和米妮<br>
+				<p class="fig-date">2013年8月28日</p>
+				<p class="fig-place">Bay Lake, FL, United States</p>
+				</figcaption>
+			</figure>
+			<figure>
+				<figcaption>探险世界真心惊险。。吓死我了<br>
+				<p class="fig-date">2013年8月27日</p>
+				<p class="fig-place">Bay Lake, FL, United States</p>
+				</figcaption>
+			</figure>
+			<figure>
+				<img src="img/grzt2.jpg"/>
+				<figcaption>美国小镇大街的风景不错~<br>
+				<p class="fig-date">2013年8月26日</p>
+				<p class="fig-place">Bay Lake, FL, United States</p>
+				</figcaption>
+			</figure>
+		</div>
+	</div>
+</div>
+
+
+
+<!------------------------------------------------------状态回复----------------------------------------------------------->
+<div data-role="page" id="status">
+	<div data-role="header" data-theme="a"data-position="fixed">
+		<img src="img/text/text_zthf.png">
+		<a data-icon="arrow-l" class="panelbar" data-iconpos="notext" data-shadow="false" data-iconshadow="false" data-rel="back">Menu</a>
+    </div>
+	<div data-role="content" data-theme="a">
+		<figure>
+			<figcaption>
+				<img class="fig-header" src="img/header/header1.jpg">小兰
+			</figcaption>
+			<figcaption>纳尼？这是迪斯尼消防部？是的，你没看错，不过他可不是一般的消防部哟，体验一把消防员的感觉，有木有！<br>
+			<p class="fig-date">2013年8月28日</p>
+			<p class="fig-place">Bay Lake, FL, United States</p>
+			</figcaption>
+		</figure>
+		<figure class="look-status-reply">
+			<img class="fig-reply-header"src="img/header/header4.jpg" style="">
+			<p class="fig-comment">小小：好漂亮的房子</p>
+		</figure>
+		<figure class="look-status-reply">
+			<img class="fig-reply-header"src="img/header/header3.jpg" style="">
+			<p class="fig-comment">小小：#随手拍#就那么好看~高手哈</p>
+		</figure>
+		<figure class="look-status-reply">
+			<img class="fig-reply-header"src="img/header/header4.jpg" style="">
+			<p class="fig-comment">小小：好漂亮的房子</p>
+		</figure>
+		<figure class="look-status-reply">
+			<img class="fig-reply-header"src="img/header/header4.jpg" style="">
+			<p class="fig-comment">小小：好漂亮的房子</p>
+		</figure>
+		<figure class="look-status-reply">
+			<img class="fig-reply-header"src="img/header/header4.jpg" style="">
+			<p class="fig-comment">小小：好漂亮的房子</p>
+		</figure>
+		<figure class="look-status-reply">
+			<img class="fig-reply-header"src="img/header/header4.jpg" style="">
+			<p class="fig-comment">小小：好漂亮的房子</p>
+		</figure>
+		<figure class="look-status-reply">
+			<img class="fig-reply-header"src="img/header/header4.jpg" style="">
+			<p class="fig-comment">小小：好漂亮的房子</p>
+		</figure>
+	</div>
+	<div data-role="footer" data-theme="a"data-position="fixed">
+		<div><input type="text" id="" value="" data-mini="true" /></div>
+		<a id="" data-role="button" data-icon="edit" data-iconpos="notext" class="ui-btn-right" style="margin-top:2px;">发布</a>
+	</div>
+</div>
+
+
+
+
+
+
+<!--------------------------------------------------消息中心-回复评论------------------------------------------------------>
+<div  data-role="page" id="msg-reply" data-theme="a">
+	<div data-role="header" data-theme="a">
+		<img src="img/text/text_xxzx.png">
+		<a href="#msg-reply-panel" class="panelbar" data-icon="bars" data-iconpos="notext" data-shadow="false" data-iconshadow="false">Menu</a>
+    </div>
+	<div data-role="content" data-theme="a">
+		<ul data-role="listview" id="reply-list">
+			<li id="">
+				<a href="#status">
+					<img src="img/header/header.jpg"/>
+					<h3>王小明</h3><p>回复了您的状态</p>
+				</a>
+			</li>
+			<li>
+				<a href="#status">
+					<img src="img/header/header.jpg"/>
+					<h3>王小明</h3><p>回复了您的状态</p>
+				</a>
+			</li>
+		</ul>
+	</div>
+	<div data-role="footer" data-theme="a" data-position="fixed">	
+		<div data-role="navbar">
+			<ul>
+				<li><a class="footer-reply" href="#" class="ui-btn-active ui-state-persist">评论回复</a></li>
+				<li><a class="footer-newf" href="#msg-newf">新的朋友</a></li>
+			</ul>
+		</div>
+	</div>
+	<div data-role="panel" id="msg-reply-panel" data-theme="a" data-position-fixed="true">
+		<ul data-role="listview" data-divider-theme="a" data-inset="false">
+			<li data-theme="a" class="panelHead">
+				<img class="panelHeadImg" src="img/header/header.jpg" >
+				<p class="panelHeadName">韩笑笑</p>
+			</li>
+			<li data-theme="a"><a href="#page0" data-transition="pop">首页</a></li>
+			<li data-theme="a"><a href="#page-google" data-transition="pop">普通地图</a></li>
+			<li data-theme="a"><a data-transition="pop" onclick="window.location.href='#page1';" data-transition="filp">景区地图</a></li>
+			<li data-role="list-divider" >动态</li>
+			<li data-theme="a"><a href="#page2" data-transition="pop" onclick="initialQueryPersonNews()";>好友动态</a></li>
+			<li data-theme="a"><a href="#page3" data-transition="pop" onclick="initialQueryJDNews();">景区新鲜事</a></li>
+			<li data-role="list-divider">关于我</li>
+			<li data-theme="a"><a href="#page4" data-transition="pop" onclick="initialQueryPersonNews();">个人主页</a></li>
+			<li data-theme="a"><a class="msg-center" href="#msg-reply-panel" data-transition="pop">消息中心</a></li>
+			<li data-role="list-divider">操作</li>
+			<li data-theme="a"><a href="#page5" data-transition="pop">设置</a></li>
+			<li data-theme="a"><a>退出</a></li>
+		</ul>
+	</div>
+</div>
+
+
+
+<!--------------------------------------------------消息中心-新的朋友------------------------------------------------------>
+<div  data-role="page" id="msg-newf" data-theme="a">
+	<div data-role="header" data-theme="a">
+		<img src="img/text/text_xxzx.png">
+		<a href="#msg-newf-panel" class="panelbar" data-icon="bars" data-iconpos="notext" data-shadow="false" data-iconshadow="false">Menu</a>
+    </div>
+	
+	<!-----------------------------消息列表------------------------------->
+	<div data-role="content" data-theme="a">
+		<ul data-role="listview" id="newf-list">
+			<li id="2-newf">
+				<a href="#zone-others">
+					<img src="img/header/header3.jpg"/>
+					<h3>王小明</h3><p>请求加您为好友</p>
+				</a>
+				<div class="ui-li-aside">
+					<button class="newfY" data-inline="true">同意</button>
+					<button class="newfN" data-inline="true">拒绝</button>
+				</div>
+			</li>
+			<li>
+				<a href="#zone-others">
+					<img src="img/header/header4.jpg"/>
+					<h3>王小明</h3><p>请求加您为好友</p>
+				</a>
+				<div class="ui-li-aside">
+					<button data-inline="true">已添加</button>
+				</div>
+			</li>
+			<li>
+				<a href="#zone-others">
+					<img src="img/header/header5.jpg"/>
+					<h3>王小明</h3><p>请求加您为好友</p>
+				</a>
+				<div class="ui-li-aside">
+					<button data-inline="true" onclick="aaa();">已拒绝</button>
+				</div>
+			</li>
+			<li>
+				<a href="#zone-others">
+					<img src="img/header/header6.jpg"/>
+					<h3>王小明</h3><p>已添加您为好友</p>
+				</a>
+			</li>
+		</ul>
+	</div>
+	<div data-role="footer" data-theme="a" data-position="fixed" >	
+		<div data-role="navbar">
+			<ul>
+				<li><a class="footer-reply" href="#msg-reply">评论回复</a></li>
+				<li><a class="footer-newf" href="#" class="ui-btn-active ui-state-persist">新的朋友</a></li>
+			</ul>
+		</div>
+	</div>
+	
+	<!---------------------------------新的朋友panel----------------------------------->
+	<div data-role="panel" id="msg-newf-panel" data-theme="a" data-position-fixed="true">
+		<ul data-role="listview" data-divider-theme="a" data-inset="false">
+			<li data-theme="a" class="panelHead">
+				<img class="panelHeadImg" src="img/header/header.jpg">
+				<p class="panelHeadName">王小明</p>
+			</li>
+			<li data-theme="a"><a href="#page0" data-transition="pop">首页</a></li>
+			<li data-theme="a"><a href="#page-google" data-transition="pop">普通地图</a></li>
+			<li data-theme="a"><a data-transition="pop" onclick="window.location.href='#page1';" data-transition="filp">景区地图</a></li>
+			<li data-role="list-divider" >动态</li>
+			<li data-theme="a"><a href="#page2" data-transition="pop" onclick="initialFriendStatus();">好友动态</a></li>
+			<li data-theme="a"><a href="#page3" data-transition="pop" onclick="initialQueryJDNews();">景区新鲜事</a></li>
+			<li data-role="list-divider">关于我</li>
+			<li data-theme="a"><a href="#page4" data-transition="pop" onclick="initialQueryPersonNews();">个人主页</a></li>
+			<li data-theme="a"><a class="msg-center" href="#msg-newf-panel" data-transition="pop">消息中心</a></li>
+			<li data-role="list-divider">操作</li>
+			<li data-theme="a"><a href="#page5" data-transition="pop">设置</a></li>
+			<li data-theme="a"><a>退出</a></li>
+		</ul>
+	</div>
+</div>
+
+
+
+<!-------------------------------------------------------好友动态---------------------------------------------------------->
+<div data-role="page" id="page2" data-theme="a" >
+    <div data-role="header" data-theme="a" data-position="fixed">
+      <img src="img/text/text_hydt.png">
+      <a href="#panel2" class="panelbar" data-icon="bars" data-iconpos="notext" data-shadow="false" data-iconshadow="false">Menu</a>
+	  <a type="button" id="friendRefresh" data-icon="refresh"data-iconpos="notext" data-shadow="false" data-iconshadow="false">刷新</a>
+	</div>
+    <div data-role="content" style="padding: 0%">
+		<figure>
+			<figcaption>
+				<img class="fig-header" src="img/header/header2.jpg">剪剪
+				<img class="status-reply-button" src="img/reply.png">
+			</figcaption>
+			<img src="img/disney02.jpg"/>
+			<figcaption>美国小镇大街，处处都体现着人与人之间的随和气息，囔，随手这么一拍就被我抓到了。<br>
+				<p class="fig-date">2013年8月28日</p>
+				<p class="fig-place">Bay Lake, FL, United States</p><hr>
+			</figcaption>
+			<figcaption>
+				<div>
+					<img class="fig-reply-header"src="img/header/header4.jpg" style="">
+					<p class="fig-comment">好漂亮的房子</p>
+				</div>
+				<div>
+					<img class="fig-reply-header"src="img/header/header3.jpg" style="">
+					<p class="fig-comment">#随手拍#就那么好看~高手哈</p>
+				</div>
+			</figcaption>
+		</figure>
+		<figure>
+			<figcaption>
+				<img class="fig-header" src="img/header/header1.jpg">小兰
+				<img class="status-reply-button" src="img/reply.png">
+			</figcaption>
+			<figcaption>纳尼？这是迪斯尼消防部？是的，你没看错，不过他可不是一般的消防部哟，体验一把消防员的感觉，有木有！<br>
+			<p class="fig-date">2013年8月28日</p>
+			<p class="fig-place">Bay Lake, FL, United States</p><hr>
+			</figcaption>
+			<figcaption>
+				<div>
+					<img class="fig-reply-header"src="img/header/header4.jpg" style="">
+					<p class="fig-comment">小小：好漂亮的房子</p>
+				</div>
+				<div>
+					<img class="fig-reply-header"src="img/header/header3.jpg" style="">
+					<p class="fig-comment">小小：#随手拍#就那么好看~高手哈</p>
+				</div>
+			</figcaption>
+		</figure>
+		<figure>
+			<figcaption>
+				<img class="fig-header" src="img/header/header3.jpg">大蓝
+				<img class="status-reply-button" src="img/reply.png">
+			</figcaption>
+			<img src="img/disney03.jpg"/>
+			<figcaption>大眼睛，大嘴巴，大肚子，大尾巴，还有四个大爪爪，人人见了都爱他！<br>
+			<p class="fig-date">2013年8月28日</p>
+			<p class="fig-place">Bay Lake, FL, United States</p><hr>
+			</figcaption>
+			<figcaption>
+				<div>
+					<img class="fig-reply-header"src="img/header/header4.jpg" style="">
+					<p class="fig-comment">好漂亮的房子</p>
+				</div>
+				<div>
+					<img class="fig-reply-header"src="img/header/header3.jpg" style="">
+					<p class="fig-comment">#随手拍#就那么好看~高手哈</p>
+				</div>
+			</figcaption>
+		</figure>
+		<figure>
+			<figcaption>
+				<img class="fig-header" src="img/header/header4.jpg">阿蒙
+				<img class="status-reply-button" src="img/reply.png">
+			</figcaption>
+			<img src="img/disney04.jpg"/>
+			<figcaption>哇，好华丽的城堡啊！<br>
+			<p class="fig-date">2013年8月28日</p>
+			<p class="fig-place">Bay Lake, FL, United States</p><hr>
+			</figcaption>
+		</figure>
+		<figure>
+			<figcaption>
+				<img class="fig-header" src="img/header/header5.jpg">欢欢
+				<img class="status-reply-button" src="img/reply.png">
+			</figcaption>
+			<img src="img/disney05.jpg"/>
+			<figcaption>欢乐之船永远航行在整个世界，伴随我们驶向未来<br>
+			<p class="fig-date">2013年8月28日</p>
+			<p class="fig-place">Bay Lake, FL, United States</p><hr>
+			</figcaption>
+		</figure>
+		<figure>
+			<figcaption>
+				<img class="fig-header" src="img/header/header6.jpg">晓琦
+				<img class="status-reply-button" src="img/reply.png">
+			</figcaption>
+			<img src="img/disney06.jpg"/>
+			<figcaption>一个人，一只船，为何世界如此于我的孤单？一双手，一把桨，何时才会觅到我心爱的阿楠？<br>
+			<p class="fig-date">2013年8月28日</p>
+			<p class="fig-place">Bay Lake, FL, United States</p><hr>
+			</figcaption>
+		</figure>
+		<figure>
+			<figcaption>
+				<img class="fig-header" src="img/header/header7.jpg">北北
+				<img class="status-reply-button" src="img/reply.png">
+			</figcaption>
+			<img src="img/disney07.jpg"/>
+			<figcaption>米妮好卡爱啊，真的好喜欢哟<br>
+			<p class="fig-date">2013年8月28日</p>
+			<p class="fig-place">Bay Lake, FL, United States</p><hr>
+			</figcaption>
+		</figure>
+      <button type="button" id="friendLoadMore">点击加载更多</button>
+    </div>
+    	
+	<div data-role="footer" data-theme="a" data-position="fixed" id="page2-reply"style="display:none">
+		<div><input type="text" id="reply-content" value="" data-mini="true" /></div>
+		<a id="button-send-friend" data-role="button" data-icon="edit" data-iconpos="notext" class="ui-btn-right" style="margin-top:2px;">发布</a>
+	</div>
+    <div data-role="panel" id="panel2" data-position="left" data-display="push" data-theme="a" data-position-fixed="true">
+		<ul data-role="listview" data-divider-theme="a" data-inset="false">
+			<li data-theme="a" class="panelHead">
+				<img class="panelHeadImg" src="img/header/header.jpg" >
+				<p class="panelHeadName">韩笑笑</p>
+			</li>
+			<li data-theme="a"><a href="#page0" data-transition="pop">首页</a></li>
+			<li data-theme="a"><a href="#page-google" data-transition="pop">普通地图</a></li>
+			<li data-theme="a"><a data-transition="pop" onclick="window.location.href='#page1';" data-transition="filp">景区地图</a></li>
+			<li data-role="list-divider" >动态</li>
+			<li data-theme="a"><a href="#panel2" data-transition="pop" onclick="initialFriendStatus();">好友动态</a></li>
+			<li data-theme="a"><a href="#page3" data-transition="pop" onclick="initialQueryJDNews();">景区新鲜事</a></li>
+			<li data-role="list-divider">关于我</li>
+			<li data-theme="a"><a href="#page4" data-transition="pop" onclick="initialQueryPersonNews();">个人主页</a></li>
+			<li data-theme="a"><a class="msg-center" href="#msg-reply" data-transition="pop">消息中心</a></li>
+			<li data-role="list-divider">操作</li>
+			<li data-theme="a"><a href="#page5" data-transition="pop">设置</a></li>
+			<li data-theme="a"><a>退出</a></li>
+		</ul>
+    </div>
+</div>
+
+
+
+<!------------------------------------------------------景区新鲜事--------------------------------------------------------->
+<div data-role="page" id="page3" data-theme="a" >
+    <div data-role="header" data-theme="a">
+      <img src="img/text/text_jqxxs.png">
+      <a href="#panel3" class="panelbar" data-icon="bars" data-iconpos="notext" data-shadow="false" data-iconshadow="false">Menu</a>
+	  <a type="button" id="spotRefresh" data-icon="refresh" data-iconpos="notext" data-shadow="false" data-iconshadow="false">刷新</a>
+	</div>
+    <div data-role="content" style="padding: 0%">
+		<figure>
+			<figcaption>
+				<img class="fig-header" src="img/hhgndcb.jpg">灰姑娘的城堡
+			</figcaption>
+			<img src="img/spotnew1.jpg"/>
+			<figcaption>09:00~10:00  群星献舞<br>
+			<p class="fig-date">2013年8月28日</p>
+			<p class="fig-place">Bay Lake, FL, United States</p>
+			</figcaption>
+		</figure>
+		<figure>
+			<figcaption>
+				<img class="fig-header" src="img/hhxsj.jpg">幻想世界
+			</figcaption>
+			<figcaption>10:15~11:30 小熊维尼历险之旅<br>
+			<p class="fig-date">2013年8月28日</p>
+			<p class="fig-place">Bay Lake, FL, United States</p>
+			</figcaption>
+		</figure>
+		<figure>
+			<figcaption>
+				<img class="fig-header" src="img/hmgxzdj.jpg">美国小镇大街
+			</figcaption>
+			<img src="img/spotnew2.jpg"/>
+			<figcaption>11:45~12:30 游行表演<br>
+			<p class="fig-date">2013年8月28日</p>
+			<p class="fig-place">Bay Lake, FL, United States</p>
+			</figcaption>
+		</figure>
+		<figure>
+			<figcaption>
+				<img class="fig-header" src="img/hzygc.jpg">自由广场
+			</figcaption>
+			<img src="img/spotnew3.jpg"/>
+			<figcaption>13:30~14:30 美妮的南国风情戏水乐<br>
+			<p class="fig-date">2013年8月28日</p>
+			<p class="fig-place">Bay Lake, FL, United States</p>
+			</figcaption>
+		</figure>
+		<figure>
+			<figcaption>
+				<img class="fig-header" src="img/hhxsj.jpg">幻想世界
+			</figcaption>
+			<img src="img/spotnew4.jpg"/>
+			<figcaption>14:45~16:00 5D动画厅放映影片<br>
+			<p class="fig-date">2013年8月28日</p>
+			<p class="fig-place">Bay Lake, FL, United States</p>
+			</figcaption>
+		</figure>
+		<figure>
+			<figcaption>
+				<img class="fig-header" src="img/hsmrcb.jpg">睡美人城堡
+			</figcaption>
+			<img src="img/spotnew5.jpg"/>
+			<figcaption>19:00~20:30 烟火表演<br>
+			<p class="fig-date">2013年8月28日</p>
+			<p class="fig-place">Bay Lake, FL, United States</p>
+			</figcaption>
+		</figure>
+      <button type="button" id="spotLoadMore">点击加载更多</button>
+    </div>
+	<div data-role="panel" id="panel3" data-position="left" data-theme="a" data-position-fixed="true">
+		<ul data-role="listview" data-divider-theme="a" data-inset="false">
+			<li data-theme="a" class="panelHead">
+				<img class="panelHeadImg" src="img/header/header.jpg" >
+				<p class="panelHeadName">韩笑笑</p>
+			</li>
+			<li data-theme="a"><a href="#page0" data-transition="pop">首页</a></li>
+			<li data-theme="a"><a href="#page-google" data-transition="pop">普通地图</a></li>
+			<li data-theme="a"><a data-transition="pop" onclick="window.location.href='#page1';" data-transition="filp">景区地图</a></li>
+			<li data-role="list-divider" >动态</li>
+			<li data-theme="a"><a href="#page2" data-transition="pop" onclick="initialFriendStatus();">好友动态</a></li>
+			<li data-theme="a"><a href="#panel3" data-transition="pop" onclick="initialQueryJDNews();">景区新鲜事</a></li>
+			<li data-role="list-divider">关于我</li>
+			<li data-theme="a"><a href="#page4" data-transition="pop" onclick="initialQueryPersonNews();">个人主页</a></li>
+			<li data-theme="a"><a class="msg-center" href="#msg-reply" data-transition="pop">消息中心</a></li>
+			<li data-role="list-divider">操作</li>
+			<li data-theme="a"><a href="#page5" data-transition="pop">设置</a></li>
+			<li data-theme="a"><a>退出</a></li>
+		</ul>
+	</div>
+</div>
+
+
+
+<!--------------------------------------------------个人主页-------------------------------------------------------->
+<div data-role="page" id="page4" data-theme="a" >
+<div data-role="header" data-theme="a">
+  <img src="img/text/text_grzy.png">
+  <a href="#panel4" class="panelbar" data-icon="bars" data-iconpos="notext" data-shadow="false" data-iconshadow="false">Menu</a>
+  <a type="button" id="myStatusRefresh" data-icon="refresh" data-iconpos="notext" data-shadow="false" data-iconshadow="false">刷新</a>
+</div>
+<div data-role="content" style="padding: 0%">
+  <table cellspacing="0" cellpadding="3" border="0" width="100%">
+	<tbody id="personal-new">
+	</tbody>
+  </table>
+	<div class="personalBg">
+		<center>
+			<img class="personalIcon" src="img/header/header.jpg" style="margin-top:30px;"/>
+			<br><br>
+			<h3 >韩笑笑
+				<img style="width: 16px;vertical-align: baseline;"src="img/female-symbol.png"/>
+			</h3>
+			
+		</center>
+		<br>
+	</div>
+	<figure>
+		<img src="img/grzt1.jpg"/>
+		<figcaption>表演真不错~还有可爱的米奇和米妮<br>
+		<p class="fig-date">2013年8月28日</p>
+		<p class="fig-place">Bay Lake, FL, United States</p>
+		</figcaption>
+	</figure>
+	<figure>
+		<figcaption>探险世界真心惊险。。吓死我了<br>
+		<p class="fig-date">2013年8月27日</p>
+		<p class="fig-place">Bay Lake, FL, United States</p>
+		</figcaption>
+	</figure>
+	<figure>
+		<img src="img/grzt2.jpg"/>
+		<figcaption>美国小镇大街的风景不错~<br>
+		<p class="fig-date">2013年8月26日</p>
+		<p class="fig-place">Bay Lake, FL, United States</p>
+		</figcaption>
+	</figure>
+		
+		
+  <button type="button" id="myStatusLoadMore">点击加载更多</button>
+</div>
+	<!--div data-role="popup" id="popupReply" data-theme="a" class="ui-corner-all">
+			<div style="padding:10px 20px;">
+			  <h3>请输入回复内容</h3>
+			  <label for="un" class="ui-hidden-accessible">Comment:</label>
+			  <input type="text" name="comment" id="reply-content-personal" value="" placeholder="回复内容" data-theme="a" />
+			  <button data-theme="a" id="button-send-personal">发送</button>
+			</div>
+	</div-->
+	<div data-role="panel" id="panel4" data-position="left" data-theme="a" data-position-fixed="true">
+		<ul data-role="listview" data-divider-theme="a" data-inset="false">
+			<li data-theme="a" class="panelHead">
+				<img class="panelHeadImg" src="img/header/header.jpg" >
+				<p class="panelHeadName">韩笑笑</p>
+			</li>
+			<li data-theme="a"><a href="#page0" data-transition="pop">首页</a></li>
+			<li data-theme="a"><a href="#page-google" data-transition="pop">普通地图</a></li>
+			<li data-theme="a"><a data-transition="pop" onclick="window.location.href='#page1';" data-transition="filp">景区地图</a></li>
+			<li data-role="list-divider" >动态</li>
+			<li data-theme="a"><a href="#page2" data-transition="pop" onclick="initialFriendStatus();">好友动态</a></li>
+			<li data-theme="a"><a href="#page3" data-transition="pop" onclick="initialQueryJDNews();">景区新鲜事</a></li>
+			<li data-role="list-divider">关于我</li>
+			<li data-theme="a"><a href="#panel4" data-transition="pop" onclick="initialQueryPersonNews();">个人主页</a></li>
+			<li data-theme="a"><a class="msg-center" href="#msg-reply" data-transition="pop">消息中心</a></li>
+			<li data-role="list-divider">操作</li>
+			<li data-theme="a"><a href="#page5" data-transition="pop">设置</a></li>
+			<li data-theme="a"><a>退出</a></li>
+		</ul>
+	</div>
+</div>
+
+
+
+<!------------------------------------------------------设置---------------------------------------------------------->
+<div data-role="page" id="page5" data-theme="a" >
+	<div data-role="header">
+	  <img src="img/text/text_sz.png">
+		<a href="#panel5" class="panelbar" data-icon="bars" data-iconpos="notext" data-shadow="false" data-iconshadow="false">Menu</a>
+	</div>
+	<div data-role="content" style="padding: 0%">
+		<form name = "form" action="" method="POST">
+		
+			更改昵称<input type="text" id="username" name="username" onblur="isNameUnique()"/>
+			<p id="usernameTip" bgcolor="#FFFFFF"></p>
+			旧密码<input type="password" id="oldPassword" name="oldPassword" onblur="isPasswordRight()"/>
+			新密码<input type="password" id="password" name="password" onblur="isPasswordLegal()"/>
+			<p id="passwordTip" bgcolor="#FFFFFF"></p> <!--判断密码是否合法-->
+			确认密码<input type="password" id="password2" name="password2" onblur="isPasswordSame()"/>
+			<p id="userpasswordTip" bgcolor="#FFFFFF"></p><!-- 判断前后密码是否一致-->
+			更改头像
+			<button onclick="capturePhotoEdit();">拍照</button><br>
+			<button onclick="getPhoto(pictureSource.PHOTOLIBRARY);">图库</button><br>
+			<img id="largeImage" src=""/>
+			<input id="login" type="submit" data-theme="a" value="确认" onClick="infoChange()"/>
+			<br><br>
+		</form>
+	</div>
+	
+	<div data-role="panel" id="panel5" data-theme="a" data-position-fixed="true">
+	   <ul data-role="listview" data-divider-theme="a" data-inset="false">
+			<li data-theme="a" class="panelHead">
+				<img class="panelHeadImg" src="img/header/header.jpg" >
+				<p class="panelHeadName">韩笑笑</p>
+			</li>
+			<li data-theme="a"><a href="#page0" data-transition="pop">首页</a></li>
+			<li data-theme="a"><a href="#page-google" data-transition="pop">普通地图</a></li>
+			<li data-theme="a"><a data-transition="pop" onclick="window.location.href='#page1';">景区地图</a></li>
+			<li data-role="list-divider" >动态</li>
+			<li data-theme="a"><a href="#page2" data-transition="pop" onclick="initialFriendStatus();">好友动态</a></li>
+			<li data-theme="a"><a href="#page3" data-transition="pop" onclick="initialQueryJDNews();">景区新鲜事</a></li>
+			<li data-role="list-divider">关于我</li>
+			<li data-theme="a"><a href="#page4" data-transition="pop" onclick="initialQueryPersonNews();">个人主页</a></li>
+			<li data-theme="a"><a class="msg-center" href="#msg-reply" data-transition="pop">消息中心</a></li>
+			<li data-role="list-divider">操作</li>
+			<li data-theme="a"><a href="#panel5" data-transition="pop">设置</a></li>
+			<li data-theme="a"><a>退出</a></li>
+	  </ul>
+	</div>
+</div>
+<!---------------------------------------------------------景点介绍-------------------------------------------------------->
+<div data-role="page" id="introduce" data-theme="a">
+	<div data-role="header">
+		<img src="img/text/text_xxxx.png">
+		<a data-icon="arrow-l" class="panelbar" data-iconpos="notext" data-shadow="false" data-iconshadow="false" data-rel="back">Menu</a>
+		<div data-role="navbar">
+			<ul>
+				<li><a href="#" class="ui-btn-active ui-state-persist">介绍</a></li>
+				<li><a href="#comment">评价</a></li>
+			</ul>
+		</div>
+
+	</div>
+	<div data-role="content">
+		<figure>
+			<figcaption>
+				<img style="width: 85px;float: left;padding: 10px;" src="img/jd1tx.jpg">
+				<div class="spot-eyeon" style="float: right;padding-top: 15px;">
+					<button data-inline="true" data-icon="plus" class="eyeon-spot">加关注</button>
+				</div>
+				<h1 style="padding-top: 23px;text-align: center;">灰姑娘的城堡</h1>
+				
+				
+			</figcaption>
+			<img src="img/disney02.jpg"/><hr>
+			<figcaption style="text-indent: 2em;">灰姑娘城堡的表面用白色和灰色的石头制作，而塔顶则为皇家蓝色，几个塔的顶端和最高的两个塔顶为真金和金箔制造。 灰姑娘城堡的内部为钢筋混凝土结构，消耗钢材达六百吨。<br><br><hr>
+			</figcaption>
+			<figcaption style="text-align:center">
+				<h3>景点新鲜事</h3>
+		<div id="newthings" style="margin:10px;background-color: #E0E0E0;padding: 5px;border-radius:10px;">
+			<p>10:00~10:30  群星献舞</p>
+			<p style="">群星献舞将在米奇和布鲁托强而有劲的太鼓声中开场，并由4支迪士尼明星队伍在各场演出中随着轻快音乐展现精湛舞技</p>
+		</div>
+			</figcaption>
+		</figure>
+	<!--div id="intro"></div>
+		<img id="spot_head" style="float:left;margin-left:10%" src="" width="100px" height="100px"  />
+		<div id="abc" style="position:relative; margin-left:150px; height:100px; "> 
+			<h2 id="spot_name" style="font-family:微软雅黑; margin-top: 10px;"></h2>
+			<div class="spot-eyeon">
+				<button data-inline="true" data-icon="plus" class="eyeon-spot">加关注</button>
+			</div>
+		</div>
+		<hr>
+		<br>
+		<center>
+		<img id="spot_pic" src="" width="400px" height="300px"style="box-shadow: 0 6px 30px black;"/>
+		</center>
+		<p id="spot_intro" style="text-indent: 2em;text-align:left;padding: 12px;"></p>
+
+		<hr>
+		<h3>景点新鲜事</h3>
+		<div id="newthings" style="margin:10px;background-color: #E0E0E0;padding: 5px;border-radius:10px;">
+			<p>10:00~10:30  群星献舞</p>
+			<p style="text-align:left;text-indent:2em;">群星献舞将在米奇和布鲁托强而有劲的太鼓声中开场，并由4支迪士尼明星队伍在各场演出中随着轻快音乐展现精湛舞技</p>
+		</div-->
+	</div>
+
+</div><!-- /page -->
+<div data-role="page" id="comment" data-theme="a">
+	<div data-role="header">
+		<img src="img/text/text_xxxx.png">
+		<a data-icon="arrow-l" class="panelbar" data-iconpos="notext" data-shadow="false" data-iconshadow="false" data-rel="back">Menu</a>
+		<a type="button" id="commentRefresh" data-icon="refresh" data-iconpos="notext" data-shadow="false" data-iconshadow="false">刷新</a>
+		<div data-role="navbar">
+			<ul>
+				<li><a href="#introduce">介绍</a></li>
+				<li><a href="#" class="ui-btn-active ui-state-persist">评价</a></li>
+			</ul>
+		</div>
+	</div>
+	<div data-role="content">
+
+		<div>
+			<p style="float:left;">发表评论~</p>
+			<p class="starWrapper" onmouseover="rate(this,event)"> 
+				<img src="" title="很烂" />
+				<img src="" title="一般" />
+				<img src="" title="还好" />
+				<img src="" title="较好" />
+				<img src="" title="很好" /> 
+			<textarea name="textarea" id="textarea" style="resize:none;"></textarea>
+		</div>
+
+		<center>
+			<button type="button" data-inline="true" data-theme="a" onClick="ensure()">确定</button>
+		</center>	
+		
+		<hr>
+		<div id="comments">
+			<div class="toubu">
+				<img class="touxiang" src="img/header/header4.jpg" />
+				<p class="mingzi">艾薇儿</p>
+				<img src="img/4star.gif" class="xingxing"style="float:right"/>
+				<p class="pinglun">我就要出新专辑啦！</p>
+			</div>
+			<hr class="hr">
+		</div>
+		<button type="button" id="commentLoadMore">点击加载更多</button>
+		
+	</div>
+	
+
+</div>
+<script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/buttonLite.js#uuid=<>&style=-1"></script>
+<script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/addons/bshareAp.js"></script>
+</body>
+</html>
