@@ -50,7 +50,7 @@ function onFail(message){
 
 function upLoadFile(path){
 	var ft= new FileTransfer();
-	ft.upload(path,"http://localhost/server/uploadPortrait.php",
+	ft.upload(path,"http://192.168.1.101/server/uploadPortrait.php",
 	function (result){
 		//alert('Upload success: '+result.responseCode);
 	},
@@ -182,7 +182,7 @@ if(userName != null){
 		  xmlHttp=new ActiveXObject("Microsoft.XMLHTTP")
 		 }
 		var gender=document.getElementsByName("gender");
-		var url="http://localhost/server/login.php";
+		var url="http://192.168.1.101/server/login.php";
 		var str = "username="+name+
 		"&password="+password;
 
@@ -254,7 +254,7 @@ if(userName != null){
 				return;
 		}
 	
-		var url="http://localhost/server/register.php";
+		var url="http://192.168.1.101/server/register.php";
 		var str = "username="+$("#username").val()+
 		"&password="+$("#password").val()+
 		"&gender="+sex+
@@ -338,7 +338,7 @@ if(userName != null){
 		 {
 		  xmlHttp=new ActiveXObject("Microsoft.XMLHTTP")
 		 }
-		var url="http://localhost/server/isNameUnique.php";
+		var url="http://192.168.1.101/server/isNameUnique.php";
 		url=url+"?username="+$("#username").val();
 		url=url+"&sid="+Math.random();
 		xmlHttp.onreadystatechange=function stateChanged(){
