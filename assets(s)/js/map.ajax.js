@@ -34,17 +34,7 @@ function startSimulation(){
 	news0 = {"Id":"7","Content":"我是路人乙","Picture":""};
 	onFriendNews(news0);
 	news0 = {"Id":"8","Content":"我是路人丙","Picture":""};
-	onFriendNews(news0);
-	
-	//5秒后让3号好友说一句话
-	news = {"Id":"3", "Content":"加油~","Picture":""}
-	setTimeout(function(){onFriendNews(news);},5000);
-	//7秒后让2号好友发布一张图片
-	news2 = {"Id":"2","Content":"这是一张照片","Picture":"img/1.jpg"};
-	setTimeout(function(){onFriendNews(news2);},7000);
-	//6秒后让李文正图书馆发布一张图片
-	news3 = {"IdName":"hgndcb","Content":"这是一张照片","Picture":"img/2.jpg"};
-	setTimeout(function(){onJDNews(news3);},6000);
+	onFriendNews(news0);	
 	
 	var request = {"Id":"6","Name":"路人甲","Head":"img/header/header4.jpg"};
 	setTimeout(function(){onFriendRequest(request);},3000);
@@ -69,22 +59,16 @@ function startSimulation(){
 	setTimeout(function(){onFriendNews(vedioNews1);},t0);
 	var vedioNews2 = {"Id":"3","Content":"恩呢，我马上过去找你","Picture":""};
 	setTimeout(function(){onFriendNews(vedioNews2);},t0+=1000);
-	//Spot2：在接下来两对情侣行程对比的时候，在张睿那边分别显示多个景点的景区新鲜事  //2秒后，6号景点探险世界发布一条新鲜事————“想体验最最惊险的探险旅程吗？那就不要错过3：30pm在探险世界举行的疯狂探险游戏吧！”照片为txsj_i.jpg     //1秒后，4号景点幻想世界发布了一条状态————“幻想世界，邀你体验梦幻般的感觉，体验时间
+	//Spot2：在接下来两对情侣行程对比的时候，在张睿那边分别显示多个景点的景区新鲜事  //2秒后，6号景点探险世界发布一条新鲜事————“想体验最最惊险的探险旅程吗？那就不要错过3：30pm在探险世界举行的疯狂探险游戏吧！”照片为txsj_i.jpg     //1秒后，号景点幻想世界发布了一条状态————“幻想世界，邀你体验梦幻般的感觉，体验时间
 //4:00pm”，照片为hxsj_i.jpg
 	vediroNews3 = {"IdName":"txsj","Content":"想体验最最惊险的探险旅程吗？那就不要错过3：30pm在探险世界举行的疯狂探险游戏吧！","Picture":"img/bysj.jpg"};
-	setTimeout(function(){onJDNews(vediroNews3);},2000);  //8秒后1号灰姑娘的城堡发布一条状态————“灰姑娘灯光会将于2：00pm在灰姑娘城堡内上映，欢迎各位游客前去观赏”，照片为hgndcb_i3.jpg
+	setTimeout(function(){onJDNews(vediroNews3);},t0+=2000);  //8秒后1号灰姑娘的城堡发布一条状态————“灰姑娘灯光会将于2：00pm在灰姑娘城堡内上映，欢迎各位游客前去观赏”，照片为hgndcb_i3.jpg
 	vediroNews4 = {"IdName":"hgndcb","Content":"灰姑娘灯光会将于2：00pm在灰姑娘城堡内上映，欢迎各位游客前去观赏","Picture":"img/hgndcb.jpg"};
 	setTimeout(function(){onJDNews(vediroNews4);},t0+=8000);  
 //然后接后一段视频，即张睿二人去魔法城堡参观，随即到了下一场景
 	//Spot3：最后一幕从城堡出来阶段遇到刘瑶二人，然后需要展示猴山的一条状态——“想观看强所未有的猴王争霸吗？5：00猴山将准时上映大型舞台剧猴王争霸，欢迎各位游客前来观赏”
 	vediroNews5 = {"IdName":"gwgs","Content":"想观看强所未有的猴王争霸吗？5：00猴山将准时上映大型舞台剧猴王争霸，欢迎各位游客前来观赏","Picture":""};
 	setTimeout(function(){onJDNews(vediroNews5);},t0+=5000);  
-	//其中可穿插路人的状态：
-	//此处有疑问？？路人回复的状态是不会显示的。
-	//3秒后，9号同学路人丙回复了睿睿的状态————”好啊，到时候灰姑娘城堡门口见啦！^_^”
-	//1秒后，7号路人甲回复路人丙的状态———“—欧也想一起去耶~~，^_^”
-	//4秒后，8号路人乙，回复7号路人甲的回复————“你去屎吧！！！！”
-	//1秒后，9号同学路人丙回复7号路人甲的回复————“同意，你去屎！！！！”	
 }
 //头像移动
 function moveHead(id,direction,px){//direction是方向1，2，3，4分别代表东南西北；px是像素值的大小
@@ -110,7 +94,7 @@ function onFriendAccept(answer){
 	if($.mobile.activePage.attr("id")=="msg-newf"){
 		$("#newf-accept-tmpl").tmpl(answer).prependTo("#newf-list");
 	}else{
-		$("#op-newf-accept-tmpl").tmpl(request).prependTo("#newf-list");
+		$("#op-newf-accept-tmpl").tmpl(answer).prependTo("#newf-list");
 	}
 }
 var tiaoCnt=200;
@@ -194,15 +178,23 @@ function initialAll(){
 				  {"Longitude":"1520","Latitude":"850","Head":"img/header/header.jpg","Id":"1","Name":"\u963f\u6960"},
 				  {"Longitude":"1400","Latitude":"850","Head":"img/header/header.jpg","Id":"1","Name":"\u963f\u6960"},
 				  {"Longitude":"1300","Latitude":"825","Head":"img/header/header.jpg","Id":"1","Name":"\u963f\u6960"},
-				  {"Longitude":"1250","Latitude":"800","Head":"img/header/header.jpg","Id":"1","Name":"\u963f\u6960"}];
+				  {"Longitude":"1250","Latitude":"800","Head":"img/header/header.jpg","Id":"1","Name":"\u963f\u6960"},
+				  {"Longitude":"825","Latitude":"984","Head":"img/header/header.jpg","Id":"1","Name":"\u963f\u6960"},
+				  {"Longitude":"715","Latitude":"975","Head":"img/header/header.jpg","Id":"1","Name":"\u963f\u6960"}];
 	if(flag_ego==1){
 		$("#user-ego-tmpl").tmpl(selfInfo[0]).appendTo("#user-ego");
 		flag=0;
 	}
-	setInterval(function(){
+	setTimeout(lanxiang,5000);
+	function lanxiang(){
+		
 		showMyPosition(selfInfo[i].Latitude,selfInfo[i].Longitude);
 		i++;
-	},30000);
+		if(i==7){}else{
+		setTimeout(lanxiang,5000);
+		}
+	}
+	
 	
 	var strangers = [{"Longitude":"1200","Latitude":"600","Head":"img/header/header6.jpg","Id":"6","Name":"\u8def\u4eba\u7532"},{"Longitude":"1400","Latitude":"700","Head":"img/header/header7.jpg","Id":"7","Name":"\u8def\u4eba\u4e59"},{"Longitude":"1900","Latitude":"800","Head":"img/header/header8.jpg","Id":"8","Name":"\u8def\u4eba\u4e19"}];
 	var friends =[{"Longitude":"1500","Latitude":"800","Head":"img/header/header2.jpg","Id":"2","Name":"\u5c0f\u9896"},{"Longitude":"1500","Latitude":"1000","Head":"img/header/header3.jpg","Id":"3","Name":"\u777f\u777f"},{"Longitude":"1600","Latitude":"1300","Head":"img/header/header4.jpg","Id":"4","Name":"\u5c0f\u7476"},{"Longitude":"1700","Latitude":"1400","Head":"img/header/header5.jpg","Id":"5","Name":"\u5c0f\u84dd"}];

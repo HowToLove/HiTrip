@@ -101,6 +101,9 @@ $(document).ready(function(){
 	$(".bubble-name").hide();
 	$(".pin").tap(function(){
 		$(this).parent().find(".bubble-name").toggle();
+		setTimeout(function(){
+			window.location="#introduce";
+		},3000)
 	});
 	
 	/************************地图切换***********************/
